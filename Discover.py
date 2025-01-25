@@ -5,7 +5,6 @@ import os
 
 load_dotenv()
 API_KEY = os.getenv('API_KEY')
-ENDPOINT = os.getenv('URL')
 
 file_path = 'Bank Data/Discover-AllAvailable-20250123.csv'
 data = pd.read_csv(file_path)
@@ -27,13 +26,13 @@ items.to_csv('discover_important_purchases.csv', index=False)
 client = AzureOpenAI(
   azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT"), 
   api_key=os.getenv("API_KEY"),  
-  api_version="2024-02-01"
+  api_version=os.getenv("API_VERSION")
 )
 
 item_list = items.to_csv(index=False)
 
 response = client.chat.completions.create(
-    model="gpt-4o-mini",
+    model=os.getenv('MODEL'),
     messages=[
         {
             "role": "system",
@@ -41,7 +40,7 @@ response = client.chat.completions.create(
                 "You are an insurance claim assistant. "
                 "Your role is to look through past purchase histories and find important items. "
                 "Identify items that are likely present in a house, are valuable, and can be restored by an insurance claim. "
-                "The output should be formatted as a CSV."
+                "The output should be formatted as only a CSV."
             ),
         },
         {
