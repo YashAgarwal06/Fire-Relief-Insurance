@@ -8,7 +8,6 @@ import datetime
 from pathlib import Path
 
 UPLOAD_FOLDER = 'temp'
-ALLOWED_EXTENSIONS = {'pdf'}
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = Path(__file__).resolve().parent / UPLOAD_FOLDER
@@ -16,7 +15,6 @@ app.config['UPLOAD_FOLDER'] = Path(__file__).resolve().parent / UPLOAD_FOLDER
 CORS(app)
 
 GOOGLE_CLIENT_ID = '297023897813-j43iei5ec3q6aeu69pina25thfm3hvjn.apps.googleusercontent.com'
-
 
 @app.route('/auth/google', methods=['POST'])
 def auth_google():
@@ -77,12 +75,6 @@ def auth_google():
         'email': 'cat'
     }), 200
 
-# Function that makes sure the uploaded file has the correct filename
-def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-
 @app.route('/upload_hd', methods=['POST'])
 def upload_hd():
     # check if the post request has the file part
@@ -97,7 +89,7 @@ def upload_hd():
         return jsonify({'error': "Blank File Name"}), 400
     
     # save file
-    if file and allowed_file(file.filename):
+    if file and ('.' in file.filename and file.filename.rsplit('.', 1)[1].lower() in ['pdf']):
         filename = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f-") + secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         
