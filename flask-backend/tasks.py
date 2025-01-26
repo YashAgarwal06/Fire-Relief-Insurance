@@ -4,6 +4,7 @@ from pdf2image import convert_from_path
 import pytesseract
 import time
 import PyPDF2
+import base64
 from dotenv import load_dotenv
 load_dotenv()
 from celery import Celery
@@ -19,8 +20,8 @@ celery = Celery(
 )
 
 
-HDPROMPT = open('hdprompt.txt', 'r').read()
-AMZNPROMPT = open('amznprompt.txt', 'r').read()
+HDPROMPT = open('lib/hdprompt.txt', 'r').read()
+AMZNPROMPT = open('lib/amznprompt.txt', 'r').read()
 
 # this celery task will be used to analyze the files uploaded by the user
 # when calling this function, we will use the filetype variable to label which file it is (e.g. home declaration doc, amazon orders.zip, etc)
@@ -69,8 +70,10 @@ def analyze_file(self, filetype, filepath):
             response = response.replace('```csv', '').replace("```", '')
         
             xlsx_bytes = process_csv_to_xlsx(response)
+            
+            base64_str = str(base64.b64encode(xlsx_bytes))
         
-            return response
+            return base64_str
         except:
             raise Exception('Task Failed, please retry or contact us')
         

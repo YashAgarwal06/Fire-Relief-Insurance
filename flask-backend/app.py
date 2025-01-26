@@ -166,7 +166,7 @@ def get_task_status(task_id):
         pending_tasks.remove(task_id)
     else:
         response = {'state': task.state, 'status': 'Unknown state'}
-    return jsonify(response), 201
+    return jsonify(response), 200
 
 @app.route('/')
 def main():
