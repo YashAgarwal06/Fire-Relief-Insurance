@@ -19,6 +19,7 @@ CORS(app)
 
 pending_tasks = set() # very quirky and dumb workaround cuz we dont use any database
 
+
 # Takes in a flask request object and makes sure that a file exists in the body of the request
 def validate_file(request):
     # check if the post request has the file part
@@ -146,7 +147,6 @@ def upload_amzn():
 # this route is used to get the status of a celery task, Deepseek generated lol
 @app.route('/task/<task_id>', methods=['GET'])
 def get_task_status(task_id):
-    print(task_id, pending_tasks)
     if task_id not in pending_tasks:
         return jsonify({'error': 'No task with specified id'}), 400
     
