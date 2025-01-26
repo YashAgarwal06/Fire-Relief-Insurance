@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, flash
+from flask import Flask, request, jsonify, flash, send_from_directory
 import requests
 import os
 from flask_cors import CORS
@@ -168,9 +168,15 @@ def get_task_status(task_id):
         response = {'state': task.state, 'status': 'Unknown state'}
     return jsonify(response), 200
 
-@app.route('/')
-def main():
-    return "<h1>Hi Kevin, u like cats huh</h1>"
+
+# Serve React App
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
 
 if __name__ == '__main__':
 
