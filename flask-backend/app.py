@@ -167,6 +167,9 @@ def get_task_status(task_id):
         response = {'state': task.state, 'status': 'Unknown state'}
     return jsonify(response), 201
 
+@app.route('/')
+def main():
+    return "<h1>Hi Kevin, u like cats huh</h1>"
 
 if __name__ == '__main__':
 
