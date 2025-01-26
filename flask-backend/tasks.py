@@ -8,6 +8,9 @@ import base64
 from dotenv import load_dotenv
 load_dotenv()
 from celery import Celery
+from pathlib import Path
+import zipfile
+import shutil
 
 from lib.amazon_to_template import process_csv_to_xlsx
 from lib.get_amazon_from_zip import process_zip_to_csv
@@ -55,9 +58,20 @@ def analyze_file(self, filetype, filepath):
             raise Exception('Task Failed, please retry or contact us')
     
     if filetype == 'AMZN':
-        item_list = process_zip_to_csv(filepath)
+        try:
+            output_folder = Path(filepath).stem
+            with zipfile.ZipFile(filepath, 'r') as zip_ref:
+                zip_ref.extractall(output_folder)
+            item_list = process_zip_to_csv(output_folder)
+        except:
+            # delete files
+            shutil.rmtree(output_folder)
+            os.remove(filepath)
+            raise Exception('Bad .zip file')
+            
         
-        # delete the .zip
+        # delete files
+        shutil.rmtree(output_folder)
         os.remove(filepath)
         
         userquery = f'''

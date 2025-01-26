@@ -1,14 +1,7 @@
-import zipfile
-from pathlib import Path
 import os
 import pandas as pd
-import shutil
 
-def process_zip_to_csv(filepath: str) -> str:
-    output_folder = Path(filepath).stem
-    with zipfile.ZipFile(filepath, 'r') as zip_ref:
-        zip_ref.extractall(output_folder)
-
+def process_zip_to_csv(output_folder: str) -> str:
     try:
         returns_file_path = os.path.join(
             output_folder, 'Retail.OrdersReturned.Payments.1', 'Retail.OrdersReturned.Payments.1.csv')
@@ -58,8 +51,5 @@ def process_zip_to_csv(filepath: str) -> str:
         'Quantity', 'Product Name', 'Total Owed']]
 
     item_list = result.to_csv(index=False)
-    
-    # delete unzipped files
-    shutil.rmtree(output_folder)
     
     return item_list
