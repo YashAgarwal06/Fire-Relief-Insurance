@@ -17,19 +17,21 @@ app.config['UPLOAD_FOLDER'] = Path(__file__).resolve().parent / UPLOAD_FOLDER
 
 CORS(app)
 
+pending_tasks = set() # very quirky and dumb workaround cuz we dont use any database
+
 # Takes in a flask request object and makes sure that a file exists in the body of the request
 def validate_file(request):
     # check if the post request has the file part
     if 'file' not in request.files:
         flash('No file part')
         raise Exception('No file')
-    
+
     file = request.files['file']
-    
+
     # If the user does not select a file, the browser submits an empty file without a filename
     if file.filename == '':
         raise Exception('Blank File Name')
-    
+
 
 @app.route('/auth/google', methods=['POST'])
 def auth_google():
@@ -97,41 +99,45 @@ def upload_hd():
         validate_file(request)
     except Exception as e:
         return jsonify({'error': e.args[0]}), 400
-    
+
     file = request.files['file']
-    
+
     # save file
     if file and ('.' in file.filename and file.filename.rsplit('.', 1)[1].lower() in ['pdf']):
         filename = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f-") + secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
+
         # send this to our celery worker
         task_id = str(uuid.uuid4())
-        analyze_file.apply_async(args=['HD', filename], task_id=task_id)
-        
+        pending_tasks.add(task_id)
+        analyze_file.apply_async(args=['HD', filepath], task_id=task_id)
+
         return jsonify({'task_id': task_id}), 200
     else:
         return jsonify({'error': "Bad file"}), 400
-    
-    
+
+
 @app.route('/upload_amzn', methods=['POST'])
 def upload_amzn():
     try:
         validate_file(request)
     except Exception as e:
         return jsonify({'error': e.args[0]}), 400
-    
+
     file = request.files['file']
-    
-    # save file
+
+    # validate file extension
     if file and ('.' in file.filename and file.filename.rsplit('.', 1)[1].lower() in ['zip']):
+        # save file
         filename = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f-") + secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        
+
         # send this to our celery worker
         task_id = str(uuid.uuid4())
+        pending_tasks.add(task_id)
         analyze_file.apply_async(args=['AMZN', filename], task_id=task_id)
-        
+
         return jsonify({'task_id': task_id}), 200
     else:
         return jsonify({'error': "Bad file"}), 400
@@ -140,22 +146,31 @@ def upload_amzn():
 # this route is used to get the status of a celery task, Deepseek generated lol
 @app.route('/task/<task_id>', methods=['GET'])
 def get_task_status(task_id):
+    print(task_id, pending_tasks)
+    if task_id not in pending_tasks:
+        return jsonify({'error': 'No task with specified id'}), 400
+    
     task = analyze_file.AsyncResult(task_id)
+    
     if task.state == 'PENDING':
         response = {'state': task.state, 'status': 'Pending...'}
     elif task.state == 'SUCCESS':
         response = {'state': task.state, 'result': task.result}
-        task.forget()  # Delete the task result from the backend
+        # Delete the task
+        task.forget()  
+        pending_tasks.remove(task_id)
     elif task.state == 'FAILURE':
         response = {'state': task.state, 'status': str(task.info)}  # Exception occurred
-        task.forget()  # Delete the task result from the backend
+        # Delete the task
+        task.forget()  
+        pending_tasks.remove(task_id)
     else:
         response = {'state': task.state, 'status': 'Unknown state'}
     return jsonify(response), 201
 
 
 if __name__ == '__main__':
-    
+
     if os.getenv('DEV') == 'True':
         app.run(debug=True)
     else:
