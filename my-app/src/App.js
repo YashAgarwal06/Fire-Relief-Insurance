@@ -5,11 +5,14 @@ import HomePage from './pages/HomePage';
 import CoverClear from './pages/Home';
 import LoadingPage from './pages/LoadingPage'; // Import Loading Page
 import ResultsPage from './pages/ResultsPage'; // Import Results Page
+import config from './config.json'
+
+const GOOGLE_CLIENT_ID = config.GOOGLE_CLIENT_ID
 
 function App() {
     return (
         <ContextStoreProvider>
-            <GoogleOAuthProvider clientId="your-client-id">
+            <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
                 <Router>
                     <Routes>
                         <Route path="/" element={<HomePage />} />

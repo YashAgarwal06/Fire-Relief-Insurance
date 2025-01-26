@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
+import config from '../config.json'
+const BASE_URL = config.BACKEND_URL
 
 const ResultsPage = () => {
     const location = useLocation();
@@ -22,7 +24,7 @@ const ResultsPage = () => {
             return;
         }
         try {
-            const response = await fetch(`http://fire.bruinai.org:5000/task/${task_id}`);
+            const response = await fetch(`${BASE_URL}/task/${task_id}`);
             const data = await response.json();
 
             console.log(data);

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FileUpload from './InsuranceFileUpload';
+import config from '../config.json'
+const BASE_URL = config.BACKEND_URL
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -19,7 +21,7 @@ const HomePage = () => {
             navigate('/loading');
 
             // Simulate file upload to the Flask backend
-            const response = await fetch('http://localhost:5000/upload_hd', {
+            const response = await fetch(`${BASE_URL}/upload_hd`, {
                 method: 'POST',
                 body: formData,
             });

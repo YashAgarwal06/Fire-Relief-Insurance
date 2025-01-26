@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
+import config from '../config.json'
+const BASE_URL = config.BACKEND_URL
 
 const InsuranceFileUpload = () => {
     const [file, setFile] = useState(null);
@@ -17,7 +19,7 @@ const InsuranceFileUpload = () => {
 
             try {
                 // Simulate file upload to the backend
-                const response = await fetch('http://fire.bruinai.org:5000/upload_hd', {
+                const response = await fetch(`${BASE_URL}/upload_hd`, {
                     method: 'POST',
                     body: formData,
                 });
