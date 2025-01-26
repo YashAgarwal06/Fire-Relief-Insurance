@@ -1,20 +1,19 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
-import config from '../config.json'
-const BASE_URL = config.BACKEND_URL
+import Header from './Header';
 
 const ResultsPage = () => {
     const navigate = useNavigate();
     const insPollingRef = useRef(null);
     const amzPollingRef = useRef(null);
 
-    const [insTaskStatus, setInsTaskStatus] = useState('PENDING'); // Current state of the insurance task
-    const [insTaskResult, setInsTaskResult] = useState(null); // Result of the insurance task
-    const [amznTaskStatus, setAmznTaskStatus] = useState('PENDING'); // Current state of the amazon task
-    const [amznTaskResult, setAmznTaskResult] = useState(null); // Result of the amazon task
+    const [insTaskStatus, setInsTaskStatus] = useState('PENDING');
+    const [insTaskResult, setInsTaskResult] = useState(null);
+    const [amznTaskStatus, setAmznTaskStatus] = useState('PENDING');
+    const [amznTaskResult, setAmznTaskResult] = useState(null);
 
-    const [errorMessage, setErrorMessage] = useState(null); // Error message, if any
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const { ins_task_id, setins_task_id } = useContextStore();
     const { amzn_task_id, setamzn_task_id } = useContextStore();
@@ -25,7 +24,7 @@ const ResultsPage = () => {
             return;
         }
         try {
-            const response = await fetch(`${BASE_URL}/task/${task_id}`);
+            const response = await fetch(`http://fire.bruinai.org:5000/task/${task_id}`);
             const data = await response.json();
 
             if (response.ok) {
@@ -78,75 +77,32 @@ const ResultsPage = () => {
 
     return (
         <div>
-            {insTaskStatus == "PENDING" && (
-                <div className="flex flex-col items-center justify-center min-h-screen">
-                    <h1 className="text-2xl font-bold mb-4">Processing Insurance File...</h1>
-                    <p className="text-lg mt-2">Task ID: {ins_task_id} {insTaskStatus}</p>
-                    <p className="text-lg mt-4">Please wait while we process your file.</p>
+            <Header></Header>
+            <div className='results-main-cont'>
+                <div className='results-top'>
+                    <h2>Your Results:</h2>
                 </div>
-            )}
-            {insTaskStatus == "SUCCESS" && (
-                <div className="flex flex-col items-center justify-center min-h-screen">
-                    <h1 className="text-2xl font-bold text-green-500">Insurance File Processed Successfully!</h1>
-                    <pre className="bg-gray-100 p-4 rounded mt-4 text-left">
-                        {JSON.stringify(insTaskResult, null, 2)}
-                    </pre>
-                    <button
-                        onClick={() => navigate('/')}
-                        className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-                    >
-                        Upload Another File
-                    </button>
-                </div>
-            )}
-            {insTaskStatus == 'FAILURE' && (
-                <div className="flex flex-col items-center justify-center min-h-screen">
-                    <h1 className="text-2xl font-bold text-red-500">Insurance Task Failed</h1>
-                    <p className="text-lg mt-4">{errorMessage || 'Something went wrong.'}</p>
-                    <button
-                        onClick={() => navigate('/')}
-                        className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-                    >
-                        Try Again
-                    </button>
-                </div>
-            )}
+                <div className="results-container">
+                {/* Render Insurance Column only when the status is SUCCESS */}
+                {insTaskStatus === "SUCCESS" || "PENDING" && (
+                    <div className="results-column insurance">
+                        <h2>Insurance Task Result</h2>
+                        <pre>{JSON.stringify(insTaskResult, null, 2)}</pre>
+                    </div>
+                )}
 
-            {amznTaskStatus == "PENDING" && (
-                <div className="flex flex-col items-center justify-center min-h-screen">
-                    <h1 className="text-2xl font-bold mb-4">Processing Amazon File...</h1>
-                    <p className="text-lg mt-2">Task ID: {amzn_task_id} {amznTaskStatus}</p>
-                    <p className="text-lg mt-4">Please wait while we process your file.</p>
+                {/* Render Amazon Column only when the status is SUCCESS */}
+                {amznTaskStatus === "SUCCESS" || "PENDING" && (
+                    <div className="results-column amazon">
+                        <h2>Amazon Task Result</h2>
+
+                        <pre>{JSON.stringify(amznTaskResult, null, 2)}</pre>
+                    </div>
+                )}
                 </div>
-            )}
-            {amznTaskStatus == "SUCCESS" && (
-                <div className="flex flex-col items-center justify-center min-h-screen">
-                    <h1 className="text-2xl font-bold text-green-500">Amazon File Processed Successfully!</h1>
-                    <pre className="bg-gray-100 p-4 rounded mt-4 text-left">
-                        {JSON.stringify(amznTaskResult, null, 2)}
-                    </pre>
-                    <button
-                        onClick={() => navigate('/home')}
-                        className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-                    >
-                        Upload Another File
-                    </button>
-                </div>
-            )}
-            {amznTaskStatus == 'FAILURE' && (
-                <div className="flex flex-col items-center justify-center min-h-screen">
-                    <h1 className="text-2xl font-bold text-red-500">Amazon Task Failed</h1>
-                    <p className="text-lg mt-4">{errorMessage || 'Something went wrong.'}</p>
-                    <button
-                        onClick={() => navigate('/home')}
-                        className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-                    >
-                        Try Again
-                    </button>
-                </div>
-            )}
+            </div>
         </div>
-    )
+    );
 };
 
 export default ResultsPage;
