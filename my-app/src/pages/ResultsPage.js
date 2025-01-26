@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
 import Header from './Header';
+import config from '../config.json'
+const BASE_URL = config.BACKEND_URL
 
 const ResultsPage = () => {
     const navigate = useNavigate();
@@ -24,7 +26,7 @@ const ResultsPage = () => {
             return;
         }
         try {
-            const response = await fetch(`http://fire.bruinai.org:5000/task/${task_id}`);
+            const response = await fetch(`${BASE_URL}/task/${task_id}`);
             const data = await response.json();
 
             if (response.ok) {
@@ -42,15 +44,22 @@ const ResultsPage = () => {
             insPollingRef.current = setInterval(async () => {
                 const data = await pollEndpoint(ins_task_id);
 
-                setInsTaskStatus(data.state)
+                if (data) {
+                    await setInsTaskStatus(data.state)
 
-                if (data.state !== 'PENDING') {
-                    clearInterval(insPollingRef.current);
-                    setInsTaskResult(data.result)
+                    if (data.state !== 'PENDING') {
+                        clearInterval(insPollingRef.current);
+                        setInsTaskResult(data.result)
+                    }
                 }
+                else {
+                    clearInterval(insPollingRef.current);
+                }
+
             }, 2000);
         };
-        poll();
+        if (ins_task_id)
+            poll();
         return () => {
             clearInterval(insPollingRef.current);
         };
@@ -61,15 +70,22 @@ const ResultsPage = () => {
             amzPollingRef.current = setInterval(async () => {
                 const data = await pollEndpoint(amzn_task_id);
 
-                setAmznTaskStatus(data.state)
+                if (data) {
+                    await setAmznTaskStatus(data.state)
 
-                if (data.state !== 'PENDING') {
-                    clearInterval(amzPollingRef.current);
-                    setAmznTaskResult(data.result)
+                    if (data.state !== 'PENDING') {
+                        clearInterval(amzPollingRef.current);
+                        setAmznTaskResult(data.result)
+                    }
+                }
+                else {
+                    clearInterval(amzPollingRef.current)
                 }
             }, 2000);
         };
-        poll();
+
+        if (amzn_task_id)
+            poll();
         return () => {
             clearInterval(amzPollingRef.current)
         }
@@ -83,22 +99,22 @@ const ResultsPage = () => {
                     <h2>Your Results:</h2>
                 </div>
                 <div className="results-container">
-                {/* Render Insurance Column only when the status is SUCCESS */}
-                {insTaskStatus === "SUCCESS" || "PENDING" && (
-                    <div className="results-column insurance">
-                        <h2>Insurance Task Result</h2>
-                        <pre>{JSON.stringify(insTaskResult, null, 2)}</pre>
-                    </div>
-                )}
+                    {/* Render Insurance Column only when the status is SUCCESS */}
+                    {(insTaskStatus === "SUCCESS" || insTaskStatus === "PENDING") && (
+                        <div className="results-column insurance">
+                            <h2>Insurance Task Result</h2>
+                            <pre>{JSON.stringify(insTaskResult, null, 2)}</pre>
+                        </div>
+                    )}
 
-                {/* Render Amazon Column only when the status is SUCCESS */}
-                {amznTaskStatus === "SUCCESS" || "PENDING" && (
-                    <div className="results-column amazon">
-                        <h2>Amazon Task Result</h2>
+                    {/* Render Amazon Column only when the status is SUCCESS */}
+                    {(amznTaskStatus === "SUCCESS" || amznTaskStatus === "PENDING") && (
+                        <div className="results-column amazon">
+                            <h2>Amazon Task Result</h2>
 
-                        <pre>{JSON.stringify(amznTaskResult, null, 2)}</pre>
-                    </div>
-                )}
+                            <pre>{JSON.stringify(amznTaskResult, null, 2)}</pre>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
