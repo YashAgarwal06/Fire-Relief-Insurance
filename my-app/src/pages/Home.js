@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close'; // Import close icon
 import '../CoverClear.css';
+import Header from './Header';
 
 const modalStyle = {
     position: 'absolute',
@@ -150,51 +151,42 @@ const CoverClear = () => {
         setIsModalOpen(false);
     };
     return (
-        <div className="home-container">
-            <div className="header">
-                {/* Header Section */}
-                <AppBar position="static" sx={{ backgroundColor: '#1f4d61' }}>
-                    <Toolbar>
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            <Link to="/home" style={{ color: '#fff', textDecoration: 'none' }}>
-                                CoverClear
-                            </Link>
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-            </div>
-            <div className="home-page-top">
-                <h1 className="home-page-top">
-                    Restoring
-                    Hope & Stability
-                    for Wildfire Survivors
-                </h1>
-            </div>
-            <div className="coverclear-container">
-
-                <div className="coverclear-content">
-                    <h1 className="coverclear-title">CoverClear</h1>
-                    <p className="coverclear-description">
-                        Insurance claimants affected by the January California Wildfires are attempting to submit itemized claims for household items lost in the fires. However, many claimants don’t know exactly what was in their home, as they were unable to evacuate their property. It’s also difficult to create an itemized list without reviewing years of receipts.
-                    </p>
-                    <div className="coverclear-checklist">
-                        <h2>Checklist for Gathering Information:</h2>
-                        <ul>
-                            <li>Insurance Policy</li>
-                            {/* <li>Bank Statements</li> */}
-                            <li>Amazon Order History</li>
-                            <li>Gmail Emails (e.g., receipts)</li>
-                        </ul>
-                    </div>
-                    <Button variant="contained" onClick={handleGetStartedClick} className="get-started-button">
-                        Get Started
-                    </Button>
+        <div>
+            <Header></Header>
+            <div className="home-container">
+                <div className="home-page-top">
+                    <h1 className="home-page-top">
+                        Restoring
+                        Hope & Stability
+                        for Wildfire Survivors
+                    </h1>
                 </div>
-                <MultiPageModal
-                    isModalOpen={isModalOpen}
-                    setIsModalOpen={setIsModalOpen}
-                />
+                <div className="coverclear-container">
 
+                    <div className="coverclear-content">
+                        <h1 className="coverclear-title">CoverClear</h1>
+                        <p className="coverclear-description">
+                            Insurance claimants affected by the January California Wildfires are attempting to submit itemized claims for household items lost in the fires. However, many claimants don’t know exactly what was in their home, as they were unable to evacuate their property. It’s also difficult to create an itemized list without reviewing years of receipts.
+                        </p>
+                        <div className="coverclear-checklist">
+                            <h2>Checklist for Gathering Information:</h2>
+                            <ul>
+                                <li>Insurance Policy</li>
+                                {/* <li>Bank Statements</li> */}
+                                <li>Amazon Order History</li>
+                                <li>Gmail Emails (e.g., receipts)</li>
+                            </ul>
+                        </div>
+                        <Button variant="contained" onClick={handleGetStartedClick} className="get-started-button">
+                            Get Started
+                        </Button>
+                    </div>
+                    <MultiPageModal
+                        isModalOpen={isModalOpen}
+                        setIsModalOpen={setIsModalOpen}
+                    />
+
+                </div>
             </div>
         </div>
     );

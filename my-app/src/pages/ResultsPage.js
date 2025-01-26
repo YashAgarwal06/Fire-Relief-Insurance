@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
 import CircularProgress from '@mui/material/CircularProgress';
 import SummarizePage from './Summarize';
+import Header from './Header';
 
 const ResultsPage = () => {
     const location = useLocation();
