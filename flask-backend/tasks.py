@@ -5,6 +5,7 @@ import os
 from pdf2image import convert_from_path
 import pytesseract
 import time
+import PyPDF2
 from dotenv import load_dotenv
 load_dotenv()
 from openai import AzureOpenAI
@@ -38,7 +39,7 @@ def prompt_gpt(prompt: str, userinput: str) -> str:
             },
         ]
     )
-    
+
     return response.choices[0].message.content
 
 
@@ -51,15 +52,25 @@ def analyze_file(self, filetype, filepath):
     if filetype == 'HD':
         # perform OCR
         start_time = time.time()
-        images = convert_from_path(filepath)
+        with open(filepath, "rb") as f:
+            reader = PyPDF2.PdfReader(f)
+            total_pages = len(reader.pages)
+        
+        last_page = 6
+        if total_pages < 6:
+            last_page = total_pages
+
+        images = convert_from_path(filepath, first_page=0, last_page=last_page)
         text = ""
-        for i in range(1, 6):
-            text += pytesseract.image_to_string(images[i])
+        for image in images:
+            text += pytesseract.image_to_string(image)
         print("OCR Took: --- %s seconds ---" % (time.time() - start_time))
         
         # delete file
         os.remove(filepath)
         
-        response = prompt_gpt(HDPROMPT, text)
-    
-        return response
+        try:
+            response = prompt_gpt(HDPROMPT, text)
+            return response
+        except:
+            raise Exception('Task Failed, please retry or contact us')
