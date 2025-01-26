@@ -8,41 +8,34 @@ const AmazonFileUpload = () => {
 
     const { amzn_task_id, setamzn_task_id } = useContextStore();
 
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    };
+    const handleFileChange = async (e) => {
+        const selectedFile = e.target.files[0];
+        setFile(selectedFile);
 
-    const handleUpload = async () => {
-        if (!file) {
-            alert('Please select a file first!');
-            return;
-        }
+        if (selectedFile) {
+            const formData = new FormData();
+            formData.append('file', selectedFile);
 
-        const formData = new FormData();
-        formData.append('file', file);
+            try {
+                // Simulate file upload to the backend
+                const response = await fetch('http://fire.bruinai.org:5000/upload_amzn', {
+                    method: 'POST',
+                    body: formData,
+                });
 
-        try {
-            // // Navigate to Loading Page
-            // navigate('/loading');
-
-            // Simulate file upload to the backend
-            const response = await fetch('http://fire.bruinai.org:5000/upload_amzn', {
-                method: 'POST',
-                body: formData,
-            });
-
-            const data = await response.json();
-            if (response.ok) {
-                setamzn_task_id(data.task_id)
-                alert('File uploaded successfully! Task ID: ' + data.task_id);
-            } else {
-                alert(`Failed to upload file: ${data.error}`);
-                // navigate('/');
+                const data = await response.json();
+                if (response.ok) {
+                    setamzn_task_id(data.task_id);
+                    alert('File uploaded successfully! Task ID: ' + data.task_id);
+                } else {
+                    alert(`Failed to upload file: ${data.error}`);
+                    navigate('/');
+                }
+            } catch (error) {
+                console.error('Error uploading file:', error);
+                alert('An error occurred. Please try again.');
+                navigate('/home');
             }
-        } catch (error) {
-            console.error('Error uploading file:', error);
-            alert('An error occurred. Please try again.');
-            navigate('/home');
         }
     };
 
@@ -65,7 +58,6 @@ const AmazonFileUpload = () => {
                 </ol>
             </p>
             <input type="file" accept=".zip" onChange={handleFileChange} />
-            <button onClick={handleUpload}>Upload</button>
         </div>
     );
 };

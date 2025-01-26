@@ -123,17 +123,17 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
                     <CloseIcon />
                 </IconButton>
                 <div>{renderPageContent()}</div>
-                <div className="modal-progress-bar" style={{ position: 'absolute', bottom: '0', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '30px', backgroundColor: '#7BA6B7', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px',}}>
-                    <Button sx={{color: '#262b2f'}} onClick={handlePreviousPage} disabled={currentPage === 0}>
+                <div className="modal-progress-bar" style={{ position: 'absolute', bottom: '0', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '40px', backgroundColor: '#7BA6B7', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px', }}>
+                    <Button sx={{ color: '#262b2f' }} onClick={handlePreviousPage} disabled={currentPage === 0}>
                         Previous
                     </Button>
                     <div>{renderDotProgress()}</div>
                     {/* Conditionally render Submit or Next button */}
                     <div>
                         {currentPage === totalPages - 1 ? (
-                            <Button sx={{color: '#262b2f'}} onClick={handleSubmit}>Submit</Button>
+                            <Button sx={{ color: '#262b2f' }} onClick={handleSubmit}>Submit</Button>
                         ) : (
-                            <Button sx={{color: '#262b2f'}} onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
+                            <Button sx={{ color: '#262b2f' }} onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
                                 Next
                             </Button>
                         )}
@@ -165,46 +165,43 @@ const CoverClear = () => {
                 </div>
                 <div className="coverclear-container">
 
-                <div className="coverclear-content">
-                    <h1 className="coverclear-title">CoverClear</h1>
-                    <p className="coverclear-description">
-                        Insurance claimants affected by the January California Wildfires are attempting to submit itemized claims for household items lost in the fires. However, many claimants don’t know exactly what was in their home, as they were unable to evacuate their property. It’s also difficult to create an itemized list without reviewing years of receipts.
-                    </p>
-                    <div className="coverclear-checklist">
-                        <h2>Checklist for Gathering Information:</h2>
-                        <ul>
-                            <li>Insurance Policy</li>
-                            {/* <li>Bank Statements</li> */}
-                            <li>Amazon Order History</li>
-                            <li>Gmail Emails (e.g., receipts)</li>
-                        </ul>
+                    <div className="coverclear-content">
+                        <h1 className="coverclear-title">CoverClear</h1>
+                        <p className="coverclear-description">
+                            Insurance claimants affected by the January California Wildfires are attempting to submit itemized claims for household items lost in the fires. However, many claimants don’t know exactly what was in their home, as they were unable to evacuate their property. It’s also difficult to create an itemized list without reviewing years of receipts.
+                        </p>
+                        <div className="coverclear-checklist">
+                            <h2>Checklist for Gathering Information:</h2>
+                            <ul>
+                                <li>Insurance Policy</li>
+                                {/* <li>Bank Statements</li> */}
+                                <li>Amazon Order History</li>
+                                {/* <li>Gmail Emails (e.g., receipts)</li> */}
+                            </ul>
+                        </div>
+                        <Button variant="contained" onClick={handleGetStartedClick} className="get-started-button">
+                            Get Started
+                        </Button>
                     </div>
-                    
+                    <MultiPageModal
+                        isModalOpen={isModalOpen}
+                        setIsModalOpen={setIsModalOpen}
+                    />
 
-                    <Button variant="contained" onClick={handleGetStartedClick} className="get-started-button">
-                        Get Started
-                    </Button>
-        
                 </div>
-                
-                <MultiPageModal
-                    isModalOpen={isModalOpen}
-                    setIsModalOpen={setIsModalOpen}
-                />
+                <div className="coverclear-confidentiality">
+                    <h1 className="confidentiality-title">Confidentiality</h1>
+                    <p className="confidentiality-description">
+                        <span style={{ color: " #d48c76" }}>We respect your privacy.</span>
+                        <span style={{ color: "navy" }}>
 
+                            Your information is not stored or shared and is immediately deleted after generating your itemized list.
+                        </span>
+                    </p>
+                </div>
             </div>
-            <div className="coverclear-confidentiality">
-            <h1 className="confidentiality-title">Confidentiality</h1>
-            <p className="confidentiality-description">
-            <span style={{ color: " #d48c76" }}>We respect your privacy.</span> 
-            <span style={{ color: "navy" }}>
-
-            Your information is not stored or shared and is immediately deleted after generating your itemized list.
-             </span>
-            </p>
-</div>
         </div>
     );
 };
 
-export default CoverClear;
+            export default CoverClear;

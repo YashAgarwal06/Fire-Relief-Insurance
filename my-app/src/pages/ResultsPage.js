@@ -124,7 +124,7 @@ const ResultsPage = () => {
                         {JSON.stringify(amznTaskResult, null, 2)}
                     </pre>
                     <button
-                        onClick={() => navigate('/')}
+                        onClick={() => navigate('/home')}
                         className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
                     >
                         Upload Another File
@@ -136,7 +136,7 @@ const ResultsPage = () => {
                     <h1 className="text-2xl font-bold text-red-500">Amazon Task Failed</h1>
                     <p className="text-lg mt-4">{errorMessage || 'Something went wrong.'}</p>
                     <button
-                        onClick={() => navigate('/')}
+                        onClick={() => navigate('/home')}
                         className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
                     >
                         Try Again
