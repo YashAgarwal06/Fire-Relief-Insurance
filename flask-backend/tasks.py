@@ -72,6 +72,10 @@ def analyze_file(self, filetype, filepath):
             xlsx_bytes = process_csv_to_xlsx(response)
             
             base64_str = str(base64.b64encode(xlsx_bytes))
+            
+            # remove the leading "b'" and trailing '
+            if base64_str.startswith("b'") and base64_str.endswith("'"):
+                base64_str = base64_str[2:-1]
         
             return base64_str
         except:
