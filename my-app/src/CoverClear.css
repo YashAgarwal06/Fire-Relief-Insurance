@@ -1,0 +1,78 @@
+/* General Container Styles */
+.coverclear-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f3f4f6;
+}
+
+/* Content Box */
+.coverclear-content {
+    width: 90%;
+    max-width: 800px;
+    padding: 24px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    margin: 16px;
+}
+
+/* Title Styles */
+.coverclear-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 16px;
+    color: #1f2937;
+}
+
+/* Description Styles */
+.coverclear-description {
+    font-size: 1.125rem;
+    color: #374151;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
+
+/* Checklist Styles */
+.coverclear-checklist {
+    margin-bottom: 24px;
+}
+
+.coverclear-checklist h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #1f2937;
+}
+
+.coverclear-checklist ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    color: #374151;
+    line-height: 1.6;
+}
+
+.coverclear-checklist li {
+    margin-bottom: 8px;
+}
+
+/* Button Styles */
+.get-started-button {
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-size: 1rem;
+    display: block;
+    margin: 0 auto;
+    background-color: #3b82f6;
+    color: #ffffff;
+    text-transform: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.get-started-button:hover {
+    background-color: #2563eb;
+}

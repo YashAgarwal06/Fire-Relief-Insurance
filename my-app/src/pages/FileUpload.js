@@ -15,7 +15,7 @@ const FileUpload = () => {
 
         const formData = new FormData();
         formData.append('file', file);
-
+        
         try {
             const response = await fetch('http://localhost:5000/upload_hd', {
                 method: 'POST',
