@@ -12,7 +12,7 @@ def process_amazon_data(zip_path):
 
     # Construct paths for returns_file_path and return_quantity_file_path
     returns_file_path = os.path.join(output_folder, 'Retail.OrdersReturned.Payments.1', 'Retail.OrdersReturned.Payments.1.csv')
-    return_quantity_file_path = os.path.join(output_folder, 'Retail.OrdersReturned.1', 'Retail.OrdersReturned.1.csv')
+    #return_quantity_file_path = os.path.join(output_folder, 'Retail.OrdersReturned.1', 'Retail.OrdersReturned.1.csv')
 
     # Unzip the file
     with zipfile.ZipFile(zip_path, 'r') as zip_ref:
@@ -33,12 +33,12 @@ def process_amazon_data(zip_path):
         return None
 
     returns_data = pd.read_csv(returns_file_path)
-    return_quantity_data = pd.read_csv(return_quantity_file_path).drop_duplicates()
+    #return_quantity_data = pd.read_csv(return_quantity_file_path).drop_duplicates()
 
     # Ensure 'Total Owed' is numeric to avoid type issues
     data['Total Owed'] = pd.to_numeric(data['Total Owed'], errors='coerce')
 
-    data = data[['Order ID', 'Order Date', 'Total Owed', 'Quantity', 'Product Name']]
+    data = data[['Order ID', 'Order Date', 'Unit Price', 'Total Owed', 'Quantity', 'Product Name']]
     data = data.loc[data['Quantity'] != 0]
     
     # Convert 'Order Date' to datetime and then format it as 'YYYY-DD-MM'
@@ -46,7 +46,7 @@ def process_amazon_data(zip_path):
 
 
     returns_subset = returns_data[['OrderID', 'AmountRefunded']].rename(columns={'OrderID': 'Order ID'})
-    return_quantity = return_quantity_data[['OrderID', 'Quantity']].rename(columns={'OrderID': 'Order ID'})
+    #return_quantity = return_quantity_data[['OrderID', 'Quantity']].rename(columns={'OrderID': 'Order ID'})
 
     # Perform an inner merge to find matching rows based on the two conditions
     matching_rows = pd.merge(
@@ -63,9 +63,20 @@ def process_amazon_data(zip_path):
     data = data[~data['Order ID'].isin(matching_rows['Order ID']) | 
                 ~data['Total Owed'].isin(matching_rows['Total Owed_x'])]
 
-    data['Total Owed'] = pd.to_numeric(data['Total Owed'], errors='coerce')
-    filtered_data = data[data['Total Owed'] > 70] 
-    result = filtered_data[['Order Date', 'Product Name', 'Total Owed']]
+    # Ensure 'Unit Price' and 'Quantity' columns are numeric
+    data['Unit Price'] = pd.to_numeric(data['Unit Price'], errors='coerce')
+    data['Quantity'] = pd.to_numeric(data['Quantity'], errors='coerce')
+
+    # Calculate 'Total Price' by multiplying 'Unit Price' and 'Quantity'
+    data['Total Price'] = data['Unit Price'] * data['Quantity']
+    
+
+    # Filter rows where 'Total Price' > 70
+    filtered_data = data[data['Total Owed'] > 70]
+
+    # Select the desired columns for the result
+    result = filtered_data[['Order Date', 'Quantity', 'Product Name', 'Total Price']]
+
 
     print(result)
     # GPT processing
@@ -140,7 +151,7 @@ def process_amazon_data(zip_path):
 
 # Write the CSV string to the file
 #with open(file_path, 'w') as file:
-#    file.write(csv_string)
+    #file.write(csv_string)
 
 
 

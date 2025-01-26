@@ -10,7 +10,6 @@ def process_and_save_to_xlsx(output_xlsx_path, amazon_output):
     df_format = pd.read_excel(df_format_path)
     output = pd.read_csv(output_csv_path)
 
-
     # Adjust df_format rows to match output rows
     output_rows = len(output) + 7  # Adding 7 for the title row
     df_format_rows = len(df_format)
@@ -55,10 +54,14 @@ def process_and_save_to_xlsx(output_xlsx_path, amazon_output):
     sum_value = df_format.iloc[7:, 10:].sum().sum()
     df_format.iat[5, 9] = sum_value
 
+    # Populate the 10th column and 8th row with the division of the 5th column by the 2nd column in output
+    if len(output) > 0:
+        division_result = output.iloc[:, 4] / output.iloc[:, 1]  # 5th column divided by 2nd column
+        df_format.iloc[7:7 + len(division_result), 9] = division_result.values  # Populate 10th column
+
     # Save the result to the specified output path
     df_format.to_excel(output_xlsx_path, index=False)
 
-
-
 # Run the function
+
 #process_and_save_to_xlsx("format.xlsx", "output.csv")
