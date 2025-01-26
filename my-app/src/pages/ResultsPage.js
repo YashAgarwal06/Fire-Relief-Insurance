@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
 import config from '../config.json'
 const BASE_URL = config.BACKEND_URL
 
 const ResultsPage = () => {
-    const location = useLocation();
     const navigate = useNavigate();
+    const insPollingRef = useRef(null);
+    const amzPollingRef = useRef(null);
 
     const [insTaskStatus, setInsTaskStatus] = useState('PENDING'); // Current state of the insurance task
     const [insTaskResult, setInsTaskResult] = useState(null); // Result of the insurance task
@@ -18,8 +19,8 @@ const ResultsPage = () => {
     const { ins_task_id, setins_task_id } = useContextStore();
     const { amzn_task_id, setamzn_task_id } = useContextStore();
 
-    const fetchTaskStatus = async (task_id, setTaskStatus, setTaskResult) => {
-        if (!task_id ) {
+    const pollEndpoint = async (task_id) => {
+        if (!task_id) {
             setErrorMessage('Task ID is missing or invalid.');
             return;
         }
@@ -27,16 +28,9 @@ const ResultsPage = () => {
             const response = await fetch(`${BASE_URL}/task/${task_id}`);
             const data = await response.json();
 
-            console.log(data);
-            
-            setTaskStatus(data.state);
             if (response.ok) {
-                if (data.state === 'SUCCESS') {
-                    setTaskResult(data.result); // Store the result for display
-                } else if (data.state === 'FAILURE') {
-                    setErrorMessage('Task failed to process.');
-                }
-                        } else {
+                return data
+            } else {
                 setErrorMessage('Failed to fetch task status from the server.');
             }
         } catch (error) {
@@ -45,35 +39,43 @@ const ResultsPage = () => {
     };
 
     useEffect(() => {
-        let ins_interval;
-    
-        if (insTaskStatus === 'PENDING' && ins_task_id) {
-            ins_interval = setInterval(() => {
-                fetchTaskStatus(ins_task_id, setInsTaskStatus, setInsTaskResult);
+        const poll = () => {
+            insPollingRef.current = setInterval(async () => {
+                const data = await pollEndpoint(ins_task_id);
+
+                setInsTaskStatus(data.state)
+
+                if (data.state !== 'PENDING') {
+                    clearInterval(insPollingRef.current);
+                    setInsTaskResult(data.result)
+                }
             }, 2000);
-        }
-    
-        // Clear interval when task is no longer pending or component unmounts
-        return () => {
-            if (ins_interval) clearInterval(ins_interval);
         };
-    }, [ins_task_id, insTaskStatus]);
-    
+        poll();
+        return () => {
+            clearInterval(insPollingRef.current);
+        };
+    }, []);
+
     useEffect(() => {
-        let amzn_interval;
-    
-        if (amznTaskStatus === 'PENDING' && amzn_task_id) {
-            amzn_interval = setInterval(() => {
-                fetchTaskStatus(amzn_task_id, setAmznTaskStatus, setAmznTaskResult);
+        const poll = () => {
+            amzPollingRef.current = setInterval(async () => {
+                const data = await pollEndpoint(amzn_task_id);
+
+                setAmznTaskStatus(data.state)
+
+                if (data.state !== 'PENDING') {
+                    clearInterval(amzPollingRef.current);
+                    setAmznTaskResult(data.result)
+                }
             }, 2000);
-        }
-    
-        // Clear interval when task is no longer pending or component unmounts
-        return () => {
-            if (amzn_interval) clearInterval(amzn_interval);
         };
-    }, [amzn_task_id, amznTaskStatus]);
-    
+        poll();
+        return () => {
+            clearInterval(amzPollingRef.current)
+        }
+    }, []);
+
     return (
         <div>
             {insTaskStatus == "PENDING" && (
@@ -86,7 +88,6 @@ const ResultsPage = () => {
             {insTaskStatus == "SUCCESS" && (
                 <div className="flex flex-col items-center justify-center min-h-screen">
                     <h1 className="text-2xl font-bold text-green-500">Insurance File Processed Successfully!</h1>
-                    <p className="text-lg mt-4">Task ID: {ins_task_id}</p>
                     <pre className="bg-gray-100 p-4 rounded mt-4 text-left">
                         {JSON.stringify(insTaskResult, null, 2)}
                     </pre>
@@ -121,7 +122,6 @@ const ResultsPage = () => {
             {amznTaskStatus == "SUCCESS" && (
                 <div className="flex flex-col items-center justify-center min-h-screen">
                     <h1 className="text-2xl font-bold text-green-500">Amazon File Processed Successfully!</h1>
-                    <p className="text-lg mt-4">Task ID: {amzn_task_id}</p>
                     <pre className="bg-gray-100 p-4 rounded mt-4 text-left">
                         {JSON.stringify(amznTaskResult, null, 2)}
                     </pre>
