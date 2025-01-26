@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import HomePage from './pages/HomePage';
-import FileUpload from './pages/FileUpload';
 import CoverClear from './pages/Home';
+import LoadingPage from './pages/LoadingPage'; // Import Loading Page
+import ResultsPage from './pages/ResultsPage'; // Import Results Page
 
 function App() {
     return (
@@ -10,8 +11,9 @@ function App() {
             <Router>
                 <Routes>
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/upload" element={<FileUpload />} />
                     <Route path="/home" element={<CoverClear />} />
+                    <Route path="/loading" element={<LoadingPage />} />
+                    <Route path="/results" element={<ResultsPage />} />
                 </Routes>
             </Router>
         </GoogleOAuthProvider>

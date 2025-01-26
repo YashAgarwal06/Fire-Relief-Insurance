@@ -1,40 +1,51 @@
-import { useGoogleLogin } from '@react-oauth/google';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import FileUpload from './FileUpload';
 
-function HomePage() {
-    const handleLoginSuccess = async (response) => {
-        console.log('Access Token:', response.access_token);
+const HomePage = () => {
+    const navigate = useNavigate();
 
-        // Send the access token to your Flask backend
-        const backendResponse = await fetch('http://localhost:5000/auth/google', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ access_token: response.access_token }),
-        });
+    const handleFileUpload = async (file) => {
+        if (!file) {
+            alert('Please select a file first!');
+            return;
+        }
 
-        const data = await backendResponse.json();
-        if (backendResponse.ok) {
-            console.log('Authentication successful:', data);
-        } else {
-            console.error('Authentication failed:', data.error);
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            // Navigate to Loading Page
+            navigate('/loading');
+
+            // Simulate file upload to the Flask backend
+            const response = await fetch('http://localhost:5000/upload_hd', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Navigate to Results Page with task ID
+                navigate('/results', { state: { taskId: data.task_id } });
+            } else {
+                alert(`File upload failed: ${data.error}`);
+                navigate('/'); // Redirect back to home on error
+            }
+        } catch (error) {
+            console.error('Error uploading file:', error);
+            alert('An unexpected error occurred.');
+            navigate('/'); // Redirect back to home on error
         }
     };
 
-    const login = useGoogleLogin({
-        onSuccess: handleLoginSuccess,
-        onError: () => {
-            console.log('Login Failed');
-        },
-        scope: 'openid profile email https://www.googleapis.com/auth/gmail.readonly', // Add the required scopes here
-        responseType: 'token', // Request an access token
-    });
-
     return (
-        <button onClick={login}>
-            Sign in with Google
-        </button>
+        <div className="flex flex-col items-center justify-center min-h-screen">
+            <h1 className="text-4xl font-bold mb-8">Upload Your File</h1>
+            <FileUpload onUpload={handleFileUpload} />
+        </div>
     );
-}
+};
 
 export default HomePage;

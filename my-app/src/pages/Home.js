@@ -178,4 +178,5 @@ const CoverClear = () => {
         </div>
     );
 };
+
 export default CoverClear;
