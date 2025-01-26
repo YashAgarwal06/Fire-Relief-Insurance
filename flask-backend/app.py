@@ -131,12 +131,13 @@ def upload_amzn():
     if file and ('.' in file.filename and file.filename.rsplit('.', 1)[1].lower() in ['zip']):
         # save file
         filename = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f-") + secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(filepath)
 
         # send this to our celery worker
         task_id = str(uuid.uuid4())
         pending_tasks.add(task_id)
-        analyze_file.apply_async(args=['AMZN', filename], task_id=task_id)
+        analyze_file.apply_async(args=['AMZN', filepath], task_id=task_id)
 
         return jsonify({'task_id': task_id}), 200
     else:
