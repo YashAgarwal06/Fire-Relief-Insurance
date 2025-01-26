@@ -5,6 +5,27 @@ import Header from './Header';
 import config from '../config.json'
 const BASE_URL = config.BACKEND_URL
 
+// https://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
+const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, { type: contentType });
+    return blob;
+}
+
 const ResultsPage = () => {
     const navigate = useNavigate();
     const insPollingRef = useRef(null);
@@ -75,7 +96,19 @@ const ResultsPage = () => {
 
                     if (data.state !== 'PENDING') {
                         clearInterval(amzPollingRef.current);
-                        setAmznTaskResult(data.result)
+
+                        if (data.state === 'SUCCESS') {
+                            // this following code converts the base64 string representing an excel file to a downloadable file
+                            const blob = b64toBlob(data.result, null);
+                            const blobUrl = URL.createObjectURL(blob);
+
+                            let a = document.createElement('a');
+                            a.href = blobUrl;
+                            a.download = 'data.xlsx'; // set file name
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                        }
                     }
                 }
                 else {
