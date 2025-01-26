@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Modal, Box, Button, Typography } from '@mui/material';
 import FileUpload from './FileUpload';
 import '../CoverClear.css';
-
 const modalStyle = {
     position: 'absolute',
     top: '50%',
@@ -14,18 +13,14 @@ const modalStyle = {
     padding: '16px',
     borderRadius: '8px',
 };
-
 const CoverClear = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const handleGetStartedClick = () => {
         setIsModalOpen(true);
     };
-
     const closeModal = () => {
         setIsModalOpen(false);
     };
-
     return (
         <div className="coverclear-container">
             <div className="coverclear-content">
@@ -51,7 +46,6 @@ const CoverClear = () => {
                     Get Started
                 </Button>
             </div>
-
             <Modal
                 open={isModalOpen}
                 onClose={closeModal}
