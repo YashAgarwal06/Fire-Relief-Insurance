@@ -7,13 +7,15 @@ import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close'; // Import close icon
 import '../CoverClear.css';
+import Header from './Header';
 
 const modalStyle = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: '800px',
+    height: '500px',
     backgroundColor: 'white',
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.2)',
     borderRadius: '8px',
@@ -121,17 +123,17 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
                     <CloseIcon />
                 </IconButton>
                 <div>{renderPageContent()}</div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '30px', backgroundColor: '#7BA6B7', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px' }}>
-                    <Button onClick={handlePreviousPage} disabled={currentPage === 0}>
+                <div className="modal-progress-bar" style={{ position: 'absolute', bottom: '0', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '30px', backgroundColor: '#7BA6B7', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px',}}>
+                    <Button sx={{color: '#262b2f'}} onClick={handlePreviousPage} disabled={currentPage === 0}>
                         Previous
                     </Button>
                     <div>{renderDotProgress()}</div>
                     {/* Conditionally render Submit or Next button */}
                     <div>
                         {currentPage === totalPages - 1 ? (
-                            <Button onClick={handleSubmit}>Submit</Button>
+                            <Button sx={{color: '#262b2f'}} onClick={handleSubmit}>Submit</Button>
                         ) : (
-                            <Button onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
+                            <Button sx={{color: '#262b2f'}} onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
                                 Next
                             </Button>
                         )}
@@ -151,27 +153,17 @@ const CoverClear = () => {
         setIsModalOpen(false);
     };
     return (
-        <div className="home-container">
-            <div className="header">
-                {/* Header Section */}
-                <AppBar position="static" sx={{ backgroundColor: '#1f4d61' }}>
-                    <Toolbar>
-                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                            <Link to="/home" style={{ color: '#fff', textDecoration: 'none' }}>
-                                CoverClear
-                            </Link>
-                        </Typography>
-                    </Toolbar>
-                </AppBar>
-            </div>
-            <div className="home-page-top">
-                <h1 className="home-page-top">
-                    Restoring
-                    Hope & Stability
-                    for Wildfire Survivors
-                </h1>
-            </div>
-            <div className="coverclear-container">
+        <div>
+            <Header></Header>
+            <div className="home-container">
+                <div className="home-page-top">
+                    <h1 className="home-page-top">
+                        Restoring
+                        Hope & Stability
+                        for Wildfire Survivors
+                    </h1>
+                </div>
+                <div className="coverclear-container">
 
                 <div className="coverclear-content">
                     <h1 className="coverclear-title">CoverClear</h1>

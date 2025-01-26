@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
-import CircularProgress from '@mui/material/CircularProgress';
-import SummarizePage from './Summarize';
 
 const ResultsPage = () => {
     const location = useLocation();
@@ -76,13 +74,14 @@ const ResultsPage = () => {
     
     return (
         <div>
-            {(insTaskStatus == "PENDING" || amznTaskStatus == "PENDING") && (
-                <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
-                <h1 className="text-4xl font-bold text-white mb-8">Uploading...</h1>
-                <CircularProgress size={80} thickness={5} />
-            </div>
+            {insTaskStatus == "PENDING" && (
+                <div className="flex flex-col items-center justify-center min-h-screen">
+                    <h1 className="text-2xl font-bold mb-4">Processing Insurance File...</h1>
+                    <p className="text-lg mt-2">Task ID: {ins_task_id} {insTaskStatus}</p>
+                    <p className="text-lg mt-4">Please wait while we process your file.</p>
+                </div>
             )}
-            {/* {insTaskStatus == "SUCCESS" && (
+            {insTaskStatus == "SUCCESS" && (
                 <div className="flex flex-col items-center justify-center min-h-screen">
                     <h1 className="text-2xl font-bold text-green-500">Insurance File Processed Successfully!</h1>
                     <p className="text-lg mt-4">Task ID: {ins_task_id}</p>
@@ -96,7 +95,7 @@ const ResultsPage = () => {
                         Upload Another File
                     </button>
                 </div>
-            )} */}
+            )}
             {insTaskStatus == 'FAILURE' && (
                 <div className="flex flex-col items-center justify-center min-h-screen">
                     <h1 className="text-2xl font-bold text-red-500">Insurance Task Failed</h1>
@@ -110,15 +109,27 @@ const ResultsPage = () => {
                 </div>
             )}
 
-            {/* {amznTaskStatus == "PENDING" && (
+            {amznTaskStatus == "PENDING" && (
                 <div className="flex flex-col items-center justify-center min-h-screen">
                     <h1 className="text-2xl font-bold mb-4">Processing Amazon File...</h1>
                     <p className="text-lg mt-2">Task ID: {amzn_task_id} {amznTaskStatus}</p>
                     <p className="text-lg mt-4">Please wait while we process your file.</p>
                 </div>
-            )} */}
-            {amznTaskStatus == "SUCCESS" && insTaskStatus == "SUCCESS" && (
-                <SummarizePage/>
+            )}
+            {amznTaskStatus == "SUCCESS" && (
+                <div className="flex flex-col items-center justify-center min-h-screen">
+                    <h1 className="text-2xl font-bold text-green-500">Amazon File Processed Successfully!</h1>
+                    <p className="text-lg mt-4">Task ID: {amzn_task_id}</p>
+                    <pre className="bg-gray-100 p-4 rounded mt-4 text-left">
+                        {JSON.stringify(amznTaskResult, null, 2)}
+                    </pre>
+                    <button
+                        onClick={() => navigate('/')}
+                        className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+                    >
+                        Upload Another File
+                    </button>
+                </div>
             )}
             {amznTaskStatus == 'FAILURE' && (
                 <div className="flex flex-col items-center justify-center min-h-screen">

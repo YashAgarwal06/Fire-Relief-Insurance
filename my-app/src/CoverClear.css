@@ -9,11 +9,11 @@
 }
 
 h1 {
-    font-family: 'Montersat', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 p {
-    font-family: 'Open-Sans', sans-serif;
+    font-family: 'Helvetica', sans-serif;
 }
 
 .home-container {
@@ -97,7 +97,17 @@ p {
     font-size: 3.5rem; /* Standard font size */
 }
 
+/* MULTIMODAL */
 .modal-text {
-    padding: 2% !important;
+    padding: 4% !important;
     padding-left: 7% !important;
+}
+
+.upload-instructions {
+    /* font-size: 0.87rem; */
+    margin-bottom: 40px; /* between paragraphs */
+}
+
+.modal-progress-bar {
+    color: var(--text) !important;
 }
