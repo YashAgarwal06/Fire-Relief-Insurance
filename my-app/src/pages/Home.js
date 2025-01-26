@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Modal, Box, Button, Typography, AppBar, Toolbar } from '@mui/material';
 import { Link } from 'react-router-dom'; // Import Link for navigation
-import FileUpload from './FileUpload';
+import InsuranceFileUpload from './InsuranceFileUpload';
+import AmazonFileUpload from './AmazonFileUpload';
+import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close'; // Import close icon
 import '../CoverClear.css';
@@ -14,13 +16,18 @@ const modalStyle = {
     width: 400,
     backgroundColor: 'white',
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.2)',
-    padding: '16px',
     borderRadius: '8px',
+};
+
+
+const pageContentStyle = {
+    padding: '20px', // Add this line to set padding to 20px
 };
 // MultiPageModal component
 const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
     const [currentPage, setCurrentPage] = useState(0);
-    const totalPages = 3;
+    const totalPages = 2;
+    const navigate = useNavigate();
 
     const handleNextPage = () => {
         if (currentPage < totalPages - 1) {
@@ -39,27 +46,33 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
         setCurrentPage(0);
     };
 
+    const handleSubmit = () => {
+        navigate('/results');
+    };
+
+
     const renderPageContent = () => {
         switch (currentPage) {
             case 0:
                 return (
-                    <div>
-                        <p >Page 1: Insurance Policy Upload</p>
-                        <FileUpload />
+                    <div className="modal-text" sx={{ padding: '50px' }}>
+                        <h2>Upload Insurance Policy</h2>
+                        <InsuranceFileUpload />
                     </div>
                 );
             case 1:
                 return (
-                    <div>
-                        <Typography variant="h6">Page 2: Review Details</Typography>
+                    <div className="modal-text" sx={{ padding: '50px' }}>
+                        <h2>Amazon Order History</h2>
+                        <AmazonFileUpload />
                     </div>
                 );
-            case 2:
-                return (
-                    <div>
-                        <Typography variant="h6">Page 3: Confirmation</Typography>
-                    </div>
-                );
+            // case 2:
+            //     return (
+            //         <div>
+            //             <Typography variant="h6">Page 3: Confirmation</Typography>
+            //         </div>
+            //     );
             default:
                 return <div>Invalid Page</div>;
         }
@@ -71,11 +84,11 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
                 <span
                     key={i}
                     style={{
-                        
+
                         width: '10px',
                         height: '10px',
                         borderRadius: '50%',
-                        backgroundColor: currentPage === i ? '#2196F3' : '#ccc',
+                        backgroundColor: currentPage === i ? '#262b2f' : '#ccc',
                         margin: '0 5px',
                         display: 'inline-block',
                     }}
@@ -94,26 +107,34 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
         >
             <Box sx={modalStyle}>
                 {/* Exit button */}
-                <IconButton 
-                    onClick={handleClose} 
+                <IconButton
+                    onClick={handleClose}
                     sx={{
-                        position: 'absolute', 
-                        top: '10px', 
-                        right: '10px', 
+                        padding: '20px',
+                        position: 'absolute',
+                        top: '10px',
+                        right: '10px',
                         color: '#000'
                     }}
                 >
                     <CloseIcon />
                 </IconButton>
                 <div>{renderPageContent()}</div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '30px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '30px', backgroundColor: '#7BA6B7', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px' }}>
                     <Button onClick={handlePreviousPage} disabled={currentPage === 0}>
                         Previous
                     </Button>
                     <div>{renderDotProgress()}</div>
-                    <Button onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
-                        Next
-                    </Button>
+                    {/* Conditionally render Submit or Next button */}
+                    <div>
+                        {currentPage === totalPages - 1 ? (
+                            <Button onClick={handleSubmit}>Submit</Button>
+                        ) : (
+                            <Button onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
+                                Next
+                            </Button>
+                        )}
+                    </div>
                 </div>
             </Box>
         </Modal>
@@ -130,51 +151,51 @@ const CoverClear = () => {
     };
     return (
         <div className="home-container">
-        <div className="header">
-            {/* Header Section */}
-            <AppBar position="static" sx={{ backgroundColor: '#1f4d61' }}>
-                <Toolbar>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                        <Link to="/home" style={{ color: '#fff', textDecoration: 'none' }}>
-                            CoverClear
-                        </Link>
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-        </div>
-        <div className="home-page-top">
-            <h1 className="home-page-top">
-                Restoring
-                Hope & Stability
-                for Wildfire Survivors
-            </h1>
-        </div>
-        <div className="coverclear-container">
-
-            <div className="coverclear-content">
-                <h1 className="coverclear-title">CoverClear</h1>
-                <p className="coverclear-description">
-                    Insurance claimants affected by the January California Wildfires are attempting to submit itemized claims for household items lost in the fires. However, many claimants don’t know exactly what was in their home, as they were unable to evacuate their property. It’s also difficult to create an itemized list without reviewing years of receipts.
-                </p>
-                <div className="coverclear-checklist">
-                    <h2>Checklist for Gathering Information:</h2>
-                    <ul>
-                        <li>Insurance Policy</li>
-                        {/* <li>Bank Statements</li> */}
-                        <li>Amazon Order History</li>
-                        <li>Gmail Emails (e.g., receipts)</li>
-                    </ul>
-                </div>
-                <Button variant="contained" onClick={handleGetStartedClick} className="get-started-button">
-                        Get Started
-                </Button>
+            <div className="header">
+                {/* Header Section */}
+                <AppBar position="static" sx={{ backgroundColor: '#1f4d61' }}>
+                    <Toolbar>
+                        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                            <Link to="/home" style={{ color: '#fff', textDecoration: 'none' }}>
+                                CoverClear
+                            </Link>
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
             </div>
-            <MultiPageModal 
-                isModalOpen={isModalOpen} 
-                setIsModalOpen={setIsModalOpen} 
-            />
+            <div className="home-page-top">
+                <h1 className="home-page-top">
+                    Restoring
+                    Hope & Stability
+                    for Wildfire Survivors
+                </h1>
+            </div>
+            <div className="coverclear-container">
 
-        </div>
+                <div className="coverclear-content">
+                    <h1 className="coverclear-title">CoverClear</h1>
+                    <p className="coverclear-description">
+                        Insurance claimants affected by the January California Wildfires are attempting to submit itemized claims for household items lost in the fires. However, many claimants don’t know exactly what was in their home, as they were unable to evacuate their property. It’s also difficult to create an itemized list without reviewing years of receipts.
+                    </p>
+                    <div className="coverclear-checklist">
+                        <h2>Checklist for Gathering Information:</h2>
+                        <ul>
+                            <li>Insurance Policy</li>
+                            {/* <li>Bank Statements</li> */}
+                            <li>Amazon Order History</li>
+                            <li>Gmail Emails (e.g., receipts)</li>
+                        </ul>
+                    </div>
+                    <Button variant="contained" onClick={handleGetStartedClick} className="get-started-button">
+                        Get Started
+                    </Button>
+                </div>
+                <MultiPageModal
+                    isModalOpen={isModalOpen}
+                    setIsModalOpen={setIsModalOpen}
+                />
+
+            </div>
         </div>
     );
 };

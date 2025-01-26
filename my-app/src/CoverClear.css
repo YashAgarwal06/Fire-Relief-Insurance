@@ -96,3 +96,8 @@ p {
     text-align: center;
     font-size: 3.5rem; /* Standard font size */
 }
+
+.modal-text {
+    padding: 2% !important;
+    padding-left: 7% !important;
+}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FileUpload from './FileUpload';
+import FileUpload from './InsuranceFileUpload';
 
 const HomePage = () => {
     const navigate = useNavigate();
