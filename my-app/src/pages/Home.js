@@ -116,6 +116,7 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
                         right: '10px',
                         color: '#000'
                     }}
+
                 >
                     <CloseIcon />
                 </IconButton>
@@ -186,16 +187,30 @@ const CoverClear = () => {
                             <li>Gmail Emails (e.g., receipts)</li>
                         </ul>
                     </div>
+                    
+
                     <Button variant="contained" onClick={handleGetStartedClick} className="get-started-button">
                         Get Started
                     </Button>
+        
                 </div>
+                
                 <MultiPageModal
                     isModalOpen={isModalOpen}
                     setIsModalOpen={setIsModalOpen}
                 />
 
             </div>
+            <div className="coverclear-confidentiality">
+            <h1 className="confidentiality-title">Confidentiality</h1>
+            <p className="confidentiality-description">
+            <span style={{ color: " #d48c76" }}>We respect your privacy.</span> 
+            <span style={{ color: "navy" }}>
+
+            Your information is not stored or shared and is immediately deleted after generating your itemized list.
+             </span>
+            </p>
+</div>
         </div>
     );
 };
