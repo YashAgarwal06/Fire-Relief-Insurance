@@ -9,7 +9,6 @@ import uuid
 
 from tasks import analyze_file
 
-
 UPLOAD_FOLDER = 'temp'
 
 app = Flask(__name__)

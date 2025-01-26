@@ -1,6 +1,4 @@
-from celery import Celery
 import time
-import platform
 import os
 from pdf2image import convert_from_path
 import pytesseract
@@ -9,12 +7,13 @@ import PyPDF2
 from dotenv import load_dotenv
 load_dotenv()
 from openai import AzureOpenAI
+from celery import Celery
 
-if platform.system() == 'Windows': # have to remove multithreading if on a windows system
-    os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
-    
-celery = Celery('tasks', broker='redis://localhost:6379/0', backend='redis://localhost:6379/0')
-celery.conf.result_expires = 600  # 10 minutes
+celery = Celery(
+    __name__,
+    broker="redis://127.0.0.1:6379/0",
+    backend="redis://127.0.0.1:6379/0"
+)
 
 client = AzureOpenAI(
     azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT"), 
