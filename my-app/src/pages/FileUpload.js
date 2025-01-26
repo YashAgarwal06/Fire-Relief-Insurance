@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const FileUpload = () => {
     const [file, setFile] = useState(null);
+    const navigate = useNavigate(); // Hook for navigation
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -15,22 +17,28 @@ const FileUpload = () => {
 
         const formData = new FormData();
         formData.append('file', file);
-        
+
         try {
-            const response = await fetch('http://localhost:5000/upload_hd', {
+            // Navigate to Loading Page
+            navigate('/loading');
+
+            // Simulate file upload to the backend
+            const response = await fetch('http://fire.bruinai.org:5000/upload_hd', {
                 method: 'POST',
                 body: formData,
             });
 
             const data = await response.json();
             if (response.ok) {
-                alert(`File uploaded successfully! Task ID: ${data.task_id}`);
+                navigate('/results', { state: { taskId: data.task_id } });
             } else {
                 alert(`Failed to upload file: ${data.error}`);
+                navigate('/');
             }
         } catch (error) {
             console.error('Error uploading file:', error);
             alert('An error occurred. Please try again.');
+            navigate('/');
         }
     };
 
