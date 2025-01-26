@@ -156,32 +156,19 @@ const CoverClear = () => {
                     }}>
                         Insurance claimants affected by the January California Wildfires are attempting to submit itemized claims for household items lost in the fires. However, many claimants don’t know exactly what was in their home, as they were unable to evacuate their property. It’s also difficult to create an itemized list without reviewing years of receipts.
                     </p>
-                    <Button
-                        variant="contained"
-                        onClick={handleGetStartedClick}
-                        style={{ 
-                            backgroundColor: '#ff6b35', 
-                            color: 'white',
-                            padding: '12px 30px',
-                            fontSize: '1.1rem',
-                            fontWeight: 'bold',
-                            marginTop: '20px'
-                        }}
-                    >
-                        Get Started
-                    </Button>
                 </div>
 
+                {/* Updated Features Section */}
                 <div style={{ 
-                    backgroundColor: '#262b2f', 
+                    backgroundColor: '#1a365d', // Updated to match header color
                     color: 'white',
                     padding: '40px 20px',
-                    margin: '40px auto',
-                    maxWidth: '800px',
+                    margin: '40px -20px', // Negative margin to expand width
+                    width: 'calc(100% + 40px)', // Full width compensation
                     borderRadius: '8px',
                 }}>
-                    <h2 style={{ fontSize: '1.8rem', marginBottom: '20px' }}>Features</h2>
-                    <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+                    <h2 style={{ fontSize: '1.8rem', marginBottom: '20px', textAlign: 'center' }}>Features</h2>
+                    <ul style={{ listStyleType: 'none', paddingLeft: 0, maxWidth: '800px', margin: '0 auto' }}>
                         <li style={{ marginBottom: '15px' }}>
                             ✔ Understand How to Reclaim Your Personal Property Based on Your Insurance Policy
                         </li>
@@ -201,6 +188,23 @@ const CoverClear = () => {
                             </ul>
                         </li>
                     </ul>
+                </div>
+
+                {/* Moved Get Started Button */}
+                <div style={{ textAlign: 'center', margin: '40px 0' }}>
+                    <Button
+                        variant="contained"
+                        onClick={handleGetStartedClick}
+                        style={{ 
+                            backgroundColor: '#ff6b35', 
+                            color: 'white',
+                            padding: '12px 30px',
+                            fontSize: '1.1rem',
+                            fontWeight: 'bold',
+                        }}
+                    >
+                        Get Started
+                    </Button>
                 </div>
 
                 <div style={{ 
