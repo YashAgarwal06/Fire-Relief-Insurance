@@ -36,7 +36,7 @@ const FileUpload = () => {
 
     return (
         <div>
-            <h2>Upload File</h2>
+            <h2>Upload Insurance Policy</h2>
             <input type="file" accept=".pdf" onChange={handleFileChange} />
             <button onClick={handleUpload}>Upload</button>
         </div>

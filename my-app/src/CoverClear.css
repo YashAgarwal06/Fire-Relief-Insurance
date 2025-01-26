@@ -1,10 +1,32 @@
+/* CSS Variables */
+:root {
+  --coral: #df7655;  
+  --light-blue: #4b89a0;
+  --accent-blue: #2c6c81;
+  --dark-blue: #1f4d61;
+  --background: #f7f7f7;
+  --text: #262b2f;
+}
+
+h1 {
+    font-family: 'Montersat', sans-serif;
+}
+
+p {
+    font-family: 'Open-Sans', sans-serif;
+}
+
+.home-container {
+    background-color: #F0F0F0; /* Light gray background */
+}
+
 /* General Container Styles */
 .coverclear-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    min-height: 50vh;
     background-color: #F0F0F0; /* Light gray background */
 }
 /* Content Box */
@@ -15,7 +37,7 @@
     background-color: #FFFFFF; /* White background */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     border-radius: 16px; /* Rounded corners */
-    margin: 16px;
+    margin: 100px;
 }
 /* Title Styles */
 .coverclear-title {
@@ -58,12 +80,19 @@
     font-size: 1rem; /* Standard font size */
     display: block; /* Center align */
     margin: 0 auto; /* Center align */
-    background-color: #007BFF; /* Blue background */
     color: #FFFFFF; /* White text */
+    background-color: var(--coral) !important;
     text-transform: none; /* No uppercase text */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Button shadow */
     transition: background-color 0.3s ease; /* Smooth hover transition */
 }
 .get-started-button:hover {
-    background-color: #0056B3; /* Darker blue on hover */
+    background-color: #d67254 !important; 
+}
+
+.home-page-top {
+    padding: 1%;
+    padding-top: 2%;
+    text-align: center;
+    font-size: 3.5rem; /* Standard font size */
 }
