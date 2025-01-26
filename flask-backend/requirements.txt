@@ -10,3 +10,5 @@ python-poppler
 PyPDF2
 pycryptodome
 pandas
+openpyxl
+xlsxwriter
