@@ -9,3 +9,4 @@ pdf2image
 python-poppler
 PyPDF2
 pycryptodome
+pandas

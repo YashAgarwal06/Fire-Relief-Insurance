@@ -99,13 +99,12 @@ def process_amazon_data(zip_path):
                     "- Miscellaneous: Pet supplies, hobby items, sports equipment\n\n"
                     
                     "CSV Formatting Rules:\n"
-                    "1. Use headers: Date Purchased,Category,Item Name,Purchase Price\n"
+                    "1. Use headers: Date Purchased,Quantity,Category,Item Name,Purchase Price\n"
                     "2. Enclose any field containing commas in double quotes\n"
                     "3. Preserve original item names exactly\n"
                     "4. Include all price ranges from $0.99 to premium items\n\n"
 
                     "Inclusion Guidelines:\n"
-                    "- Include even small/low-value household essentials (sponges, lightbulbs)\n"
                     "- Keep decorative/non-essential items (vases, picture frames)\n"
                     "- Include replacement items (if multiple of same category)\n"
                     "- Assume all items were present unless explicitly temporary"
@@ -122,7 +121,7 @@ def process_amazon_data(zip_path):
                     "3. Include partially used consumables (cleaning supplies)\n"
                     "4. Preserve exact product names with special characters\n"
                     "5. Categorize items using detailed home inventory taxonomy"
-                    "6. The CSV should neatly contain the dates, categories, item names, and price; don't add any extra cells or your own text; also remove the ```csv at the beginning and ``` at the end so the result should be everything betweeen those."
+                    "6. The CSV should neatly contain the dates, quantities, categories, item names, and price; don't add any extra cells or your own text; also remove the ```csv at the beginning and ``` at the end so the result should be everything betweeen those."
                 )
             }
         ]

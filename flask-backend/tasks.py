@@ -8,6 +8,8 @@ from dotenv import load_dotenv
 load_dotenv()
 from openai import AzureOpenAI
 from celery import Celery
+import pandas as pd
+import zipfile
 
 celery = Celery(
     __name__,
@@ -46,8 +48,7 @@ def prompt_gpt(prompt: str, userinput: str) -> str:
 # when calling this function, we will use the filetype variable to label which file it is (e.g. home declaration doc, amazon orders.zip, etc)
 # and handle it accordingly
 @celery.task(bind=True)
-def analyze_file(self, filetype, filepath):
-    
+def analyze_file(self, filetype, filepath): 
     if filetype == 'HD':
         # perform OCR
         start_time = time.time()
@@ -73,3 +74,8 @@ def analyze_file(self, filetype, filepath):
             return response
         except:
             raise Exception('Task Failed, please retry or contact us')
+    
+    if filetype == 'AMZN':
+        output_folder = os.path.join()
+        with zipfile.ZipFile(filepath, 'r') as zip_ref:
+            zip_ref.extractall(output)
