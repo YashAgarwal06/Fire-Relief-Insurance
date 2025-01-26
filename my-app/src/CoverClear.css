@@ -5,74 +5,65 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background-color: #f3f4f6;
+    background-color: #F0F0F0; /* Light gray background */
 }
-
 /* Content Box */
 .coverclear-content {
     width: 90%;
     max-width: 800px;
     padding: 24px;
-    background-color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 16px;
+    background-color: #FFFFFF; /* White background */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 16px; /* Rounded corners */
     margin: 16px;
 }
-
 /* Title Styles */
 .coverclear-title {
-    font-size: 2.5rem;
-    font-weight: bold;
+    font-size: 2.5rem; /* Larger title size */
+    font-weight: bold; /* Bold font */
     text-align: center;
     margin-bottom: 16px;
-    color: #1f2937;
+    color: #333333; /* Dark gray text */
 }
-
 /* Description Styles */
 .coverclear-description {
-    font-size: 1.125rem;
-    color: #374151;
+    font-size: 1.125rem; /* Slightly larger than default */
+    color: #555555; /* Medium gray text */
     margin-bottom: 24px;
-    line-height: 1.6;
+    line-height: 1.6; /* Comfortable line spacing */
 }
-
 /* Checklist Styles */
 .coverclear-checklist {
     margin-bottom: 24px;
 }
-
 .coverclear-checklist h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
+    font-size: 1.25rem; /* Medium font size */
+    font-weight: 600; /* Semi-bold font */
     margin-bottom: 12px;
-    color: #1f2937;
+    color: #333333; /* Dark gray text */
 }
-
 .coverclear-checklist ul {
-    list-style-type: disc;
-    padding-left: 1.5rem;
-    color: #374151;
-    line-height: 1.6;
+    list-style-type: disc; /* Standard bullet points */
+    padding-left: 1.5rem; /* Indentation */
+    color: #555555; /* Medium gray text */
+    line-height: 1.6; /* Comfortable line spacing */
 }
-
 .coverclear-checklist li {
-    margin-bottom: 8px;
+    margin-bottom: 8px; /* Space between items */
 }
-
 /* Button Styles */
 .get-started-button {
-    border-radius: 20px;
-    padding: 8px 20px;
-    font-size: 1rem;
-    display: block;
-    margin: 0 auto;
-    background-color: #3b82f6;
-    color: #ffffff;
-    text-transform: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s;
+    border-radius: 20px; /* Rounded button */
+    padding: 8px 20px; /* Padding inside button */
+    font-size: 1rem; /* Standard font size */
+    display: block; /* Center align */
+    margin: 0 auto; /* Center align */
+    background-color: #007BFF; /* Blue background */
+    color: #FFFFFF; /* White text */
+    text-transform: none; /* No uppercase text */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Button shadow */
+    transition: background-color 0.3s ease; /* Smooth hover transition */
 }
-
 .get-started-button:hover {
-    background-color: #2563eb;
+    background-color: #0056B3; /* Darker blue on hover */
 }

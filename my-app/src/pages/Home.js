@@ -2,33 +2,27 @@ import React, { useState } from 'react';
 import { Modal, Box, Button, Typography } from '@mui/material';
 import FileUpload from './FileUpload';
 import '../CoverClear.css';
-
 const modalStyle = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: 400,
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    borderRadius: 2,
+    backgroundColor: 'white',
+    boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.2)',
+    padding: '16px',
+    borderRadius: '8px',
 };
-
 const CoverClear = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const handleGetStartedClick = () => {
         setIsModalOpen(true);
     };
-
     const closeModal = () => {
         setIsModalOpen(false);
     };
-
     return (
         <div className="coverclear-container">
-            {}
             <div className="coverclear-content">
                 <h1 className="coverclear-title">CoverClear</h1>
                 <p className="coverclear-description">
@@ -52,8 +46,6 @@ const CoverClear = () => {
                     Get Started
                 </Button>
             </div>
-
-            {}
             <Modal
                 open={isModalOpen}
                 onClose={closeModal}
@@ -65,7 +57,7 @@ const CoverClear = () => {
                         Upload File
                     </Typography>
                     <Box mt={4}>
-                        <FileUpload /> {}
+                        <FileUpload />
                     </Box>
                     <Button
                         variant="contained"
@@ -81,5 +73,4 @@ const CoverClear = () => {
         </div>
     );
 };
-
 export default CoverClear;
