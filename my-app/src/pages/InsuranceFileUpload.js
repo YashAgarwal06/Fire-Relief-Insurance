@@ -43,13 +43,22 @@ const InsuranceFileUpload = () => {
         } catch (error) {
             console.error('Error uploading file:', error);
             alert('An error occurred. Please try again.');
-            navigate('/');
+            navigate('/home');
         }
     };
 
     return (
         <div>
-            {/* <h2>Upload Insurance Policy</h2> */}
+            <p className="upload-instructions">
+                Upload any document related to your Home Insurance Policy:
+                <ul className="list-disc pl-5">
+                    <li>Insurance Policy</li>
+                    <li>Insurance Renewal</li>
+                    <li>Insurance Declarations</li>
+                    <li>Insurance Claims</li>
+                </ul>
+                The file must be uploaded in PDF format.
+            </p>
             <input type="file" accept=".pdf" onChange={handleFileChange} />
             <button onClick={handleUpload}>Upload</button>
         </div>

@@ -14,7 +14,8 @@ const modalStyle = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: '800px',
+    height: '500px',
     backgroundColor: 'white',
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.2)',
     borderRadius: '8px',
@@ -121,17 +122,17 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
                     <CloseIcon />
                 </IconButton>
                 <div>{renderPageContent()}</div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '30px', backgroundColor: '#7BA6B7', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px' }}>
-                    <Button onClick={handlePreviousPage} disabled={currentPage === 0}>
+                <div className="modal-progress-bar" style={{ position: 'absolute', bottom: '0', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '30px', backgroundColor: '#7BA6B7', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px',}}>
+                    <Button sx={{color: '#262b2f'}} onClick={handlePreviousPage} disabled={currentPage === 0}>
                         Previous
                     </Button>
                     <div>{renderDotProgress()}</div>
                     {/* Conditionally render Submit or Next button */}
                     <div>
                         {currentPage === totalPages - 1 ? (
-                            <Button onClick={handleSubmit}>Submit</Button>
+                            <Button sx={{color: '#262b2f'}} onClick={handleSubmit}>Submit</Button>
                         ) : (
-                            <Button onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
+                            <Button sx={{color: '#262b2f'}} onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
                                 Next
                             </Button>
                         )}
