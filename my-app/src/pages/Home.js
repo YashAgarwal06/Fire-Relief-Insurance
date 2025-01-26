@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Modal, Box, Button, Typography, AppBar, Toolbar } from '@mui/material';
+import { Link } from 'react-router-dom';
 import InsuranceFileUpload from './InsuranceFileUpload';
 import AmazonFileUpload from './AmazonFileUpload';
 import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close'; // Import close icon
+import CloseIcon from '@mui/icons-material/Close';
 import '../CoverClear.css';
 import Header from './Header';
 
@@ -20,11 +21,10 @@ const modalStyle = {
     borderRadius: '8px',
 };
 
-
 const pageContentStyle = {
-    padding: '20px', // Add this line to set padding to 20px
+    padding: '20px',
 };
-// MultiPageModal component
+
 const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
     const [currentPage, setCurrentPage] = useState(0);
     const totalPages = 2;
@@ -51,7 +51,6 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
         navigate('/results');
     };
 
-
     const renderPageContent = () => {
         switch (currentPage) {
             case 0:
@@ -68,16 +67,11 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
                         <AmazonFileUpload />
                     </div>
                 );
-            // case 2:
-            //     return (
-            //         <div>
-            //             <Typography variant="h6">Page 3: Confirmation</Typography>
-            //         </div>
-            //     );
             default:
                 return <div>Invalid Page</div>;
         }
     };
+
     const renderDotProgress = () => {
         let dots = [];
         for (let i = 0; i < totalPages; i++) {
@@ -85,7 +79,6 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
                 <span
                     key={i}
                     style={{
-
                         width: '10px',
                         height: '10px',
                         borderRadius: '50%',
@@ -107,7 +100,6 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
             aria-describedby="modal-description"
         >
             <Box sx={modalStyle}>
-                {/* Exit button */}
                 <IconButton
                     onClick={handleClose}
                     sx={{
@@ -117,7 +109,6 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
                         right: '10px',
                         color: '#000'
                     }}
-
                 >
                     <CloseIcon />
                 </IconButton>
@@ -127,7 +118,6 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
                         Previous
                     </Button>
                     <div>{renderDotProgress()}</div>
-                    {/* Conditionally render Submit or Next button */}
                     <div>
                         {currentPage === totalPages - 1 ? (
                             <Button sx={{ color: '#262b2f' }} onClick={handleSubmit}>Submit</Button>
@@ -148,59 +138,91 @@ const CoverClear = () => {
     const handleGetStartedClick = () => {
         setIsModalOpen(true);
     };
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
+
     return (
         <div>
             <Header></Header>
-            <div className="home-container">
-                <div className="home-page-top">
-                    <h1 className="home-page-top">
-                        Restoring
-                        Hope & Stability
-                        for Wildfire Survivors
+            <div style={{ padding: '20px' }}>
+                <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+                    <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#262b2f' }}>
+                        Restoring Hope & Stability for Wildfire Survivors
                     </h1>
+                    <p style={{ 
+                        fontSize: '1rem', 
+                        color: '#555', 
+                        margin: '40px auto',
+                        maxWidth: '800px',
+                        lineHeight: '1.6'
+                    }}>
+                        Insurance claimants affected by the January California Wildfires are attempting to submit itemized claims for household items lost in the fires. However, many claimants don’t know exactly what was in their home, as they were unable to evacuate their property. It’s also difficult to create an itemized list without reviewing years of receipts.
+                    </p>
+                    <Button
+                        variant="contained"
+                        onClick={handleGetStartedClick}
+                        style={{ 
+                            backgroundColor: '#ff6b35', 
+                            color: 'white',
+                            padding: '12px 30px',
+                            fontSize: '1.1rem',
+                            fontWeight: 'bold',
+                            marginTop: '20px'
+                        }}
+                    >
+                        Get Started
+                    </Button>
                 </div>
-                <div className="coverclear-container">
 
-                    <div className="coverclear-content">
-                        <h1 className="coverclear-title">CoverClear</h1>
-                        <p className="coverclear-description">
-                            Insurance claimants affected by the January California Wildfires are attempting to submit itemized claims for household items lost in the fires. However, many claimants don’t know exactly what was in their home, as they were unable to evacuate their property. It’s also difficult to create an itemized list without reviewing years of receipts.
-                        </p>
-                        <div className="coverclear-checklist">
-                            <h2>Checklist for Gathering Information:</h2>
-                            <ul>
-                                <li>Insurance Policy</li>
-                                {/* <li>Bank Statements</li> */}
-                                <li>Amazon Order History</li>
-                                {/* <li>Gmail Emails (e.g., receipts)</li> */}
+                <div style={{ 
+                    backgroundColor: '#262b2f', 
+                    color: 'white',
+                    padding: '40px 20px',
+                    margin: '40px auto',
+                    maxWidth: '800px',
+                    borderRadius: '8px',
+                }}>
+                    <h2 style={{ fontSize: '1.8rem', marginBottom: '20px' }}>Features</h2>
+                    <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+                        <li style={{ marginBottom: '15px' }}>
+                            ✔ Understand How to Reclaim Your Personal Property Based on Your Insurance Policy
+                        </li>
+                        <li>
+                            ✔ Itemize Your Inventory Using Data From:
+                            <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '10px' }}>
+                                <li style={{ marginBottom: '8px' }}>• Bank Statements</li>
+                                <li style={{ marginBottom: '8px' }}>• Amazon History</li>
+                                <li>• Gmail Receipts</li>
                             </ul>
-                        </div>
-                        <Button variant="contained" onClick={handleGetStartedClick} className="get-started-button">
-                            Get Started
-                        </Button>
-                    </div>
-                    <MultiPageModal
-                        isModalOpen={isModalOpen}
-                        setIsModalOpen={setIsModalOpen}
-                    />
-
+                        </li>
+                        <li style={{ marginTop: '20px' }}>
+                            ✔ Checklist for Gathering Information:
+                            <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '10px' }}>
+                                <li style={{ marginBottom: '8px' }}>• Insurance Policy</li>
+                                <li>• Amazon Order History</li>
+                            </ul>
+                        </li>
+                    </ul>
                 </div>
-                <div className="coverclear-confidentiality">
-                    <h1 className="confidentiality-title">Confidentiality</h1>
-                    <p className="confidentiality-description">
-                        <span style={{ color: " #d48c76" }}>We respect your privacy.</span>
-                        <span style={{ color: "navy" }}>
 
+                <div style={{ 
+                    maxWidth: '800px', 
+                    margin: '40px auto 0',
+                    textAlign: 'left' 
+                }}>
+                    <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#262b2f', marginBottom: '10px' }}>Confidentiality</h1>
+                    <p style={{ fontSize: '1rem', color: '#555' }}>
+                        <span style={{ color: '#d48c76' }}>We respect your privacy.</span>{' '}
+                        <span style={{ color: 'navy' }}>
                             Your information is not stored or shared and is immediately deleted after generating your itemized list.
                         </span>
                     </p>
                 </div>
             </div>
+            <MultiPageModal
+                isModalOpen={isModalOpen}
+                setIsModalOpen={setIsModalOpen}
+            />
         </div>
     );
 };
 
-            export default CoverClear;
+export default CoverClear;
