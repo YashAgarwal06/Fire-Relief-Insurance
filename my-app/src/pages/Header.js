@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { Modal, Box, Button, Typography, AppBar, Toolbar } from '@mui/material';
+import React from 'react';
+import { Typography, AppBar, Toolbar } from '@mui/material';
 import { Link } from 'react-router-dom'; // Import Link for navigation
 import '../CoverClear.css';
-import { defaultUrlTransform } from 'react-markdown';
 
 
 const Header = () => {

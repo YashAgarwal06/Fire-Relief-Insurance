@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Box, Button, Typography, AppBar, Toolbar } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Modal, Box, Button } from '@mui/material';
 import InsuranceFileUpload from './InsuranceFileUpload';
 import AmazonFileUpload from './AmazonFileUpload';
 import { useNavigate } from 'react-router-dom';
@@ -19,10 +18,6 @@ const modalStyle = {
     backgroundColor: 'white',
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.2)',
     borderRadius: '8px',
-};
-
-const pageContentStyle = {
-    padding: '20px',
 };
 
 const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {

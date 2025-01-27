@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
 import Header from './Header';
 import config from '../config.json'
