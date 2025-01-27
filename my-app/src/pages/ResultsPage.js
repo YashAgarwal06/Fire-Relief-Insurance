@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import Markdown from 'react-markdown'
 import { useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
 import Header from './Header';
@@ -70,7 +71,10 @@ const ResultsPage = () => {
 
                     if (data.state !== 'PENDING') {
                         clearInterval(insPollingRef.current);
-                        setInsTaskResult(data.result)
+
+                        if (data.state === 'SUCCESS') {
+                            setInsTaskResult(data.result)
+                        }
                     }
                 }
                 else {
@@ -138,8 +142,8 @@ const ResultsPage = () => {
                     {/* Render Insurance Column only when the status is SUCCESS */}
                     {(insTaskStatus === "SUCCESS" || insTaskStatus === "PENDING") && (
                         <div className="results-column insurance">
-                            <h2>Insurance Coverage Summary</h2>
-                            <pre>{JSON.stringify(insTaskResult, null, 2)}</pre>
+                            <h1>Insurance Coverage Summary</h1>
+                            <Markdown components={{h1: 'h2', h2: 'h3'}}>{insTaskResult}</Markdown>
                         </div>
                     )}
 
