@@ -7,6 +7,8 @@ import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import '../CoverClear.css';
 import Header from './Header';
+import homePageImage from '../assets/homepageimage.png';
+
 
 const modalStyle = {
     position: 'absolute',
@@ -115,7 +117,7 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
                     <div>{renderDotProgress()}</div>
                     <div>
                         {currentPage === totalPages - 1 ? (
-                            <Button sx={{ color: '#262b2f', padding: '12px',  }} onClick={handleSubmit}>Submit</Button>
+                            <Button sx={{ color: '#262b2f', padding: '12px', }} onClick={handleSubmit}>Submit</Button>
                         ) : (
                             <Button sx={{ color: '#262b2f', padding: '12px', }} onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
                                 Next
@@ -142,11 +144,11 @@ const CoverClear = () => {
                     <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#262b2f' }}>
                         Restoring Hope & Stability for Wildfire Survivors
                     </h1>
-                    <p style={{ 
-                        fontSize: '1rem', 
-                        color: '#555', 
+                    <p style={{
+                        fontSize: '1rem',
+                        color: '#555',
                         margin: '40px auto',
-                        maxWidth: '800px',
+                        maxWidth: '850px',
                         lineHeight: '1.6'
                     }}>
                         Insurance claimants affected by the January California Wildfires are attempting to submit itemized claims for household items lost in the fires. However, many claimants don’t know exactly what was in their home, as they were unable to evacuate their property. It’s also difficult to create an itemized list without reviewing years of receipts.
@@ -154,13 +156,11 @@ const CoverClear = () => {
                 </div>
 
                 {/* Updated Features Section */}
-                <div style={{ 
-                    backgroundColor: '#1a365d', // Updated to match header color
+                <div style={{
+                    backgroundColor: '#1f4d61',
                     color: 'white',
                     padding: '40px 20px',
                     margin: '40px -20px', // Negative margin to expand width
-                    width: 'calc(100% + 40px)', // Full width compensation
-                    borderRadius: '8px',
                 }}>
                     <h2 style={{ fontSize: '1.8rem', marginBottom: '20px', textAlign: 'center' }}>Features</h2>
                     <ul style={{ listStyleType: 'none', paddingLeft: 0, maxWidth: '800px', margin: '0 auto' }}>
@@ -185,13 +185,56 @@ const CoverClear = () => {
                     </ul>
                 </div>
 
+                <div
+                    style={{
+                        display: "flex",
+                        backgroundColor: "#1f4d61",
+                        height: "300px",
+                        justifyContent: "center", // Center the blocks horizontally if needed
+                        alignItems: "center", // Center the content inside blocks vertically
+                    }}
+                >
+                    <div style={{ flex: 1, backgroundColor: "blue" }}>
+                    </div>
+                    <div style={{ flex: 1, backgroundColor: "#7BA6B7" }}>
+                        <img
+                            src={homePageImage}
+                            alt="Image"
+                            style={{ objectFit: "cover", height: "300px", width: "100%" }}
+                        />
+                    </div>
+                    <div style={{ flex: 1, backgroundColor: "#7BA6B7" }}>
+                    <ul style={{ listStyleType: 'none', paddingLeft: 0, maxWidth: '800px', margin: '0 auto' }}>
+                        <li style={{ marginBottom: '15px' }}>
+                            Understand How to Reclaim Your Personal Property Based on Your Insurance Policy
+                        </li>
+                        <li>
+                            ✔ Itemize Your Inventory Using Data From:
+                            <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '10px' }}>
+                                <li style={{ marginBottom: '8px' }}>• Bank Statements</li>
+                                <li style={{ marginBottom: '8px' }}>• Amazon History</li>
+                                <li>• Gmail Receipts</li>
+                            </ul>
+                        </li>
+                        <li style={{ marginTop: '20px' }}>
+                            ✔ Checklist for Gathering Information:
+                            <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '10px' }}>
+                                <li style={{ marginBottom: '8px' }}>• Insurance Policy</li>
+                                <li>• Amazon Order History</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    </div>
+                    <div style={{ flex: 1, backgroundColor: "purple" }}></div>
+                </div>
+
                 {/* Moved Get Started Button */}
                 <div style={{ textAlign: 'center', margin: '40px 0' }}>
                     <Button
                         variant="contained"
                         onClick={handleGetStartedClick}
-                        style={{ 
-                            backgroundColor: '#ff6b35', 
+                        style={{
+                            backgroundColor: '#ff6b35',
                             color: 'white',
                             padding: '12px 30px',
                             fontSize: '1.1rem',
@@ -202,16 +245,15 @@ const CoverClear = () => {
                     </Button>
                 </div>
 
-                <div style={{ 
-                    maxWidth: '800px', 
+                <div style={{
                     margin: '40px auto 0',
-                    textAlign: 'left' 
+                    textAlign: 'center'
                 }}>
-                    <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#262b2f', marginBottom: '10px' }}>Confidentiality</h1>
+                    {/* <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', color: '#262b2f', marginBottom: '10px' }}>Confidentiality</h1> */}
                     <p style={{ fontSize: '1rem', color: '#555' }}>
-                        <span style={{ color: '#d48c76' }}>We respect your privacy.</span>{' '}
-                        <span style={{ color: 'navy' }}>
-                            Your information is not stored or shared and is immediately deleted after generating your itemized list.
+                        <span style={{ color: '#d48c76' }}>.</span>{' '}
+                        <span >
+                            Confidentiality Note: We respect your privacy. Your information is not stored or shared and is immediately deleted after generating your itemized list.
                         </span>
                     </p>
                 </div>
