@@ -204,11 +204,11 @@ p {
 
 
 /* Full width when the other column is hidden */
-.results-container .insurance:(.hidden) {
+.results-container .insurance.hidden {
     width: 90%;
 }
 
-.results-container .amazon:(.hidden) {
+.results-container .amazon.hidden {
     width: 90%;
 }
 

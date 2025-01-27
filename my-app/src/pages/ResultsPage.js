@@ -2,17 +2,15 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
 import Header from './Header';
-import config from '../config.json'
-const BASE_URL = config.BACKEND_URL
+import config from '../config.json';
+const BASE_URL = config.BACKEND_URL;
 
-// https://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
 const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
 
     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
         const slice = byteCharacters.slice(offset, offset + sliceSize);
-
         const byteNumbers = new Array(slice.length);
         for (let i = 0; i < slice.length; i++) {
             byteNumbers[i] = slice.charCodeAt(i);
@@ -24,7 +22,7 @@ const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
 
     const blob = new Blob(byteArrays, { type: contentType });
     return blob;
-}
+};
 
 const ResultsPage = () => {
     const navigate = useNavigate();
@@ -32,31 +30,23 @@ const ResultsPage = () => {
     const amzPollingRef = useRef(null);
 
     const [insTaskStatus, setInsTaskStatus] = useState('PENDING');
-    const [insTaskResult, setInsTaskResult] = useState(null);
+    const [insTaskResult, setInsTaskResult] = useState('NULL');
     const [amznTaskStatus, setAmznTaskStatus] = useState('PENDING');
-    const [amznTaskResult, setAmznTaskResult] = useState(null);
-
-    const [errorMessage, setErrorMessage] = useState(null);
-
+    const [amznTaskResult, setAmznTaskResult] = useState('NULL');
+    
     const { ins_task_id, setins_task_id } = useContextStore();
     const { amzn_task_id, setamzn_task_id } = useContextStore();
 
     const pollEndpoint = async (task_id) => {
         if (!task_id) {
-            setErrorMessage('Task ID is missing or invalid.');
             return;
         }
         try {
             const response = await fetch(`${BASE_URL}/task/${task_id}`);
             const data = await response.json();
-
-            if (response.ok) {
-                return data
-            } else {
-                setErrorMessage('Failed to fetch task status from the server.');
-            }
+            return data;
         } catch (error) {
-            setErrorMessage('An error occurred while fetching task status.');
+            console.error('Error fetching task data:', error);
         }
     };
 
@@ -64,69 +54,61 @@ const ResultsPage = () => {
         const poll = () => {
             insPollingRef.current = setInterval(async () => {
                 const data = await pollEndpoint(ins_task_id);
-
                 if (data) {
-                    await setInsTaskStatus(data.state)
-
+                    setInsTaskStatus(data.state);
+                    setInsTaskResult(data.result || 'NULL');
                     if (data.state !== 'PENDING') {
                         clearInterval(insPollingRef.current);
-                        setInsTaskResult(data.result)
                     }
-                }
-                else {
+                } else {
+                    setInsTaskResult('NULL');
                     clearInterval(insPollingRef.current);
                 }
-
             }, 2000);
         };
-        if (ins_task_id)
-            poll();
-        return () => {
-            clearInterval(insPollingRef.current);
-        };
-    }, []);
+
+        if (ins_task_id) poll();
+        return () => clearInterval(insPollingRef.current);
+    }, [ins_task_id]);
 
     useEffect(() => {
         const poll = () => {
             amzPollingRef.current = setInterval(async () => {
                 const data = await pollEndpoint(amzn_task_id);
-
                 if (data) {
-                    await setAmznTaskStatus(data.state)
-
+                    setAmznTaskStatus(data.state);
+                    setAmznTaskResult(data.result || 'NULL');
                     if (data.state !== 'PENDING') {
                         clearInterval(amzPollingRef.current);
-
-                        if (data.state === 'SUCCESS') {
-                            // this following code converts the base64 string representing an excel file to a downloadable file
-                            const blob = b64toBlob(data.result, null);
-                            const blobUrl = URL.createObjectURL(blob);
-
-                            let a = document.createElement('a');
-                            a.href = blobUrl;
-                            a.download = 'data.xlsx'; // set file name
-                            document.body.appendChild(a);
-                            a.click();
-                            a.remove();
-                        }
                     }
-                }
-                else {
-                    clearInterval(amzPollingRef.current)
+                } else {
+                    setAmznTaskResult('NULL');
+                    clearInterval(amzPollingRef.current);
                 }
             }, 2000);
         };
 
-        if (amzn_task_id)
-            poll();
-        return () => {
-            clearInterval(amzPollingRef.current)
+        if (amzn_task_id) poll();
+        return () => clearInterval(amzPollingRef.current);
+    }, [amzn_task_id]);
+
+    const handleDownload = () => {
+        // Ensure that the task is successful and result is not 'NULL'
+        if (amznTaskStatus === 'SUCCESS' && amznTaskResult !== 'NULL') {
+            const blob = b64toBlob(amznTaskResult, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            const blobUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = 'inventory.xlsx'; // Set the file name for download
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
         }
-    }, []);
+    };
 
     return (
         <div>
-            <Header></Header>
+            <Header />
             <div className='results-main-cont'>
                 <div className="results-top">
                     <h2 className="your-results-heading">Your Results:</h2>
@@ -135,21 +117,28 @@ const ResultsPage = () => {
                     </p>
                 </div>
                 <div className="results-container">
-                    {/* Render Insurance Column only when the status is SUCCESS */}
-                    {(insTaskStatus === "SUCCESS" || insTaskStatus === "PENDING") && (
+                    {/* Render Insurance Column */}
+                    {(insTaskStatus === "SUCCESS") && (
                         <div className="results-column insurance">
                             <h2>Insurance Coverage Summary</h2>
                             <pre>{JSON.stringify(insTaskResult, null, 2)}</pre>
                         </div>
                     )}
 
-                    {/* Render Amazon Column only when the status is SUCCESS */}
-                    {(amznTaskStatus === "SUCCESS" || amznTaskStatus === "PENDING") && (
+                    {/* Render Amazon Column */}
+                    {(amznTaskStatus === "SUCCESS" && amznTaskResult !== 'NULL') && (
                         <div className="results-column amazon">
                             <h2 id='amazon-result'>Item Inventory</h2>
-                            <button className='button'>Download</button>
+                            <button className='button' onClick={handleDownload}>Download</button>
+                            <pre>{'Download the itemized inventory of your ...'}</pre>
+                        </div>
+                    )}
 
-                            <pre>{JSON.stringify(amznTaskResult, null, 2)}</pre>
+                    {/* Show placeholder text if the task is not completed */}
+                    {(amznTaskStatus !== "SUCCESS" && amznTaskResult === 'NULL') && (
+                        <div className="results-column amazon">
+                            <h2 id='amazon-result'>Item Inventory</h2>
+                            <pre>No result available yet.</pre>
                         </div>
                     )}
                 </div>
