@@ -114,15 +114,15 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
                 </IconButton>
                 <div>{renderPageContent()}</div>
                 <div className="modal-progress-bar" style={{ position: 'absolute', bottom: '0', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '40px', backgroundColor: '#7BA6B7', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px', }}>
-                    <Button sx={{ color: '#262b2f' }} onClick={handlePreviousPage} disabled={currentPage === 0}>
+                    <Button sx={{ color: '#262b2f', padding: '12px', }} onClick={handlePreviousPage} disabled={currentPage === 0}>
                         Previous
                     </Button>
                     <div>{renderDotProgress()}</div>
                     <div>
                         {currentPage === totalPages - 1 ? (
-                            <Button sx={{ color: '#262b2f' }} onClick={handleSubmit}>Submit</Button>
+                            <Button sx={{ color: '#262b2f', padding: '12px',  }} onClick={handleSubmit}>Submit</Button>
                         ) : (
-                            <Button sx={{ color: '#262b2f' }} onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
+                            <Button sx={{ color: '#262b2f', padding: '12px', }} onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
                                 Next
                             </Button>
                         )}
