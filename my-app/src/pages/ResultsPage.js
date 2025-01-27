@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Markdown from 'react-markdown'
-import { useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
 import Header from './Header';
+import Spinner from '../lib/Spinner'
 import config from '../config.json';
 const BASE_URL = config.BACKEND_URL;
 
@@ -162,7 +162,8 @@ const ResultsPage = () => {
                     )}
                     {(insTaskStatus === 'PENDING') && (
                         <div className='results-column insurance'>
-                            <p>Trust me, i'm spinning</p>
+                            <Spinner size={500}/>
+                            <p>Loading...</p>
                         </div>
                     )}
 
@@ -176,7 +177,8 @@ const ResultsPage = () => {
                     )}
                     {(amznTaskStatus === 'PENDING') && (
                         <div className='results-column amazon'>
-                            <p>Trust me again, i'm spinning</p>
+                            <Spinner size={300}/>
+                            <p>Loading...</p>
                         </div>
                     )}
                 </div>
