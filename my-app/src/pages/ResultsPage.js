@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Markdown from 'react-markdown'
-import { useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
 import Header from './Header';
+import Spinner from '../lib/Spinner'
 import config from '../config.json';
 const BASE_URL = config.BACKEND_URL;
 
@@ -158,11 +158,14 @@ const ResultsPage = () => {
                         <div className="results-column-insurance">
                             <h1>Insurance Coverage Summary</h1>
                             <Markdown components={{ h1: 'h2', h2: 'h3' }}>{insTaskResult}</Markdown>
+                            <br />
+                            <br />
                         </div>
                     )}
                     {(insTaskStatus === 'PENDING') && (
                         <div className='results-column insurance'>
-                            <p>Trust me, i'm spinning</p>
+                            <Spinner/>
+                            <p style={{ textAlign: "center" }}>Loading...</p>
                         </div>
                     )}
 
@@ -173,10 +176,12 @@ const ResultsPage = () => {
                             <button className='button' onClick={handleDownload}>Download</button>
                             <pre style={{whiteSpace: 'pre-wrap', wordBreak: 'break-word'}}>{'Download the itemized inventory of your ...'}</pre>
                         </div>
+                        
                     )}
                     {(amznTaskStatus === 'PENDING') && (
                         <div className='results-column amazon'>
-                            <p>Trust me again, i'm spinning</p>
+                            <Spinner/>
+                            <p>Loading...</p>
                         </div>
                     )}
                 </div>
