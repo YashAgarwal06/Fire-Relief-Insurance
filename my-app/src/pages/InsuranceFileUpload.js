@@ -30,7 +30,7 @@ const InsuranceFileUpload = () => {
                     alert('File uploaded successfully! Task ID: ' + data.task_id);
                 } else {
                     alert(`Failed to upload file: ${data.error}`);
-                    navigate('/');
+                    navigate('/home');
                 }
             } catch (error) {
                 console.error('Error uploading file:', error);
@@ -52,7 +52,7 @@ const InsuranceFileUpload = () => {
                 </ul>
                 The file must be uploaded in PDF format.
             </p>
-            <input type="file" accept=".pdf" onChange={handleFileChange} />
+             <input type="file" id = 'browse' accept=".zip" onChange={handleFileChange} />
         </div>
     );
 };

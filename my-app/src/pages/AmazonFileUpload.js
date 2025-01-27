@@ -31,7 +31,7 @@ const AmazonFileUpload = () => {
                     alert('File uploaded successfully! Task ID: ' + data.task_id);
                 } else {
                     alert(`Failed to upload file: ${data.error}`);
-                    navigate('/');
+                    navigate('/home');
                 }
             } catch (error) {
                 console.error('Error uploading file:', error);
@@ -59,7 +59,7 @@ const AmazonFileUpload = () => {
                     <li>Upload "Your Orders.zip" below.</li>
                 </ol>
             </p>
-            <input type="file" accept=".zip" onChange={handleFileChange} />
+            <input type="file" id = 'browse' accept=".zip" onChange={handleFileChange} />
         </div>
     );
 };

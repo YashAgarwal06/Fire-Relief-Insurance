@@ -111,3 +111,7 @@ p {
 .modal-progress-bar {
     color: var(--text) !important;
 }
+
+#file-upload-button {
+    background-color: coral;
+}

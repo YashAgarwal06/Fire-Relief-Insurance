@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
+import CircularProgress from '@mui/material/CircularProgress';
 import config from '../config.json'
 const BASE_URL = config.BACKEND_URL
 
@@ -19,7 +20,7 @@ const ResultsPage = () => {
     const { amzn_task_id, setamzn_task_id } = useContextStore();
 
     const fetchTaskStatus = async (task_id, setTaskStatus, setTaskResult) => {
-        if (!task_id ) {
+        if (!task_id) {
             setErrorMessage('Task ID is missing or invalid.');
             return;
         }
@@ -28,7 +29,7 @@ const ResultsPage = () => {
             const data = await response.json();
 
             console.log(data);
-            
+
             setTaskStatus(data.state);
             if (response.ok) {
                 if (data.state === 'SUCCESS') {
@@ -36,7 +37,7 @@ const ResultsPage = () => {
                 } else if (data.state === 'FAILURE') {
                     setErrorMessage('Task failed to process.');
                 }
-                        } else {
+            } else {
                 setErrorMessage('Failed to fetch task status from the server.');
             }
         } catch (error) {
@@ -46,39 +47,42 @@ const ResultsPage = () => {
 
     useEffect(() => {
         let ins_interval;
-    
+
         if (insTaskStatus === 'PENDING' && ins_task_id) {
             ins_interval = setInterval(() => {
                 fetchTaskStatus(ins_task_id, setInsTaskStatus, setInsTaskResult);
             }, 2000);
         }
-    
+
         // Clear interval when task is no longer pending or component unmounts
         return () => {
             if (ins_interval) clearInterval(ins_interval);
         };
     }, [ins_task_id, insTaskStatus]);
-    
+
     useEffect(() => {
         let amzn_interval;
-    
+
         if (amznTaskStatus === 'PENDING' && amzn_task_id) {
             amzn_interval = setInterval(() => {
                 fetchTaskStatus(amzn_task_id, setAmznTaskStatus, setAmznTaskResult);
             }, 2000);
         }
-    
+
         // Clear interval when task is no longer pending or component unmounts
         return () => {
             if (amzn_interval) clearInterval(amzn_interval);
         };
     }, [amzn_task_id, amznTaskStatus]);
-    
+
     return (
         <div>
             {insTaskStatus == "PENDING" && (
                 <div className="flex flex-col items-center justify-center min-h-screen">
                     <h1 className="text-2xl font-bold mb-4">Processing Insurance File...</h1>
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
+                        <CircularProgress size={80} thickness={5} />
+                    </div>
                     <p className="text-lg mt-2">Task ID: {ins_task_id} {insTaskStatus}</p>
                     <p className="text-lg mt-4">Please wait while we process your file.</p>
                 </div>
@@ -114,6 +118,9 @@ const ResultsPage = () => {
             {amznTaskStatus == "PENDING" && (
                 <div className="flex flex-col items-center justify-center min-h-screen">
                     <h1 className="text-2xl font-bold mb-4">Processing Amazon File...</h1>
+                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
+                        <CircularProgress size={80} thickness={5} />
+                    </div>
                     <p className="text-lg mt-2">Task ID: {amzn_task_id} {amznTaskStatus}</p>
                     <p className="text-lg mt-4">Please wait while we process your file.</p>
                 </div>
