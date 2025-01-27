@@ -184,49 +184,8 @@ const CoverClear = () => {
                         </li>
                     </ul>
                 </div>
-
-                <div
-                    style={{
-                        display: "flex",
-                        backgroundColor: "#1f4d61",
-                        height: "300px",
-                        justifyContent: "center", // Center the blocks horizontally if needed
-                        alignItems: "center", // Center the content inside blocks vertically
-                    }}
-                >
-                    <div style={{ flex: 1, backgroundColor: "blue" }}>
-                    </div>
-                    <div style={{ flex: 1, backgroundColor: "#7BA6B7" }}>
-                        <img
-                            src={homePageImage}
-                            alt="Image"
-                            style={{ objectFit: "cover", height: "300px", width: "100%" }}
-                        />
-                    </div>
-                    <div style={{ flex: 1, backgroundColor: "#7BA6B7" }}>
-                    <ul style={{ listStyleType: 'none', paddingLeft: 0, maxWidth: '800px', margin: '0 auto' }}>
-                        <li style={{ marginBottom: '15px' }}>
-                            Understand How to Reclaim Your Personal Property Based on Your Insurance Policy
-                        </li>
-                        <li>
-                            ✔ Itemize Your Inventory Using Data From:
-                            <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '10px' }}>
-                                <li style={{ marginBottom: '8px' }}>• Bank Statements</li>
-                                <li style={{ marginBottom: '8px' }}>• Amazon History</li>
-                                <li>• Gmail Receipts</li>
-                            </ul>
-                        </li>
-                        <li style={{ marginTop: '20px' }}>
-                            ✔ Checklist for Gathering Information:
-                            <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '10px' }}>
-                                <li style={{ marginBottom: '8px' }}>• Insurance Policy</li>
-                                <li>• Amazon Order History</li>
-                            </ul>
-                        </li>
-                    </ul>
-                    </div>
-                    <div style={{ flex: 1, backgroundColor: "purple" }}></div>
-                </div>
+                
+                
 
                 {/* Moved Get Started Button */}
                 <div style={{ textAlign: 'center', margin: '40px 0' }}>
