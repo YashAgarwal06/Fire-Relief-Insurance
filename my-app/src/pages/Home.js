@@ -31,6 +31,10 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
     const navigate = useNavigate();
 
     const handleNextPage = () => {
+        // if they didn't upload a file, yell at 'em
+        if (ins_task_id === '') {
+            return alert('Please upload a copy of your home insurance policy')
+        }
         if (currentPage < totalPages - 1) {
             setCurrentPage(currentPage + 1);
         }
