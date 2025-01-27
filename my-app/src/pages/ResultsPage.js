@@ -153,35 +153,28 @@ const ResultsPage = () => {
                     </p>
                 </div>
                 <div className="results-container">
+                    {(amznTaskStatus === 'PENDING' || insTaskStatus === 'PENDING') && (
+                        <div className='spinner'>
+                            <Spinner />
+                            <p>Loading...</p>
+                        </div>
+                    )}
+                    {/* Render Amazon Column */}
+                    {(amznTaskStatus === "SUCCESS" && amznTaskResult !== 'NULL') && (
+                        <div className="results-amazon">
+                            <h2 id='amazon-result'>Amazon Home Item Inventory</h2>
+                            <button className='button' onClick={handleDownload}>Download</button>
+                            <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-word', color: "white" }}>{'Download the itemized inventory of your Amazon orders, in Claim Format'}</pre>
+                        </div>
+
+                    )}
                     {/* Render Insurance Column */}
                     {(insTaskStatus === "SUCCESS") && (
-                        <div className="results-column-insurance">
+                        <div className="results-insurance">
                             <h1>Insurance Coverage Summary</h1>
                             <Markdown components={{ h1: 'h2', h2: 'h3' }}>{insTaskResult}</Markdown>
                             <br />
                             <br />
-                        </div>
-                    )}
-                    {(insTaskStatus === 'PENDING') && (
-                        <div className='results-column insurance'>
-                            <Spinner/>
-                            <p style={{ textAlign: "center" }}>Loading...</p>
-                        </div>
-                    )}
-
-                    {/* Render Amazon Column */}
-                    {(amznTaskStatus === "SUCCESS" && amznTaskResult !== 'NULL') && (
-                        <div className="results-column-amazon" style={{backgroundColor: '#4b89a0'}}>
-                            <h2 id='amazon-result'>Item Inventory</h2>
-                            <button className='button' onClick={handleDownload}>Download</button>
-                            <pre style={{whiteSpace: 'pre-wrap', wordBreak: 'break-word'}}>{'Download the itemized inventory of your ...'}</pre>
-                        </div>
-                        
-                    )}
-                    {(amznTaskStatus === 'PENDING') && (
-                        <div className='results-column amazon'>
-                            <Spinner/>
-                            <p>Loading...</p>
                         </div>
                     )}
                 </div>

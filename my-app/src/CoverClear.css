@@ -138,94 +138,42 @@ p {
 
 .results-main-cont {
     align-items: center;
-    padding: 20px;
+    padding-left: 4rem;
+    padding-right: 4rem;
     height: 80vh;
 }
 .results-top {
     text-align: left;
-    margin-bottom: 20px;
+    padding: 10px;
 }
 
-/* Results container layout */
-.results-container {
-    display: flex;
-    justify-content: space-between;
-    align-self: center;
-    gap: 20px;
-    padding: 20px;
-    min-height: 60vh;
-    max-height: 80vh;
-}
-
-/* Default widths */
-.results-column {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 2px;
-}
-
-.results-column h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--dark-blue);
-    margin-bottom: 12px;
-}
-
-.results-column pre {
-    background-color: #f7f7f7;
-    padding: 16px;
-    border-radius: 2px;
-    font-size: 0.9rem;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    color: var(--text);
-}
-
-/* Conditional display for the insurance and amazon columns */
-.results-column-insurance {
-    display: block;
-    width: 70%;
-}
-
-.results-column-amazon {
-    display: block;
-    width: 20%;
+.results-amazon {
     background-color: #4b89a0;
-    padding: 16px !important;
-    padding-bottom: 70px !important;
-    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+    border-radius: 12px; /* Rounded edges */
+    padding-left: 20px; /* Inner spacing */
+    padding-bottom: 20px;
+    border: 1px solid #e0e0e0; /* Optional: Light border for definition */
+    margin: 20px auto; /* Optional: Center the div */
+}
+
+.results-insurance {
+    padding: 10px;
+}
+
+.spinner {
+    align-items: center;
+    text-align: center;
 }
 
 #amazon-result {
-    color: #F0F0F0;
+    color: white;
 }
 
-/* Hidden columns */
-.results-column.hidden {
-    display: none;
+.results-insurance {
+    background-color: #f0f0f0; /* Light background color */
+    border-radius: 12px; /* Rounded edges */
+    padding: 20px; /* Inner spacing */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border: 1px solid #e0e0e0; /* Optional: Light border for definition */
+    margin: 20px auto; /* Optional: Center the div */
 }
-
-
-/* Full width when the other column is hidden */
-.results-container .results-column-insurance.hidden {
-    width: 90%;
-}
-
-.results-container .results-column-amazon.hidden {
-    width: 90%;
-}
-
-/* Make the layout stack on smaller screens */
-@media (max-width: 768px) {
-    .results-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .results-column {
-        width: 90%;
-        margin-bottom: 20px;
-    }
-}
-
-

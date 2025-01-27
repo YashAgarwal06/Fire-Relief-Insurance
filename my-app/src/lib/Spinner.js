@@ -5,23 +5,14 @@ import spinnerGif from '../assets/splash.gif';
 
 const Spinner = () => {
     return (
-        <div style={styles.spinnerContainer}>
-            <img src={spinnerGif} alt="Loading..." style={styles.spinner} />
-        </div>
+        <img src={spinnerGif} alt="Loading..." style={styles.spinner} />
     );
 };
 
 const styles = {
-    spinnerContainer: {
-        width: '100%', // Spinner container takes full width of the parent
-        height: '100%', // Spinner container takes full height of the parent
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     spinner: {
-        width: '100%', // Spinner image fits container width
-        height: '100%', // Spinner image fits container height
+        width: '158px',
+        height: '158px',
         objectFit: 'contain', // Ensures the spinner keeps its aspect ratio
     },
 };
