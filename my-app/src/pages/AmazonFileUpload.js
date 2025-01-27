@@ -31,12 +31,12 @@ const AmazonFileUpload = () => {
                     alert('File uploaded successfully! Task ID: ' + data.task_id);
                 } else {
                     alert(`Failed to upload file: ${data.error}`);
-                    navigate('/home');
+                    navigate('/');
                 }
             } catch (error) {
                 console.error('Error uploading file:', error);
                 alert('An error occurred. Please try again.');
-                navigate('/home');
+                navigate('/');
             }
         }
     };
