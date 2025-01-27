@@ -7,7 +7,6 @@ import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import '../CoverClear.css';
 import Header from './Header';
-import homePageImage from '../assets/homepageimage.png';
 import { useContextStore } from '../lib/ContextStore';
 
 
@@ -17,7 +16,7 @@ const modalStyle = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '600px',
-    height: '4px',
+    height: '400px',
     backgroundColor: 'white',
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.2)',
     borderRadius: '8px',
