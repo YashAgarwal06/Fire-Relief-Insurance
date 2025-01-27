@@ -24,7 +24,6 @@ const modalStyle = {
 
 const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
     const [currentPage, setCurrentPage] = useState(0);
-    const [submitContent, setSubmitContent] = useState('Submit');
 
     const totalPages = 2;
     const navigate = useNavigate();
@@ -47,10 +46,7 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
     };
 
     const handleSubmit = () => {
-        setSubmitContent(<CircularProgress size={20} />)
-        setTimeout(() => {
-            navigate('/results');
-        }, 2000)
+        navigate('/results');
     };
 
     const renderPageContent = () => {
@@ -122,7 +118,7 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
                     <div>{renderDotProgress()}</div>
                     <div>
                         {currentPage === totalPages - 1 ? (
-                            <Button sx={{ color: '#262b2f', padding: '12px', }} onClick={handleSubmit}>{submitContent}</Button>
+                            <Button sx={{ color: '#262b2f', padding: '12px', }} onClick={handleSubmit}>Submit</Button>
                         ) : (
                             <Button sx={{ color: '#262b2f', padding: '12px', }} onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
                                 Next
