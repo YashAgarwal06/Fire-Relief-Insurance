@@ -12,7 +12,7 @@ const Header = () => {
         <AppBar position="static" sx={{ backgroundColor: '#1f4d61' }}>
             <Toolbar>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                    <Link to="/home" style={{ color: '#fff', textDecoration: 'none' }}>
+                    <Link to="/" style={{ color: '#fff', textDecoration: 'none' }}>
                         CoverClear
                     </Link>
                 </Typography>
