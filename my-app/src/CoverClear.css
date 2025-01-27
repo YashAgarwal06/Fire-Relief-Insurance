@@ -153,7 +153,8 @@ p {
     align-self: center;
     gap: 20px;
     padding: 20px;
-    max-height: 20vh;
+    min-height: 60vh;
+    max-height: 80vh;
 }
 
 /* Default widths */
@@ -190,6 +191,8 @@ p {
     display: block;
     width: 20%;
     background-color: #4b89a0;
+    padding: 16px !important;
+    padding-bottom: 70px !important;
     /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
 }
 
@@ -204,11 +207,11 @@ p {
 
 
 /* Full width when the other column is hidden */
-.results-container .insurance.hidden {
+.results-container .results-column-insurance.hidden {
     width: 90%;
 }
 
-.results-container .amazon.hidden {
+.results-container .results-column-amazon.hidden {
     width: 90%;
 }
 

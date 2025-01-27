@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Box, Button } from '@mui/material';
+import { Modal, Box, Button, CircularProgress } from '@mui/material';
 import InsuranceFileUpload from './InsuranceFileUpload';
 import AmazonFileUpload from './AmazonFileUpload';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import '../CoverClear.css';
 import Header from './Header';
 import homePageImage from '../assets/homepageimage.png';
+import { useContextStore } from '../lib/ContextStore';
 
 
 const modalStyle = {
@@ -24,6 +25,9 @@ const modalStyle = {
 
 const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
     const [currentPage, setCurrentPage] = useState(0);
+    const { ins_task_id, setins_task_id } = useContextStore();
+    const { amzn_task_id, setamzn_task_id } = useContextStore();
+
     const totalPages = 2;
     const navigate = useNavigate();
 
@@ -45,7 +49,10 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
     };
 
     const handleSubmit = () => {
-        navigate('/results');
+        if (ins_task_id === '' && amzn_task_id === '') {
+            alert('Please upload at least an Insurance Policy or Amazon Order History')
+        }
+        else navigate('/results');
     };
 
     const renderPageContent = () => {
@@ -184,8 +191,49 @@ const CoverClear = () => {
                         </li>
                     </ul>
                 </div>
-                
-                
+
+                <div
+                    style={{
+                        display: "flex",
+                        backgroundColor: "#1f4d61",
+                        height: "300px",
+                        justifyContent: "center", // Center the blocks horizontally if needed
+                        alignItems: "center", // Center the content inside blocks vertically
+                    }}
+                >
+                    <div style={{ flex: 1, backgroundColor: "blue" }}>
+                    </div>
+                    <div style={{ flex: 1, backgroundColor: "#7BA6B7" }}>
+                        <img
+                            src={homePageImage}
+                            alt="Image"
+                            style={{ objectFit: "cover", height: "300px", width: "100%" }}
+                        />
+                    </div>
+                    <div style={{ flex: 1, backgroundColor: "#7BA6B7" }}>
+                    <ul style={{ listStyleType: 'none', paddingLeft: 0, maxWidth: '800px', margin: '0 auto' }}>
+                        <li style={{ marginBottom: '15px' }}>
+                            Understand How to Reclaim Your Personal Property Based on Your Insurance Policy
+                        </li>
+                        <li>
+                            ✔ Itemize Your Inventory Using Data From:
+                            <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '10px' }}>
+                                <li style={{ marginBottom: '8px' }}>• Bank Statements</li>
+                                <li style={{ marginBottom: '8px' }}>• Amazon History</li>
+                                <li>• Gmail Receipts</li>
+                            </ul>
+                        </li>
+                        <li style={{ marginTop: '20px' }}>
+                            ✔ Checklist for Gathering Information:
+                            <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '10px' }}>
+                                <li style={{ marginBottom: '8px' }}>• Insurance Policy</li>
+                                <li>• Amazon Order History</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    </div>
+                    <div style={{ flex: 1, backgroundColor: "purple" }}></div>
+                </div>
 
                 {/* Moved Get Started Button */}
                 <div style={{ textAlign: 'center', margin: '40px 0' }}>

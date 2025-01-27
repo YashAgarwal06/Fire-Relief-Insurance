@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Markdown from 'react-markdown'
-import { useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
 import Header from './Header';
+import Spinner from '../lib/Spinner'
 import config from '../config.json';
 const BASE_URL = config.BACKEND_URL;
 
@@ -26,7 +26,6 @@ const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
 };
 
 const ResultsPage = () => {
-    const navigate = useNavigate();
     const insPollingRef = useRef(null);
     const amzPollingRef = useRef(null);
 
@@ -52,50 +51,82 @@ const ResultsPage = () => {
     };
 
     useEffect(() => {
-        const poll = () => {
-            insPollingRef.current = setInterval(async () => {
-                const data = await pollEndpoint(ins_task_id);
-                if (data) {
-                    setInsTaskStatus(data.state);
-                    setInsTaskResult(data.result || 'NULL');
-                    if (data.state !== 'PENDING') {
-                        clearInterval(insPollingRef.current);
+        // Claire named this function, not my problem -Toidi357
+        const amogi = async () => {
+            const data = await pollEndpoint(ins_task_id);
+            if (data) {
+                setInsTaskStatus(data.state);
+                setInsTaskResult(data.result || 'NULL');
+                if (data.state !== 'PENDING') {
+                    return true;
+                }
+                return false;
+            } else {
+                setInsTaskResult('NULL');
+                return true;
+            }
+        }
 
-                        if (data.state === 'SUCCESS') {
-                            setInsTaskResult(data.result)
-                        }
-                    }
-                } else {
-                    setInsTaskResult('NULL');
+        // Polling logic with setInterval
+        const poll = async () => {
+            let stopPolling = await amogi();
+            if (stopPolling) return; // Stop if task is not in "PENDING" state
+
+            // Clear existing interval before starting a new one
+            if (insPollingRef.current) {
+                clearInterval(insPollingRef.current);
+            }
+
+            insPollingRef.current = setInterval(async () => {
+                stopPolling = await amogi();
+                if (stopPolling) {
                     clearInterval(insPollingRef.current);
                 }
             }, 2000);
-        };
+        }
 
         if (ins_task_id) poll();
         return () => clearInterval(insPollingRef.current);
-    }, [ins_task_id]);
+    }, []);
 
     useEffect(() => {
-        const poll = () => {
+
+        // Claire named this function, not my problem -Toidi357
+        const amogi = async () => {
+            const data = await pollEndpoint(amzn_task_id);
+            if (data) {
+                setAmznTaskStatus(data.state);
+                setAmznTaskResult(data.result || 'NULL');
+                if (data.state !== 'PENDING') {
+                    return true;
+                }
+                return false;
+            } else {
+                setAmznTaskResult('NULL');
+                return true;
+            }
+        }
+
+        const poll = async () => {
+            let stopPolling = await amogi();
+            if (stopPolling) return; // Stop if task is not in "PENDING" state
+
+            // Clear existing interval before starting a new one
+            if (amzPollingRef.current) {
+                clearInterval(amzPollingRef.current);
+            }
+
             amzPollingRef.current = setInterval(async () => {
-                const data = await pollEndpoint(amzn_task_id);
-                if (data) {
-                    setAmznTaskStatus(data.state);
-                    setAmznTaskResult(data.result || 'NULL');
-                    if (data.state !== 'PENDING') {
-                        clearInterval(amzPollingRef.current);
-                    }
-                } else {
-                    setAmznTaskResult('NULL');
+                stopPolling = await amogi();
+                if (stopPolling) {
                     clearInterval(amzPollingRef.current);
                 }
             }, 2000);
         };
 
-        if (amzn_task_id) poll();
+        if (amzn_task_id) poll()
         return () => clearInterval(amzPollingRef.current);
-    }, [amzn_task_id]);
+    }, []);
 
     const handleDownload = () => {
         // Ensure that the task is successful and result is not 'NULL'
@@ -122,20 +153,35 @@ const ResultsPage = () => {
                     </p>
                 </div>
                 <div className="results-container">
-                {/* Render Insurance Column */}
-                {(insTaskStatus === "SUCCESS") && (
+                    {/* Render Insurance Column */}
+                    {(insTaskStatus === "SUCCESS") && (
                         <div className="results-column-insurance">
                             <h1>Insurance Coverage Summary</h1>
-                            <Markdown components={{h1: 'h2', h2: 'h3'}}>{insTaskResult}</Markdown>
+                            <Markdown components={{ h1: 'h2', h2: 'h3' }}>{insTaskResult}</Markdown>
+                            <br />
+                            <br />
+                        </div>
+                    )}
+                    {(insTaskStatus === 'PENDING') && (
+                        <div className='results-column insurance'>
+                            <Spinner/>
+                            <p style={{ textAlign: "center" }}>Loading...</p>
                         </div>
                     )}
 
-                {/* Render Amazon Column */}
-                {(amznTaskStatus === "SUCCESS" && amznTaskResult !== 'NULL') && (
-                        <div className="results-columnamazon">
+                    {/* Render Amazon Column */}
+                    {(amznTaskStatus === "SUCCESS" && amznTaskResult !== 'NULL') && (
+                        <div className="results-column-amazon" style={{backgroundColor: '#4b89a0'}}>
                             <h2 id='amazon-result'>Item Inventory</h2>
                             <button className='button' onClick={handleDownload}>Download</button>
-                            <pre>{'Download the itemized inventory of your ...'}</pre>
+                            <pre style={{whiteSpace: 'pre-wrap', wordBreak: 'break-word'}}>{'Download the itemized inventory of your ...'}</pre>
+                        </div>
+                        
+                    )}
+                    {(amznTaskStatus === 'PENDING') && (
+                        <div className='results-column amazon'>
+                            <Spinner/>
+                            <p>Loading...</p>
                         </div>
                     )}
                 </div>
