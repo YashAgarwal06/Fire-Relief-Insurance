@@ -158,12 +158,14 @@ const ResultsPage = () => {
                         <div className="results-column-insurance">
                             <h1>Insurance Coverage Summary</h1>
                             <Markdown components={{ h1: 'h2', h2: 'h3' }}>{insTaskResult}</Markdown>
+                            <br />
+                            <br />
                         </div>
                     )}
                     {(insTaskStatus === 'PENDING') && (
                         <div className='results-column insurance'>
-                            <Spinner size={500}/>
-                            <p>Loading...</p>
+                            <Spinner/>
+                            <p style={{ textAlign: "center" }}>Loading...</p>
                         </div>
                     )}
 
@@ -174,10 +176,11 @@ const ResultsPage = () => {
                             <button className='button' onClick={handleDownload}>Download</button>
                             <pre>{'Download the itemized inventory of your ...'}</pre>
                         </div>
+                        
                     )}
                     {(amznTaskStatus === 'PENDING') && (
                         <div className='results-column amazon'>
-                            <Spinner size={300}/>
+                            <Spinner/>
                             <p>Loading...</p>
                         </div>
                     )}
