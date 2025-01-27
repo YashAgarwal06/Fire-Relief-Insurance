@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Box, Button } from '@mui/material';
+import { Modal, Box, Button, CircularProgress } from '@mui/material';
 import InsuranceFileUpload from './InsuranceFileUpload';
 import AmazonFileUpload from './AmazonFileUpload';
 import { useNavigate } from 'react-router-dom';
@@ -24,6 +24,8 @@ const modalStyle = {
 
 const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
     const [currentPage, setCurrentPage] = useState(0);
+    const [submitContent, setSubmitContent] = useState('Submit');
+
     const totalPages = 2;
     const navigate = useNavigate();
 
@@ -45,7 +47,10 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
     };
 
     const handleSubmit = () => {
-        navigate('/results');
+        setSubmitContent(<CircularProgress size={20} />)
+        setTimeout(() => {
+            navigate('/results');
+        }, 2000)
     };
 
     const renderPageContent = () => {
@@ -117,7 +122,7 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
                     <div>{renderDotProgress()}</div>
                     <div>
                         {currentPage === totalPages - 1 ? (
-                            <Button sx={{ color: '#262b2f', padding: '12px', }} onClick={handleSubmit}>Submit</Button>
+                            <Button sx={{ color: '#262b2f', padding: '12px', }} onClick={handleSubmit}>{submitContent}</Button>
                         ) : (
                             <Button sx={{ color: '#262b2f', padding: '12px', }} onClick={handleNextPage} disabled={currentPage === totalPages - 1}>
                                 Next

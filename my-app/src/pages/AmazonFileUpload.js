@@ -28,7 +28,6 @@ const AmazonFileUpload = () => {
                 const data = await response.json();
                 if (response.ok) {
                     setamzn_task_id(data.task_id);
-                    alert('File uploaded successfully! Task ID: ' + data.task_id);
                 } else {
                     alert(`Failed to upload file: ${data.error}`);
                     navigate('/');

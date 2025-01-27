@@ -129,6 +129,11 @@ const ResultsPage = () => {
                             <Markdown components={{h1: 'h2', h2: 'h3'}}>{insTaskResult}</Markdown>
                         </div>
                     )}
+                    {(insTaskStatus === 'PENDING') && (
+                        <div className='results-column insurance'>
+                            <p>Trust me, i'm spinning</p>
+                        </div>
+                    )}
 
                     {/* Render Amazon Column */}
                     {(amznTaskStatus === "SUCCESS" && amznTaskResult !== 'NULL') && (
@@ -136,6 +141,11 @@ const ResultsPage = () => {
                             <h2 id='amazon-result'>Item Inventory</h2>
                             <button className='button' onClick={handleDownload}>Download</button>
                             <pre>{'Download the itemized inventory of your ...'}</pre>
+                        </div>
+                    )}
+                    {(amznTaskStatus === 'PENDING') && (
+                        <div className='results-column amazon'>
+                            <p>Trust me again, i'm spinning</p>
                         </div>
                     )}
                 </div>
