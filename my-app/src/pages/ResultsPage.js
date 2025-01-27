@@ -1,25 +1,47 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
-import CircularProgress from '@mui/material/CircularProgress';
+import Header from './Header';
 import config from '../config.json'
 const BASE_URL = config.BACKEND_URL
 
+// https://stackoverflow.com/questions/16245767/creating-a-blob-from-a-base64-string-in-javascript
+const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, { type: contentType });
+    return blob;
+}
+
 const ResultsPage = () => {
-    const location = useLocation();
     const navigate = useNavigate();
+    const insPollingRef = useRef(null);
+    const amzPollingRef = useRef(null);
 
-    const [insTaskStatus, setInsTaskStatus] = useState('PENDING'); // Current state of the insurance task
-    const [insTaskResult, setInsTaskResult] = useState(null); // Result of the insurance task
-    const [amznTaskStatus, setAmznTaskStatus] = useState('PENDING'); // Current state of the amazon task
-    const [amznTaskResult, setAmznTaskResult] = useState(null); // Result of the amazon task
+    const [insTaskStatus, setInsTaskStatus] = useState('PENDING');
+    const [insTaskResult, setInsTaskResult] = useState(null);
+    const [amznTaskStatus, setAmznTaskStatus] = useState('PENDING');
+    const [amznTaskResult, setAmznTaskResult] = useState(null);
 
-    const [errorMessage, setErrorMessage] = useState(null); // Error message, if any
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const { ins_task_id, setins_task_id } = useContextStore();
     const { amzn_task_id, setamzn_task_id } = useContextStore();
 
-    const fetchTaskStatus = async (task_id, setTaskStatus, setTaskResult) => {
+    const pollEndpoint = async (task_id) => {
         if (!task_id) {
             setErrorMessage('Task ID is missing or invalid.');
             return;
@@ -28,15 +50,8 @@ const ResultsPage = () => {
             const response = await fetch(`${BASE_URL}/task/${task_id}`);
             const data = await response.json();
 
-            console.log(data);
-
-            setTaskStatus(data.state);
             if (response.ok) {
-                if (data.state === 'SUCCESS') {
-                    setTaskResult(data.result); // Store the result for display
-                } else if (data.state === 'FAILURE') {
-                    setErrorMessage('Task failed to process.');
-                }
+                return data
             } else {
                 setErrorMessage('Failed to fetch task status from the server.');
             }
@@ -46,114 +61,97 @@ const ResultsPage = () => {
     };
 
     useEffect(() => {
-        let ins_interval;
+        const poll = () => {
+            insPollingRef.current = setInterval(async () => {
+                const data = await pollEndpoint(ins_task_id);
 
-        if (insTaskStatus === 'PENDING' && ins_task_id) {
-            ins_interval = setInterval(() => {
-                fetchTaskStatus(ins_task_id, setInsTaskStatus, setInsTaskResult);
+                if (data) {
+                    await setInsTaskStatus(data.state)
+
+                    if (data.state !== 'PENDING') {
+                        clearInterval(insPollingRef.current);
+                        setInsTaskResult(data.result)
+                    }
+                }
+                else {
+                    clearInterval(insPollingRef.current);
+                }
+
             }, 2000);
-        }
-
-        // Clear interval when task is no longer pending or component unmounts
-        return () => {
-            if (ins_interval) clearInterval(ins_interval);
         };
-    }, [ins_task_id, insTaskStatus]);
+        if (ins_task_id)
+            poll();
+        return () => {
+            clearInterval(insPollingRef.current);
+        };
+    }, []);
 
     useEffect(() => {
-        let amzn_interval;
+        const poll = () => {
+            amzPollingRef.current = setInterval(async () => {
+                const data = await pollEndpoint(amzn_task_id);
 
-        if (amznTaskStatus === 'PENDING' && amzn_task_id) {
-            amzn_interval = setInterval(() => {
-                fetchTaskStatus(amzn_task_id, setAmznTaskStatus, setAmznTaskResult);
+                if (data) {
+                    await setAmznTaskStatus(data.state)
+
+                    if (data.state !== 'PENDING') {
+                        clearInterval(amzPollingRef.current);
+
+                        if (data.state === 'SUCCESS') {
+                            // this following code converts the base64 string representing an excel file to a downloadable file
+                            const blob = b64toBlob(data.result, null);
+                            const blobUrl = URL.createObjectURL(blob);
+
+                            let a = document.createElement('a');
+                            a.href = blobUrl;
+                            a.download = 'data.xlsx'; // set file name
+                            document.body.appendChild(a);
+                            a.click();
+                            a.remove();
+                        }
+                    }
+                }
+                else {
+                    clearInterval(amzPollingRef.current)
+                }
             }, 2000);
-        }
-
-        // Clear interval when task is no longer pending or component unmounts
-        return () => {
-            if (amzn_interval) clearInterval(amzn_interval);
         };
-    }, [amzn_task_id, amznTaskStatus]);
+
+        if (amzn_task_id)
+            poll();
+        return () => {
+            clearInterval(amzPollingRef.current)
+        }
+    }, []);
 
     return (
         <div>
-            {insTaskStatus == "PENDING" && (
-                <div className="flex flex-col items-center justify-center min-h-screen">
-                    <h1 className="text-2xl font-bold mb-4">Processing Insurance File...</h1>
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
-                        <CircularProgress size={80} thickness={5} />
-                    </div>
-                    <p className="text-lg mt-2">Task ID: {ins_task_id} {insTaskStatus}</p>
-                    <p className="text-lg mt-4">Please wait while we process your file.</p>
+            <Header></Header>
+            <div className='results-main-cont'>
+                <div className='results-top'>
+                    <h2>Your Results:</h2>
                 </div>
-            )}
-            {insTaskStatus == "SUCCESS" && (
-                <div className="flex flex-col items-center justify-center min-h-screen">
-                    <h1 className="text-2xl font-bold text-green-500">Insurance File Processed Successfully!</h1>
-                    <p className="text-lg mt-4">Task ID: {ins_task_id}</p>
-                    <pre className="bg-gray-100 p-4 rounded mt-4 text-left">
-                        {JSON.stringify(insTaskResult, null, 2)}
-                    </pre>
-                    <button
-                        onClick={() => navigate('/')}
-                        className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-                    >
-                        Upload Another File
-                    </button>
-                </div>
-            )}
-            {insTaskStatus == 'FAILURE' && (
-                <div className="flex flex-col items-center justify-center min-h-screen">
-                    <h1 className="text-2xl font-bold text-red-500">Insurance Task Failed</h1>
-                    <p className="text-lg mt-4">{errorMessage || 'Something went wrong.'}</p>
-                    <button
-                        onClick={() => navigate('/')}
-                        className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-                    >
-                        Try Again
-                    </button>
-                </div>
-            )}
+                <div className="results-container">
+                    {/* Render Insurance Column only when the status is SUCCESS */}
+                    {(insTaskStatus === "SUCCESS" || insTaskStatus === "PENDING") && (
+                        <div className="results-column insurance">
+                            <h2>Insurance Task Result</h2>
+                            <pre>{JSON.stringify(insTaskResult, null, 2)}</pre>
+                        </div>
+                    )}
 
-            {amznTaskStatus == "PENDING" && (
-                <div className="flex flex-col items-center justify-center min-h-screen">
-                    <h1 className="text-2xl font-bold mb-4">Processing Amazon File...</h1>
-                    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-purple-600">
-                        <CircularProgress size={80} thickness={5} />
-                    </div>
-                    <p className="text-lg mt-2">Task ID: {amzn_task_id} {amznTaskStatus}</p>
-                    <p className="text-lg mt-4">Please wait while we process your file.</p>
+                    {/* Render Amazon Column only when the status is SUCCESS */}
+                    {(amznTaskStatus === "SUCCESS" || amznTaskStatus === "PENDING") && (
+                        <div className="results-column amazon">
+                            <h2>Amazon Task Result</h2>
+
+                            <pre>{JSON.stringify(amznTaskResult, null, 2)}</pre>
+                        </div>
+                    )}
                 </div>
-            )}
-            {amznTaskStatus == "SUCCESS" && (
-                <div className="flex flex-col items-center justify-center min-h-screen">
-                    <h1 className="text-2xl font-bold text-green-500">Amazon File Processed Successfully!</h1>
-                    <p className="text-lg mt-4">Task ID: {amzn_task_id}</p>
-                    <pre className="bg-gray-100 p-4 rounded mt-4 text-left">
-                        {JSON.stringify(amznTaskResult, null, 2)}
-                    </pre>
-                    <button
-                        onClick={() => navigate('/home')}
-                        className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-                    >
-                        Upload Another File
-                    </button>
-                </div>
-            )}
-            {amznTaskStatus == 'FAILURE' && (
-                <div className="flex flex-col items-center justify-center min-h-screen">
-                    <h1 className="text-2xl font-bold text-red-500">Amazon Task Failed</h1>
-                    <p className="text-lg mt-4">{errorMessage || 'Something went wrong.'}</p>
-                    <button
-                        onClick={() => navigate('/home')}
-                        className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-                    >
-                        Try Again
-                    </button>
-                </div>
-            )}
+            </div>
         </div>
-    )
+    );
 };
 
 export default ResultsPage;

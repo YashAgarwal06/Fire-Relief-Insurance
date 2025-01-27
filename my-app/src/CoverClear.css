@@ -112,6 +112,97 @@ p {
     color: var(--text) !important;
 }
 
-#file-upload-button {
-    background-color: coral;
+
+
+/*------------------------------------------------ RESULTS --------------------------------------------*/
+
+.results-main-cont {
+    display: flex;
+    align-self: center;
+    padding: 20px;
+    min-height: 80vh;
+    width: 90%;
 }
+
+/* Results container layout */
+.results-container {
+    display: flex;
+    justify-content: space-between;
+    align-self: center;
+    gap: 20px;
+    padding: 20px;
+    min-height: 80vh;
+    width: 90%;
+}
+
+/* Default widths */
+.results-column {
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.results-column h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--dark-blue);
+    margin-bottom: 12px;
+}
+
+.results-column pre {
+    background-color: #f7f7f7;
+    padding: 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: var(--text);
+}
+
+/* Conditional display for the insurance and amazon columns */
+.results-column.insurance {
+    display: block;
+}
+
+.results-column.amazon {
+    display: block;
+}
+
+/* Hidden columns */
+.results-column.hidden {
+    display: none;
+}
+
+/* Column width adjustments */
+.insurance {
+    width: 70%;
+}
+
+.amazon {
+    width: 20%;
+}
+
+/* Full width when the other column is hidden */
+.results-container .insurance:not(.hidden) {
+    width: 90%;
+}
+
+.results-container .amazon:not(.hidden) {
+    width: 90%;
+}
+
+/* Make the layout stack on smaller screens */
+@media (max-width: 768px) {
+    .results-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .results-column {
+        width: 90%;
+        margin-bottom: 20px;
+    }
+}
+
+
