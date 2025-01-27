@@ -7,6 +7,7 @@ import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import '../CoverClear.css';
 import Header from './Header';
+import homePageImage from '../assets/homepageimage.png';
 import { useContextStore } from '../lib/ContextStore';
 
 
@@ -149,8 +150,8 @@ const CoverClear = () => {
     return (
         <div>
             <Header></Header>
-            <div style={{ padding: '20px' }}>
-                <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <div style={{  }}>
+                <div style={{ textAlign: 'center', marginTop: '80px', marginBottom: '40px' }}>
                     <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#262b2f' }}>
                         Restoring Hope & Stability for Wildfire Survivors
                     </h1>
@@ -164,39 +165,8 @@ const CoverClear = () => {
                         Insurance claimants affected by the January California Wildfires are attempting to submit itemized claims for household items lost in the fires. However, many claimants don’t know exactly what was in their home, as they were unable to evacuate their property. It’s also difficult to create an itemized list without reviewing years of receipts.
                     </p>
                 </div>
-
-                {/* Updated Features Section */}
-                <div style={{
-                    backgroundColor: '#1f4d61',
-                    color: 'white',
-                    padding: '40px 20px',
-                    margin: '40px -20px', // Negative margin to expand width
-                }}>
-                    <h2 style={{ fontSize: '1.8rem', marginBottom: '20px', textAlign: 'center' }}>Features</h2>
-                    <ul style={{ listStyleType: 'none', paddingLeft: 0, maxWidth: '800px', margin: '0 auto' }}>
-                        <li style={{ marginBottom: '15px' }}>
-                            ✔ Understand How to Reclaim Your Personal Property Based on Your Insurance Policy
-                        </li>
-                        <li>
-                            ✔ Itemize Your Inventory Using Data From:
-                            <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '10px' }}>
-                                <li style={{ marginBottom: '8px' }}>• Bank Statements</li>
-                                <li style={{ marginBottom: '8px' }}>• Amazon History</li>
-                                <li>• Gmail Receipts</li>
-                            </ul>
-                        </li>
-                        <li style={{ marginTop: '20px' }}>
-                            ✔ Checklist for Gathering Information:
-                            <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '10px' }}>
-                                <li style={{ marginBottom: '8px' }}>• Insurance Policy</li>
-                                <li>• Amazon Order History</li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-
-                {/* Moved Get Started Button */}
-                <div style={{ textAlign: 'center', margin: '40px 0' }}>
+                 {/* Moved Get Started Button */}
+                 <div style={{ textAlign: 'center', marginBottom: '60px' }}>
                     <Button
                         variant="contained"
                         onClick={handleGetStartedClick}
@@ -211,6 +181,53 @@ const CoverClear = () => {
                         Get Started
                     </Button>
                 </div>
+
+                <div
+                    style={{
+                        display: "flex",
+                        backgroundColor: "#1f4d61",
+                        height: "350px",
+                        justifyContent: "center", // Center the blocks horizontally if needed
+                        alignItems: "center", // Center the content inside blocks vertically
+                        margin: '40px -20px', // Negative margin to expand width
+                    }}
+                >
+                    <div style={{ flex: 1, backgroundColor: "blue" }}>
+                    </div>
+                    <div style={{ flex: 1, backgroundColor: "#4C6778", display: 'flex', alignItems: 'flex-start', height: '350px', }}>
+                        <img
+                            src={homePageImage}
+                            alt="Image"
+                            style={{ objectFit: "contain", height: "auto", width: "100%", verticalAlign:'top'}}
+                        />
+                    </div>
+                    <div style={{ flex: 1,  backgroundColor: "#4C6778", color: 'white', minHeight: '350px',maxHeight: '300px', paddingLeft: '20px', justifyContent: 'center', flexDirection: 'column',}}>
+                    <p style={{ marginBottom: '5px', padding: '10px', marginTop: '20px', fontWeight:'bold' }}>
+                            1. Upload Your Home Insurance Risk Assessment
+                        </p>
+                    <ol style={{ listStyleType: 'none', paddingLeft: '1px', paddingRight: '10px', maxWidth: '800px', margin: '0 auto' }}>
+                        <li>
+                            <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '5px' }}>
+                                <li style={{ marginBottom: '4px' }}>• Your Personal Risk Diagnostic</li>
+                                <li style={{ marginBottom: '4px' }}>• Areas Of High Exposure</li>
+                                <li>• Tangible Steps to Mitigate Your Risk</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <p style={{ marginBottom: '5px', padding: '10px', fontWeight: 'bold' }}>
+                    2. Reclaim Personal Property within Your Policy Limit                        </p>
+                    <ol style={{ listStyleType: 'none', paddingLeft: '10px', paddingRight: '10px', maxWidth: '800px', margin: '0 auto' }}>
+                        <li>
+                            <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '5px' }}>
+                                <li>• Recreate the California Personal Property Inventory Form per your Insurance Policy.
+                                </li>
+                            </ul>
+                        </li>
+                    </ol>
+                    </div>
+                    <div style={{ flex: 1, }}></div>
+                </div>
+
 
                 <div style={{
                     margin: '40px auto 0',
