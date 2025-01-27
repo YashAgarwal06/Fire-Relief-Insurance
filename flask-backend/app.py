@@ -7,6 +7,7 @@ import datetime
 from pathlib import Path
 import uuid
 from werkzeug.exceptions import InternalServerError
+import logging
 
 from tasks import analyze_file
 
@@ -16,6 +17,8 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = Path(__file__).resolve().parent / UPLOAD_FOLDER
 
 CORS(app)
+
+logging.basicConfig(filename='app.log', level=logging.ERROR)
 
 pending_tasks = set() # very quirky and dumb workaround cuz we dont use any database
 
@@ -182,19 +185,13 @@ def serve(path):
 
 @app.errorhandler(InternalServerError)
 def handle_exception(e):
-    with open(f'logs/{datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f-")}', 'w') as f:
-        _ = f'''
-        {e.code}
-        {e.name}
-        {e.description}
-        '''
-        f.write(_)
-        
-        # signal kevin
-        URL = os.getenv('ERROR_WEBHOOK')
-        requests.post(URL, data={
-            "content": "check logs nerd"
-        })
+    logging.error(e, exc_info=True)
+    
+    # signal kevin
+    URL = os.getenv('ERROR_WEBHOOK')
+    requests.post(URL, data={
+        "content": "check logs nerd"
+    })
     
     return jsonify({'error': "Internal Server Error, please try again"}), 500
 
