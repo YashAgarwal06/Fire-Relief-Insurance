@@ -30,9 +30,9 @@ const ResultsPage = () => {
     const insPollingRef = useRef(null);
     const amzPollingRef = useRef(null);
 
-    const [insTaskStatus, setInsTaskStatus] = useState('PENDING');
+    const [insTaskStatus, setInsTaskStatus] = useState('');
     const [insTaskResult, setInsTaskResult] = useState('NULL');
-    const [amznTaskStatus, setAmznTaskStatus] = useState('PENDING');
+    const [amznTaskStatus, setAmznTaskStatus] = useState('');
     const [amznTaskResult, setAmznTaskResult] = useState('NULL');
     
     const { ins_task_id, setins_task_id } = useContextStore();
@@ -136,14 +136,6 @@ const ResultsPage = () => {
                             <h2 id='amazon-result'>Item Inventory</h2>
                             <button className='button' onClick={handleDownload}>Download</button>
                             <pre>{'Download the itemized inventory of your ...'}</pre>
-                        </div>
-                    )}
-
-                    {/* Show placeholder text if the task is not completed */}
-                    {(amznTaskStatus !== "SUCCESS" && amznTaskResult === 'NULL') && (
-                        <div className="results-column amazon">
-                            <h2 id='amazon-result'>Item Inventory</h2>
-                            <pre>No result available yet.</pre>
                         </div>
                     )}
                 </div>
