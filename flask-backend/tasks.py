@@ -89,16 +89,16 @@ def analyze_file(self, filetype, filepath):
             response = StringIO(response)  # Create a file-like object from the string
             response = pd.read_csv(response)
             
-            if isinstance(response.iloc[1, 3], str) and isinstance(response.iloc[1, 4], float):
-                # If the conditions are true, do nothing or proceed with further operations
-                pass
-            else:
-                # If the conditions are false, call the prompt_gpt function and process the response
+            
+            while not (isinstance(response.iloc[1, 3], str) and isinstance(response.iloc[1, 4], float)):
                 print("reran due to misplaced values (hallucination)")
                 response = prompt_gpt(AMZNPROMPT, userquery)
                 response = response.replace('```csv', '').replace("```", '')
-                            
-            
+                response = StringIO(response)  # Create a file-like object from the string
+                response = pd.read_csv(response)
+
+            response = response.replace('```csv', '').replace("```", '')
+             
             xlsx_bytes = process_csv_to_xlsx(response)
             
             base64_str = str(base64.b64encode(xlsx_bytes))
