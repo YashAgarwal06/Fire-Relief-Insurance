@@ -168,10 +168,10 @@ const ResultsPage = () => {
 
                     {/* Render Amazon Column */}
                     {(amznTaskStatus === "SUCCESS" && amznTaskResult !== 'NULL') && (
-                        <div className="results-columnamazon">
+                        <div className="results-column-amazon" style={{backgroundColor: '#4b89a0'}}>
                             <h2 id='amazon-result'>Item Inventory</h2>
                             <button className='button' onClick={handleDownload}>Download</button>
-                            <pre>{'Download the itemized inventory of your ...'}</pre>
+                            <pre style={{whiteSpace: 'pre-wrap', wordBreak: 'break-word'}}>{'Download the itemized inventory of your ...'}</pre>
                         </div>
                     )}
                     {(amznTaskStatus === 'PENDING') && (
