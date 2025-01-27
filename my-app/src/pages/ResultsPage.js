@@ -128,14 +128,17 @@ const ResultsPage = () => {
         <div>
             <Header></Header>
             <div className='results-main-cont'>
-                <div className='results-top'>
-                    <h2>Your Results:</h2>
+                <div className="results-top">
+                    <h2 className="your-results-heading">Your Results:</h2>
+                    <p className="results-description">
+                        Below are the results of your tasks. Please check the detailed information from both the Insurance and Amazon results.
+                    </p>
                 </div>
                 <div className="results-container">
                     {/* Render Insurance Column only when the status is SUCCESS */}
                     {(insTaskStatus === "SUCCESS" || insTaskStatus === "PENDING") && (
                         <div className="results-column insurance">
-                            <h2>Insurance Task Result</h2>
+                            <h2>Insurance Coverage Summary</h2>
                             <pre>{JSON.stringify(insTaskResult, null, 2)}</pre>
                         </div>
                     )}
@@ -143,7 +146,8 @@ const ResultsPage = () => {
                     {/* Render Amazon Column only when the status is SUCCESS */}
                     {(amznTaskStatus === "SUCCESS" || amznTaskStatus === "PENDING") && (
                         <div className="results-column amazon">
-                            <h2>Amazon Task Result</h2>
+                            <h2 id='amazon-result'>Item Inventory</h2>
+                            <button className='button'>Download</button>
 
                             <pre>{JSON.stringify(amznTaskResult, null, 2)}</pre>
                         </div>

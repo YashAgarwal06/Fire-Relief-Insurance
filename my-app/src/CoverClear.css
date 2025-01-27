@@ -20,6 +20,26 @@ p {
     background-color: #F0F0F0; /* Light gray background */
 }
 
+.button {
+    background-color:#ff6f43;
+    color: #fff; /* White text */
+    padding: 12px 24px; /* Padding inside the button */
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center; 
+    border-radius: 1px;
+    border-color: #df7655;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    background-color: #cb6749;
+    /* transform: translateY(-2px); */
+    /* box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); Stronger shadow on hover */
+}
+
 /* General Container Styles */
 .coverclear-container {
     display: flex;
@@ -117,11 +137,13 @@ p {
 /*------------------------------------------------ RESULTS --------------------------------------------*/
 
 .results-main-cont {
-    display: flex;
-    align-self: center;
+    align-items: center;
     padding: 20px;
     min-height: 80vh;
-    width: 90%;
+}
+.results-top {
+    text-align: left;
+    margin-bottom: 20px;
 }
 
 /* Results container layout */
@@ -132,15 +154,13 @@ p {
     gap: 20px;
     padding: 20px;
     min-height: 80vh;
-    width: 90%;
 }
 
 /* Default widths */
 .results-column {
     background-color: #ffffff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 2px;
 }
 
 .results-column h2 {
@@ -153,7 +173,7 @@ p {
 .results-column pre {
     background-color: #f7f7f7;
     padding: 16px;
-    border-radius: 8px;
+    border-radius: 2px;
     font-size: 0.9rem;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -163,10 +183,18 @@ p {
 /* Conditional display for the insurance and amazon columns */
 .results-column.insurance {
     display: block;
+    width: 70%;
 }
 
 .results-column.amazon {
     display: block;
+    width: 20%;
+    background-color: #4b89a0;
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+}
+
+#amazon-result {
+    color: #F0F0F0;
 }
 
 /* Hidden columns */
@@ -174,21 +202,13 @@ p {
     display: none;
 }
 
-/* Column width adjustments */
-.insurance {
-    width: 70%;
-}
-
-.amazon {
-    width: 20%;
-}
 
 /* Full width when the other column is hidden */
-.results-container .insurance:not(.hidden) {
+.results-container .insurance:(.hidden) {
     width: 90%;
 }
 
-.results-container .amazon:not(.hidden) {
+.results-container .amazon:(.hidden) {
     width: 90%;
 }
 
