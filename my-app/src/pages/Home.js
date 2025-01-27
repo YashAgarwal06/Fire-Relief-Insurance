@@ -16,8 +16,8 @@ const modalStyle = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '800px',
-    height: '500px',
+    width: '600px',
+    height: '4px',
     backgroundColor: 'white',
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.2)',
     borderRadius: '8px',
@@ -67,7 +67,7 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
             case 1:
                 return (
                     <div className="modal-text" sx={{ padding: '50px' }}>
-                        <h2>Amazon Order History</h2>
+                        <h2>Amazon Order History (Optional)</h2>
                         <AmazonFileUpload />
                     </div>
                 );
@@ -190,49 +190,6 @@ const CoverClear = () => {
                             </ul>
                         </li>
                     </ul>
-                </div>
-
-                <div
-                    style={{
-                        display: "flex",
-                        backgroundColor: "#1f4d61",
-                        height: "300px",
-                        justifyContent: "center", // Center the blocks horizontally if needed
-                        alignItems: "center", // Center the content inside blocks vertically
-                    }}
-                >
-                    <div style={{ flex: 1, backgroundColor: "blue" }}>
-                    </div>
-                    <div style={{ flex: 1, backgroundColor: "#7BA6B7" }}>
-                        <img
-                            src={homePageImage}
-                            alt="Image"
-                            style={{ objectFit: "cover", height: "300px", width: "100%" }}
-                        />
-                    </div>
-                    <div style={{ flex: 1, backgroundColor: "#7BA6B7" }}>
-                        <ul style={{ listStyleType: 'none', paddingLeft: 0, maxWidth: '800px', margin: '0 auto' }}>
-                            <li style={{ marginBottom: '15px' }}>
-                                Understand How to Reclaim Your Personal Property Based on Your Insurance Policy
-                            </li>
-                            <li>
-                                ✔ Itemize Your Inventory Using Data From:
-                                <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '10px' }}>
-                                    <li style={{ marginBottom: '8px' }}>• Bank Statements</li>
-                                    <li style={{ marginBottom: '8px' }}>• Amazon History</li>
-                                    <li>• Gmail Receipts</li>
-                                </ul>
-                            </li>
-                            <li style={{ marginTop: '20px' }}>
-                                ✔ Checklist for Gathering Information:
-                                <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '10px' }}>
-                                    <li style={{ marginBottom: '8px' }}>• Insurance Policy</li>
-                                    <li>• Amazon Order History</li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div style={{ flex: 1, backgroundColor: "purple" }}></div>
                 </div>
 
                 {/* Moved Get Started Button */}
