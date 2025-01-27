@@ -52,7 +52,7 @@ const InsuranceFileUpload = () => {
                 </ul>
                 The file must be uploaded in PDF format.
             </p>
-             <input type="file" id = 'browse' accept=".zip" onChange={handleFileChange} />
+             <input type="file" id = 'browse' accept=".pdf" onChange={handleFileChange} />
         </div>
     );
 };
