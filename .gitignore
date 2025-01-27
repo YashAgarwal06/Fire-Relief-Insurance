@@ -10,3 +10,6 @@ temp/
 config.json
 
 *.sock
+
+logs/
+*/logs/*

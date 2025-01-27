@@ -6,6 +6,7 @@ from werkzeug.utils import secure_filename
 import datetime
 from pathlib import Path
 import uuid
+from werkzeug.exceptions import InternalServerError
 
 from tasks import analyze_file
 
@@ -177,6 +178,26 @@ def serve(path):
         return send_from_directory(app.static_folder, path)
     else:
         return send_from_directory(app.static_folder, 'index.html')
+
+
+@app.errorhandler(InternalServerError)
+def handle_exception(e):
+    with open(f'logs/{datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f-")}', 'w') as f:
+        _ = f'''
+        {e.code}
+        {e.name}
+        {e.description}
+        '''
+        f.write(_)
+        
+        # signal kevin
+        URL = os.getenv('ERROR_WEBHOOK')
+        requests.post(URL, data={
+            "content": "check logs nerd"
+        })
+    
+    return jsonify({'error': "Internal Server Error, please try again"}), 500
+
 
 if __name__ == '__main__':
 
