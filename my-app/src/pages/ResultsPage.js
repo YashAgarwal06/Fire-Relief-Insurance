@@ -34,7 +34,7 @@ const ResultsPage = () => {
     const [insTaskResult, setInsTaskResult] = useState('NULL');
     const [amznTaskStatus, setAmznTaskStatus] = useState('');
     const [amznTaskResult, setAmznTaskResult] = useState('NULL');
-    
+
     const { ins_task_id, setins_task_id } = useContextStore();
     const { amzn_task_id, setamzn_task_id } = useContextStore();
 
@@ -122,17 +122,17 @@ const ResultsPage = () => {
                     </p>
                 </div>
                 <div className="results-container">
-                    {/* Render Insurance Column */}
-                    {(insTaskStatus === "SUCCESS") && (
-                        <div className="results-column insurance">
+                {/* Render Insurance Column */}
+                {(insTaskStatus === "SUCCESS") && (
+                        <div className="results-column-insurance">
                             <h1>Insurance Coverage Summary</h1>
                             <Markdown components={{h1: 'h2', h2: 'h3'}}>{insTaskResult}</Markdown>
                         </div>
                     )}
 
-                    {/* Render Amazon Column */}
-                    {(amznTaskStatus === "SUCCESS" && amznTaskResult !== 'NULL') && (
-                        <div className="results-column amazon">
+                {/* Render Amazon Column */}
+                {(amznTaskStatus === "SUCCESS" && amznTaskResult !== 'NULL') && (
+                        <div className="results-columnamazon">
                             <h2 id='amazon-result'>Item Inventory</h2>
                             <button className='button' onClick={handleDownload}>Download</button>
                             <pre>{'Download the itemized inventory of your ...'}</pre>
