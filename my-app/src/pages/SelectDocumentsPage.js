@@ -1,6 +1,6 @@
 import Select from 'react-select'
 
-const SelectDocuments = ({ setDocs }) => {
+const SelectDocuments = ({ docs, setDocs }) => {
 
     const options = [
         { label: 'Home Declaration', value: 'Home_Declaration', endpoint: "/upload_hd" },
@@ -25,6 +25,7 @@ const SelectDocuments = ({ setDocs }) => {
                     options={options}
                     onChange={handleChange}
                     isMulti={true}
+                    value={docs}
                 />
             </form>
 

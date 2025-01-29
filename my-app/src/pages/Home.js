@@ -29,17 +29,29 @@ const modalStyle = {
 const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
     const [currentPage, setCurrentPage] = useState(0);
     const [docs, setDocs] = useState([]);
+    const [allFilesUploaded, setAllFilesUploaded] = useState(false);
 
     const totalPages = 3;
     const navigate = useNavigate();
 
     const handleNextPage = () => {
+        // make sure at least one is selected
+        if (docs.length === 0 || docs.doc.length === 0) {
+            return alert('Please select at least one document to upload')
+        }
+
+        // make sure all files are uploaded
+        if (currentPage === 1 && !allFilesUploaded) {
+            return alert('Please upload all the selected files')
+        }
+
         if (currentPage < totalPages - 1) {
             setCurrentPage(currentPage + 1);
         }
     };
 
     const handlePreviousPage = () => {
+
         if (currentPage > 0) {
             setCurrentPage(currentPage - 1);
         }
@@ -47,6 +59,7 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
 
     const handleClose = () => {
         setIsModalOpen(false);
+        setDocs([])
         setCurrentPage(0);
     };
 
@@ -60,14 +73,14 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
                 return (
                     <div className="modal-text" sx={{ padding: '50px' }}>
                         <h2>Select Desired Documents to Upload</h2>
-                        <SelectDocuments setDocs={setDocs} />
+                        <SelectDocuments docs={docs.doc} setDocs={setDocs} />
                     </div>
                 );
             case 1:
                 return (
                     <div className="modal-text" sx={{ padding: '50px' }}>
                         <h2>Upload Insurance Documents</h2>
-                        <UploadInsurancePage docs={docs} />
+                        <UploadInsurancePage docs={docs} setAllFilesUploaded={setAllFilesUploaded} />
                     </div>
                 )
             case 2:
@@ -152,7 +165,7 @@ const CoverClear = () => {
     return (
         <div>
             <Header></Header>
-            <div style={{  }}>
+            <div style={{}}>
                 <div style={{ textAlign: 'center', marginTop: '80px', marginBottom: '40px' }}>
                     <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', color: '#262b2f' }}>
                         Restoring Hope & Stability for Wildfire Survivors
@@ -167,8 +180,8 @@ const CoverClear = () => {
                         Insurance claimants affected by the January California Wildfires are attempting to submit itemized claims for household items lost in the fires. However, many claimants don’t know exactly what was in their home, as they were unable to evacuate their property. It’s also difficult to create an itemized list without reviewing years of receipts.
                     </p>
                 </div>
-                 {/* Moved Get Started Button */}
-                 <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+                {/* Moved Get Started Button */}
+                <div style={{ textAlign: 'center', marginBottom: '60px' }}>
                     <Button
                         variant="contained"
                         onClick={handleGetStartedClick}
@@ -200,32 +213,32 @@ const CoverClear = () => {
                         <img
                             src={homePageImage}
                             alt="Image"
-                            style={{ objectFit: "contain", height: "auto", width: "100%", verticalAlign:'top'}}
+                            style={{ objectFit: "contain", height: "auto", width: "100%", verticalAlign: 'top' }}
                         />
                     </div>
-                    <div style={{ flex: 1,  backgroundColor: "#4C6778", color: 'white', minHeight: '350px',maxHeight: '300px', paddingLeft: '20px', justifyContent: 'center', flexDirection: 'column',}}>
-                    <p style={{ marginBottom: '5px', padding: '10px', marginTop: '20px', fontWeight:'bold' }}>
+                    <div style={{ flex: 1, backgroundColor: "#4C6778", color: 'white', minHeight: '350px', maxHeight: '300px', paddingLeft: '20px', justifyContent: 'center', flexDirection: 'column', }}>
+                        <p style={{ marginBottom: '5px', padding: '10px', marginTop: '20px', fontWeight: 'bold' }}>
                             1. Upload Your Home Insurance Risk Assessment
                         </p>
-                    <ol style={{ listStyleType: 'none', paddingLeft: '1px', paddingRight: '10px', maxWidth: '800px', margin: '0 auto' }}>
-                        <li>
-                            <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '5px' }}>
-                                <li style={{ marginBottom: '4px' }}>• Your Personal Risk Diagnostic</li>
-                                <li style={{ marginBottom: '4px' }}>• Areas Of High Exposure</li>
-                                <li>• Tangible Steps to Mitigate Your Risk</li>
-                            </ul>
-                        </li>
-                    </ol>
-                    <p style={{ marginBottom: '5px', padding: '10px', fontWeight: 'bold' }}>
-                    2. Reclaim Personal Property within Your Policy Limit                        </p>
-                    <ol style={{ listStyleType: 'none', paddingLeft: '10px', paddingRight: '10px', maxWidth: '800px', margin: '0 auto' }}>
-                        <li>
-                            <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '5px' }}>
-                                <li>• Recreate the California Personal Property Inventory Form per your Insurance Policy.
-                                </li>
-                            </ul>
-                        </li>
-                    </ol>
+                        <ol style={{ listStyleType: 'none', paddingLeft: '1px', paddingRight: '10px', maxWidth: '800px', margin: '0 auto' }}>
+                            <li>
+                                <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '5px' }}>
+                                    <li style={{ marginBottom: '4px' }}>• Your Personal Risk Diagnostic</li>
+                                    <li style={{ marginBottom: '4px' }}>• Areas Of High Exposure</li>
+                                    <li>• Tangible Steps to Mitigate Your Risk</li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p style={{ marginBottom: '5px', padding: '10px', fontWeight: 'bold' }}>
+                            2. Reclaim Personal Property within Your Policy Limit                        </p>
+                        <ol style={{ listStyleType: 'none', paddingLeft: '10px', paddingRight: '10px', maxWidth: '800px', margin: '0 auto' }}>
+                            <li>
+                                <ul style={{ listStyleType: 'none', paddingLeft: '20px', marginTop: '5px' }}>
+                                    <li>• Recreate the California Personal Property Inventory Form per your Insurance Policy.
+                                    </li>
+                                </ul>
+                            </li>
+                        </ol>
                     </div>
                     <div style={{ flex: 1, }}></div>
                 </div>

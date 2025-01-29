@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
 import config from '../config.json'
 const BASE_URL = config.BACKEND_URL
 
-const UploadInsurancePage = ({ docs }) => {
-    const [file, setFile] = useState(null);
+const UploadInsurancePage = ({ docs, setAllFilesUploaded }) => {
     const navigate = useNavigate(); // Hook for navigation
+    var initialFileInputState = docs?.doc?.map(doc => {
+        return { 'value': doc.value, 'endpoint': doc.endpoint, 'file': null }
+    })
+    const [fileInputs, setFileInputs] = useState(initialFileInputState);
 
     const { taskIds, setTaskIds } = useContextStore();
 
-    const handleFileChange = async (e) => {
+    const handleFileChange = (e, value) => {
+        const newFileInputs = fileInputs.map(input =>
+            input.value === value ? { ...input, file: e.target.files[0] } : input
+        );
+        setFileInputs(newFileInputs);
+        console.log(newFileInputs.every(file => file.file !== null))
+        setAllFilesUploaded(newFileInputs.every(file => file.file !== null))
+    };
+
+    const eeeee = async (e) => {
         const selectedFile = e.target.files[0];
-        setFile(selectedFile);
 
         if (selectedFile) {
             const formData = new FormData();
@@ -50,7 +61,7 @@ const UploadInsurancePage = ({ docs }) => {
                     <input
                         type="file"
                         accept='.pdf'
-                        onChange={(e) => handleFileChange(e, doc.endpoint)}
+                        onChange={(e) => handleFileChange(e, doc.value)}
                         className='file-upload-input'
                     />
                 </div>
