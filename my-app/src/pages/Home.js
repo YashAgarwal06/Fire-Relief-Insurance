@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Modal, Box, Button, CircularProgress } from '@mui/material';
-import SelectDocuments from '../lib/SelectDocuments';
-import AmazonFileUpload from './AmazonFileUpload';
+import SelectDocuments from './SelectDocumentsPage';
+import AmazonFileUpload from './AmazonFileUploadPage';
+import UploadInsurancePage from './UploadInsurancePage'
 import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import '../CoverClear.css';
-import Header from './Header';
+import Header from '../lib/Header';
 import homePageImage from '../assets/homepageimage.png';
 import { useContextStore } from '../lib/ContextStore';
 
@@ -16,27 +17,24 @@ const modalStyle = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '600px',
-    height: '400px',
+    maxWidth: '800px',
+    minWidth: '500px',
+    maxHeight: '400px',
     backgroundColor: 'white',
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.2)',
     borderRadius: '8px',
+    maxHeight: '90vh',  // Allow the height to adapt but not exceed the viewport
+    overflowY: 'auto',
 };
 
 const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
     const [currentPage, setCurrentPage] = useState(0);
     const [docs, setDocs] = useState([]);
-    const { ins_task_id, setins_task_id } = useContextStore();
-    const { amzn_task_id, setamzn_task_id } = useContextStore();
 
-    const totalPages = 2;
+    const totalPages = 3;
     const navigate = useNavigate();
 
     const handleNextPage = () => {
-        // if they didn't upload a file, yell at 'em
-        if (ins_task_id === '') {
-            return alert('Please upload a copy of your home insurance policy')
-        }
         if (currentPage < totalPages - 1) {
             setCurrentPage(currentPage + 1);
         }
@@ -54,10 +52,7 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
     };
 
     const handleSubmit = () => {
-        if (ins_task_id === '' && amzn_task_id === '') {
-            alert('Please upload at least an Insurance Policy or Amazon Order History')
-        }
-        else navigate('/results');
+        navigate('/results');
     };
 
     const renderPageContent = () => {
@@ -70,6 +65,13 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
                     </div>
                 );
             case 1:
+                return (
+                    <div className="modal-text" sx={{ padding: '50px' }}>
+                        <h2>Upload Insurance Documents</h2>
+                        <UploadInsurancePage docs={docs} />
+                    </div>
+                )
+            case 2:
                 return (
                     <div className="modal-text" sx={{ padding: '50px' }}>
                         <h2>Amazon Order History (Optional)</h2>
