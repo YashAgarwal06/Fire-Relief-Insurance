@@ -26,8 +26,12 @@ celery = Celery(
 )
 
 
-HDPROMPT = open('lib/hdprompt.txt', 'r').read()
-AMZNPROMPT = open('lib/amznprompt.txt', 'r').read()
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+HDPROMPT = open(os.path.join(BASE_DIR, 'lib', 'hdprompt.txt'), 'r').read()
+
+# HDPROMPT = open('lib/hdprompt.txt', 'r').read()
+# AMZNPROMPT = open('lib/amznprompt.txt', 'r').read()
+AMZNPROMPT = open(os.path.join(BASE_DIR, 'lib', 'amznprompt.txt'), 'r').read()
 
 # this celery task will be used to analyze the files uploaded by the user
 # when calling this function, we will use the filetype variable to label which file it is (e.g. home declaration doc, amazon orders.zip, etc)
