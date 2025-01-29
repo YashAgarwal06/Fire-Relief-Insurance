@@ -3,5 +3,12 @@ __pycache__
 venv/
 */venv/*
 
+temp/
+*/temp/*
+
 .env
 config.json
+
+*.sock
+
+app.log
