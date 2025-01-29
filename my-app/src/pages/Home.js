@@ -17,14 +17,13 @@ const modalStyle = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    maxWidth: '800px',
-    minWidth: '500px',
-    maxHeight: '400px',
+    minWidth: '600px',
+    minHeight: '400px',
     backgroundColor: 'white',
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.2)',
     borderRadius: '8px',
     maxHeight: '90vh',  // Allow the height to adapt but not exceed the viewport
-    overflowY: 'auto',
+    //overflowY: 'auto',
 };
 
 const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {

@@ -42,7 +42,6 @@ const UploadInsurancePage = ({ docs }) => {
 
     return (
         <div className='file-upload-container'>
-            <h3>Please upload:</h3>
             {docs.doc.map(doc => (
                 <div key={doc.value} className="file-upload-row">
                     <label className='file-upload-label'>
@@ -56,6 +55,7 @@ const UploadInsurancePage = ({ docs }) => {
                     />
                 </div>
             ))}
+            <br />
         </div>
 
     );
