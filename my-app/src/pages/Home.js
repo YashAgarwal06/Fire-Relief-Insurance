@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, Box, Button, CircularProgress } from '@mui/material';
-import InsuranceFileUpload from './InsuranceFileUpload';
+import SelectDocuments from '../lib/SelectDocuments';
 import AmazonFileUpload from './AmazonFileUpload';
 import { useNavigate } from 'react-router-dom';
 import { IconButton } from '@mui/material';
@@ -25,6 +25,7 @@ const modalStyle = {
 
 const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
     const [currentPage, setCurrentPage] = useState(0);
+    const [docs, setDocs] = useState([]);
     const { ins_task_id, setins_task_id } = useContextStore();
     const { amzn_task_id, setamzn_task_id } = useContextStore();
 
@@ -64,8 +65,8 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
             case 0:
                 return (
                     <div className="modal-text" sx={{ padding: '50px' }}>
-                        <h2>Upload Insurance Policy</h2>
-                        <InsuranceFileUpload />
+                        <h2>Select Desired Documents to Upload</h2>
+                        <SelectDocuments setDocs={setDocs} />
                     </div>
                 );
             case 1:
