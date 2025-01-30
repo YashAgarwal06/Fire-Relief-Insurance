@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useContextStore } from '../lib/ContextStore';
 import config from '../config.json'
@@ -9,6 +9,11 @@ const AmazonFileUpload = () => {
     const navigate = useNavigate(); // Hook for navigation
 
     const { amzn_task_id, setamzn_task_id } = useContextStore();
+
+    // when loading this component, set the amzn_task_id to empty
+    useEffect(() => {
+        setamzn_task_id('');
+    }, [])
 
     const handleFileChange = async (e) => {
         const selectedFile = e.target.files[0];
@@ -39,7 +44,7 @@ const AmazonFileUpload = () => {
             }
         }
     };
-
+    const fileName = file?.name || "No file chosen";
     return (
         <div>
             <p className="upload-instructions">
@@ -58,7 +63,24 @@ const AmazonFileUpload = () => {
                     <li>Upload "Your Orders.zip" below.</li>
                 </ol>
             </p>
-            <input type="file" id = 'browse' accept=".zip" onChange={handleFileChange} />
+            <div className="file-upload-row">
+                <label className='file-upload-label'>
+                    {"Your Orders: "}
+                </label>
+                <div className="file-upload-right">
+                    <input
+                        type="file"
+                        accept='.zip'
+                        onChange={handleFileChange}
+                        className='file-upload-input'
+                        id='file-upload-amzn'
+                    />
+                    <label htmlFor={'file-upload-amzn'} className="file-upload-custom">
+                        Choose File
+                    </label>
+                    <span className="file-upload-name">{fileName}</span>
+                </div>
+            </div>
         </div>
     );
 };
