@@ -1,11 +1,11 @@
 /* CSS Variables */
 :root {
-  --coral: #df7655;  
-  --light-blue: #4b89a0;
-  --accent-blue: #2c6c81;
-  --dark-blue: #1f4d61;
-  --background: #f7f7f7;
-  --text: #262b2f;
+    --coral: #df7655;
+    --light-blue: #4b89a0;
+    --accent-blue: #2c6c81;
+    --dark-blue: #1f4d61;
+    --background: #f7f7f7;
+    --text: #262b2f;
 }
 
 h1 {
@@ -17,16 +17,19 @@ p {
 }
 
 .home-container {
-    background-color: #F0F0F0; /* Light gray background */
+    background-color: #F0F0F0;
+    /* Light gray background */
 }
 
 .button {
-    background-color:#ff6f43;
-    color: #fff; /* White text */
-    padding: 12px 24px; /* Padding inside the button */
+    background-color: #ff6f43;
+    color: #fff;
+    /* White text */
+    padding: 12px 24px;
+    /* Padding inside the button */
     font-size: 1rem;
     font-weight: bold;
-    text-align: center; 
+    text-align: center;
     border-radius: 1px;
     border-color: #df7655;
     /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  */
@@ -47,85 +50,117 @@ p {
     align-items: center;
     justify-content: center;
     min-height: 50vh;
-    background-color: #F0F0F0; /* Light gray background */
+    background-color: #F0F0F0;
+    /* Light gray background */
 }
+
 /* Content Box */
 .coverclear-content {
     width: 90%;
     max-width: 800px;
     padding: 24px;
-    background-color: #ffffff; /* White background */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    border-radius: 16px; /* Rounded corners */
+    background-color: #ffffff;
+    /* White background */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
+    border-radius: 16px;
+    /* Rounded corners */
     margin: 100px;
 }
+
 /* Title Styles */
 .coverclear-title {
-    font-size: 2.5rem; /* Larger title size */
-    font-weight: bold; /* Bold font */
+    font-size: 2.5rem;
+    /* Larger title size */
+    font-weight: bold;
+    /* Bold font */
     text-align: center;
     margin-bottom: 16px;
-    color: #333333; /* Dark gray text */
+    color: #333333;
+    /* Dark gray text */
 }
+
 /* Description Styles */
 .coverclear-description {
-    font-size: 1.125rem; /* Slightly larger than default */
-    color: #555555; /* Medium gray text */
+    font-size: 1.125rem;
+    /* Slightly larger than default */
+    color: #555555;
+    /* Medium gray text */
     margin-bottom: 24px;
-    line-height: 1.6; /* Comfortable line spacing */
+    line-height: 1.6;
+    /* Comfortable line spacing */
 }
+
 /* Checklist Styles */
 .coverclear-checklist {
     margin-bottom: 24px;
 }
+
 .coverclear-checklist h2 {
-    font-size: 1.25rem; /* Medium font size */
-    font-weight: 600; /* Semi-bold font */
+    font-size: 1.25rem;
+    /* Medium font size */
+    font-weight: 600;
+    /* Semi-bold font */
     margin-bottom: 12px;
-    color: #333333; /* Dark gray text */
+    color: #333333;
+    /* Dark gray text */
 }
+
 .coverclear-checklist ul {
-    list-style-type: disc; /* Standard bullet points */
-    padding-left: 1.5rem; /* Indentation */
-    color: #555555; /* Medium gray text */
-    line-height: 1.6; /* Comfortable line spacing */
+    list-style-type: disc;
+    /* Standard bullet points */
+    padding-left: 1.5rem;
+    /* Indentation */
+    color: #555555;
+    /* Medium gray text */
+    line-height: 1.6;
+    /* Comfortable line spacing */
 }
+
 .coverclear-checklist li {
-    margin-bottom: 8px; /* Space between items */
+    margin-bottom: 8px;
+    /* Space between items */
 }
+
 /* Button Styles */
 .get-started-button {
-    border-radius: 20px; /* Rounded button */
-    padding: 8px 20px; /* Padding inside button */
-    font-size: 1rem; /* Standard font size */
-    display: block; /* Center align */
-    margin: 0 auto; /* Center align */
-    color: #FFFFFF; /* White text */
+    border-radius: 20px;
+    /* Rounded button */
+    padding: 8px 20px;
+    /* Padding inside button */
+    font-size: 1rem;
+    /* Standard font size */
+    display: block;
+    /* Center align */
+    margin: 0 auto;
+    /* Center align */
+    color: #FFFFFF;
+    /* White text */
     background-color: var(--coral) !important;
-    text-transform: none; /* No uppercase text */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Button shadow */
-    transition: background-color 0.3s ease; /* Smooth hover transition */
+    text-transform: none;
+    /* No uppercase text */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Button shadow */
+    transition: background-color 0.3s ease;
+    /* Smooth hover transition */
 }
+
 .get-started-button:hover {
-    background-color: #d67254 !important; 
+    background-color: #d67254 !important;
 }
 
 .home-page-top {
     padding: 1%;
     padding-top: 2%;
     text-align: center;
-    font-size: 3.5rem; /* Standard font size */
+    font-size: 3.5rem;
+    /* Standard font size */
 }
 
 /* MULTIMODAL */
 .modal-text {
     padding: 4% !important;
     padding-left: 7% !important;
-}
-
-.upload-instructions {
-    /* font-size: 0.87rem; */
-    margin-bottom: 40px; /* between paragraphs */
 }
 
 .modal-progress-bar {
@@ -142,6 +177,7 @@ p {
     padding-right: 4rem;
     height: 80vh;
 }
+
 .results-top {
     text-align: left;
     padding: 10px;
@@ -149,11 +185,15 @@ p {
 
 .results-amazon {
     background-color: #4b89a0;
-    border-radius: 12px; /* Rounded edges */
-    padding-left: 20px; /* Inner spacing */
+    border-radius: 12px;
+    /* Rounded edges */
+    padding-left: 20px;
+    /* Inner spacing */
     padding-bottom: 20px;
-    border: 1px solid #e0e0e0; /* Optional: Light border for definition */
-    margin: 20px auto; /* Optional: Center the div */
+    border: 1px solid #e0e0e0;
+    /* Optional: Light border for definition */
+    margin: 20px auto;
+    /* Optional: Center the div */
 }
 
 .results-insurance {
@@ -170,10 +210,70 @@ p {
 }
 
 .results-insurance {
-    background-color: #f0f0f0; /* Light background color */
-    border-radius: 12px; /* Rounded edges */
-    padding: 20px; /* Inner spacing */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    border: 1px solid #e0e0e0; /* Optional: Light border for definition */
-    margin: 20px auto; /* Optional: Center the div */
+    background-color: #f0f0f0;
+    /* Light background color */
+    border-radius: 12px;
+    /* Rounded edges */
+    padding: 20px;
+    /* Inner spacing */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
+    border: 1px solid #e0e0e0;
+    /* Optional: Light border for definition */
+    margin: 20px auto;
+    /* Optional: Center the div */
+}
+
+/* -------------------------- UploadInsurancePage.js ----------------------------------------------- */
+.file-upload-container {
+    padding: 5px;
+}
+
+.file-upload-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.file-upload-label {
+    font-size: 1rem;
+    font-weight: 120;
+}
+
+.file-upload-input {
+    display: none; /* Hide the default file input */
+}
+
+.file-upload-label {
+    font-weight: bold;
+    flex-shrink: 0; /* Prevent the label from shrinking */
+}
+
+.file-upload-custom {
+    padding: 3px 7px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: .85em;
+}
+
+.file-upload-custom:hover {
+    background-color: #0056b3;
+}
+
+.file-upload-name {
+    margin-left: 5px;
+    font-style: italic;
+    color: #555;
+    font-size: .85em;
+    flex-grow: 1; /* Allow the file name to take up remaining space */
+    text-align: right; /* Right-align the file name */
+}
+
+.file-upload-right {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between the button and file name */
 }

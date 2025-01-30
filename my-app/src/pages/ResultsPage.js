@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Markdown from 'react-markdown'
 import { useContextStore } from '../lib/ContextStore';
-import Header from './Header';
+import Header from '../lib/Header';
 import Spinner from '../lib/Spinner'
 import config from '../config.json';
 const BASE_URL = config.BACKEND_URL;
