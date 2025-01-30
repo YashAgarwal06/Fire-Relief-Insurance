@@ -242,6 +242,38 @@ p {
 }
 
 .file-upload-input {
-    width: 60%;
-    text-align: right;
+    display: none; /* Hide the default file input */
+}
+
+.file-upload-label {
+    font-weight: bold;
+    flex-shrink: 0; /* Prevent the label from shrinking */
+}
+
+.file-upload-custom {
+    padding: 3px 7px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: .85em;
+}
+
+.file-upload-custom:hover {
+    background-color: #0056b3;
+}
+
+.file-upload-name {
+    margin-left: 5px;
+    font-style: italic;
+    color: #555;
+    font-size: .85em;
+    flex-grow: 1; /* Allow the file name to take up remaining space */
+    text-align: right; /* Right-align the file name */
+}
+
+.file-upload-right {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between the button and file name */
 }

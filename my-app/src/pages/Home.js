@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Box, Button, CircularProgress } from '@mui/material';
 import SelectDocuments from './SelectDocumentsPage';
 import AmazonFileUpload from './AmazonFileUploadPage';
@@ -29,7 +29,18 @@ const modalStyle = {
 const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
     const [currentPage, setCurrentPage] = useState(0);
     const [docs, setDocs] = useState([]);
-    const [allFilesUploaded, setAllFilesUploaded] = useState(false);
+    const [fileInputs, setFileInputs] = useState([]);
+
+    useEffect(() => {
+        if (docs?.doc) {
+            const initialFileInputState = docs.doc.map(doc => ({
+                value: doc.value,
+                endpoint: doc.endpoint,
+                file: null
+            }));
+            setFileInputs(initialFileInputState);
+        }
+    }, [docs]);
 
     const totalPages = 3;
     const navigate = useNavigate();
@@ -41,7 +52,7 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
         }
 
         // make sure all files are uploaded
-        if (currentPage === 1 && !allFilesUploaded) {
+        if (currentPage === 1 && !fileInputs.every(file => file.file !== null)) {
             return alert('Please upload all the selected files')
         }
 
@@ -59,7 +70,8 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
 
     const handleClose = () => {
         setIsModalOpen(false);
-        setDocs([])
+        setDocs([]);
+        setFileInputs([]);
         setCurrentPage(0);
     };
 
@@ -68,31 +80,32 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
     };
 
     const renderPageContent = () => {
-        switch (currentPage) {
-            case 0:
-                return (
+        return (
+            <>
+                {currentPage === 0 && (
                     <div className="modal-text" sx={{ padding: '50px' }}>
                         <h2>Select Desired Documents to Upload</h2>
                         <SelectDocuments docs={docs.doc} setDocs={setDocs} />
                     </div>
-                );
-            case 1:
-                return (
+                )}
+                {currentPage === 1 && (
                     <div className="modal-text" sx={{ padding: '50px' }}>
                         <h2>Upload Insurance Documents</h2>
-                        <UploadInsurancePage docs={docs} setAllFilesUploaded={setAllFilesUploaded} />
+                        <UploadInsurancePage
+                            docs={docs}
+                            fileInputs={fileInputs}
+                            setFileInputs={setFileInputs}
+                        />
                     </div>
-                )
-            case 2:
-                return (
+                )}
+                {currentPage === 2 && (
                     <div className="modal-text" sx={{ padding: '50px' }}>
                         <h2>Amazon Order History (Optional)</h2>
                         <AmazonFileUpload />
                     </div>
-                );
-            default:
-                return <div>Invalid Page</div>;
-        }
+                )}
+            </>
+        );
     };
 
     const renderDotProgress = () => {
