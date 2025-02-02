@@ -1,36 +1,80 @@
-import Select from 'react-select'
+import React from 'react';
 
-const SelectDocuments = ({ docs, setDocs }) => {
-
+const SelectDocuments = ({ docs = [], setDocs, onStartUpload }) => {
     const options = [
-        { label: 'Home Declaration', value: 'Home_Declaration', endpoint: "/upload_hd" },
-        { label: 'Health Insurance (Private)', value: 'Health_Insurance_Private', endpoint: "/upload_healthins" },
-        { label: 'Medicare/Medicaid', value: 'Medicare', endpoint: "/upload_medicare" },
-        { label: 'Car Insurance', value: 'Car_Insurance', endpoint: "/upload_car" },
-        { label: 'a', value: 'a', endpoint: '/a'},
-        { label: 'b', value: 'b', endpoint: '/b'},
-        { label: 'c', value: 'c', endpoint: '/c'},
-        { label: 'd', value: 'd', endpoint: '/d'},
-    ]
+        { label: 'Home', value: 'Home' },
+        { label: 'Pet', value: 'Pet' },
+        { label: 'Medical', value: 'Medical' },
+        { label: 'Earthquake', value: 'Earthquake' },
+        { label: 'Flood', value: 'Flood' },
+        { label: 'Public Health', value: 'Public Health' },
+        { label: 'Private Health', value: 'Private Health' },
+        { label: 'Car', value: 'Car' },
+    ];
 
-    const handleChange = (doc) => {
-        setDocs({ doc })
-    }
+    const handleCheckboxChange = (option) => {
+        const updatedDocs = docs.find(doc => doc.value === option.value)
+            ? docs.filter(doc => doc.value !== option.value)
+            : [...docs, option]; // Add full object, not just value
+        setDocs(updatedDocs);
+    };
 
     return (
-        <>
-            <h3>Please select</h3>
-            <form>
-                <Select
-                    options={options}
-                    onChange={handleChange}
-                    isMulti={true}
-                    value={docs}
-                />
-            </form>
-
-        </>
-    )
+        <div>
+            <h3 style={{ textAlign: 'center', marginBottom: '20px' }}>Select Insurance Policies</h3>
+            <div
+                style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(2, 1fr)',
+                    gap: '20px',
+                    padding: '0 10px',
+                }}
+            >
+                {options.map((option) => (
+                    <div
+                        key={option.value}
+                        onClick={() => handleCheckboxChange(option)}
+                        style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            backgroundColor: '#f9f9f9',
+                            borderRadius: '8px',
+                            padding: '15px',
+                            cursor: 'pointer',
+                            userSelect: 'none',
+                            boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)',
+                        }}
+                    >
+                        <input
+                            type="checkbox"
+                            id={option.value}
+                            value={option.value}
+                            checked={docs.some(doc => doc.value === option.value)}
+                            readOnly
+                            style={{ marginRight: '10px', pointerEvents: 'none' }}
+                        />
+                        <label htmlFor={option.value}>{option.label}</label>
+                    </div>
+                ))}
+            </div>
+            {docs.length > 0 && (
+                <div style={{ textAlign: 'center', marginTop: '20px' }}>
+                    <button
+                        onClick={onStartUpload}
+                        style={{
+                            backgroundColor: '#000',
+                            color: '#fff',
+                            padding: '10px 20px',
+                            borderRadius: '20px',
+                            fontSize: '16px',
+                        }}
+                    >
+                        Start Upload
+                    </button>
+                </div>
+            )}
+        </div>
+    );
 };
 
 export default SelectDocuments;

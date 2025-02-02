@@ -1,76 +1,161 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useContextStore } from '../lib/ContextStore';
-import config from '../config.json'
-const BASE_URL = config.BACKEND_URL
+import React, { useState, useEffect } from 'react';
 
-const UploadInsurancePage = ({ docs, fileInputs, setFileInputs }) => {
-    const navigate = useNavigate(); // Hook for navigation
+const UploadInsurancePage = ({ doc, onNext, isLast, onFileUpload, onSubmit, fileInputs }) => {
+    const [declarationFile, setDeclarationFile] = useState(null);
+    const [renewalFile, setRenewalFile] = useState(null);
 
-    const handleFileChange = (e, value) => {
-        const newFileInputs = fileInputs.map(input =>
-            input.value === value ? { ...input, file: e.target.files[0] } : input
-        );
-        setFileInputs(newFileInputs);
+    // Reset UI when switching pages
+    useEffect(() => {
+        setDeclarationFile(null);
+        setRenewalFile(null);
+    }, [doc]);
+
+    const handleFileChange = (e, fileType, setFile) => {
+        const file = e.target.files[0];
+        setFile(file);
+        onFileUpload(doc, fileType, file); // Store the file in the parent state
     };
 
-    const eeeee = async (e) => {
-        const selectedFile = e.target.files[0];
-
-        if (selectedFile) {
-            const formData = new FormData();
-            formData.append('file', selectedFile);
-
-            try {
-                // Simulate file upload to the backend
-                const response = await fetch(`${BASE_URL}/upload_amzn`, {
-                    method: 'POST',
-                    body: formData,
-                });
-
-                const data = await response.json();
-                if (response.ok) {
-                    console.log(data.task_id);
-                } else {
-                    alert(`Failed to upload file: ${data.error}`);
-                    navigate('/');
-                }
-            } catch (error) {
-                console.error('Error uploading file:', error);
-                alert('An error occurred. Please try again.');
-                navigate('/');
-            }
-        }
-    };
+    const isNextDisabled = !declarationFile || !renewalFile; // Disable button if either file is missing
 
     return (
-        <div className='file-upload-container'>
-            {docs?.doc?.map(doc => {
-                const fileInput = fileInputs.find(input => input.value === doc.value);
-                const fileName = fileInput?.file?.name || "No file chosen";
+        <div style={{ padding: '30px' }}>
+            <h3 style={{ textAlign: 'center', fontSize: '22px', marginBottom: '25px', fontWeight: 'bold' }}>
+                {`Upload Documents for ${doc?.label || 'Loading...'}`}
+            </h3>
 
-                return (
-                    <div key={doc.value} className="file-upload-row">
-                        <label className='file-upload-label'>
-                            {doc.label + ": "}
-                        </label>
-                        <div className="file-upload-right">
-                            <input
-                                type="file"
-                                accept='.pdf'
-                                onChange={(e) => handleFileChange(e, doc.value)}
-                                className='file-upload-input'
-                                id={`file-upload-${doc.value}`}
-                            />
-                            <label htmlFor={`file-upload-${doc.value}`} className="file-upload-custom">
-                                Choose File
-                            </label>
-                            <span className="file-upload-name">{fileName}</span>
-                        </div>
-                    </div>
-                );
-            })}
-            <br />
+            {/* Declaration Document Upload */}
+            <div style={{ marginBottom: '30px' }}>
+                <div style={{ marginBottom: '15px', fontSize: '16px', fontWeight: 'bold' }}>Declaration Document:</div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <input
+                        type="file"
+                        accept=".pdf"
+                        id="declaration-upload"
+                        onChange={(e) => handleFileChange(e, 'declaration', setDeclarationFile)}
+                        style={{ display: 'none' }}
+                    />
+                    <label
+                        htmlFor="declaration-upload"
+                        style={{
+                            backgroundColor: '#f2f2f2',
+                            border: '1px solid #ccc',
+                            padding: '12px 20px',
+                            borderRadius: '6px',
+                            fontSize: '16px',
+                            cursor: 'pointer',
+                            flex: 1,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: '20px',
+                        }}
+                    >
+                        Choose File
+                    </label>
+                    <span
+                        style={{
+                            marginLeft: '15px',
+                            fontSize: '14px',
+                            flex: 2,
+                            display: 'inline-block',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                        }}
+                    >
+                        {declarationFile ? declarationFile.name : 'No file chosen'}
+                    </span>
+                </div>
+            </div>
+
+            {/* Renewal Information Upload */}
+            <div style={{ marginBottom: '30px' }}>
+                <div style={{ marginBottom: '15px', fontSize: '16px', fontWeight: 'bold' }}>Renewal Information:</div>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <input
+                        type="file"
+                        accept=".pdf"
+                        id="renewal-upload"
+                        onChange={(e) => handleFileChange(e, 'renewal', setRenewalFile)}
+                        style={{ display: 'none' }}
+                    />
+                    <label
+                        htmlFor="renewal-upload"
+                        style={{
+                            backgroundColor: '#f2f2f2',
+                            border: '1px solid #ccc',
+                            padding: '12px 20px',
+                            borderRadius: '6px',
+                            fontSize: '16px',
+                            cursor: 'pointer',
+                            flex: 1,
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            height: '20px',
+                        }}
+                    >
+                        Choose File
+                    </label>
+                    <span
+                        style={{
+                            marginLeft: '15px',
+                            fontSize: '14px',
+                            flex: 2,
+                            display: 'inline-block',
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                        }}
+                    >
+                        {renewalFile ? renewalFile.name : 'No file chosen'}
+                    </span>
+                </div>
+            </div>
+
+            {/* Navigation Buttons */}
+            <div style={{ textAlign: 'center' }}>
+                {isLast ? (
+                    <button
+                        onClick={onSubmit}
+                        disabled={isNextDisabled}
+                        style={{
+                            backgroundColor: isNextDisabled ? '#ccc' : '#000',
+                            color: '#fff',
+                            padding: '12px 30px',
+                            borderRadius: '8px',
+                            fontSize: '16px',
+                            fontWeight: 'bold',
+                            border: 'none',
+                            cursor: isNextDisabled ? 'not-allowed' : 'pointer',
+                            height: '45px',
+                            width: '150px',
+                        }}
+                    >
+                        Submit All
+                    </button>
+                ) : (
+                    <button
+                        onClick={onNext}
+                        disabled={isNextDisabled}
+                        style={{
+                            backgroundColor: isNextDisabled ? '#ccc' : '#000',
+                            color: '#fff',
+                            padding: '12px 30px',
+                            borderRadius: '8px',
+                            fontSize: '16px',
+                            fontWeight: 'bold',
+                            border: 'none',
+                            cursor: isNextDisabled ? 'not-allowed' : 'pointer',
+                            height: '45px',
+                            width: '150px',
+                        }}
+                    >
+                        Next
+                    </button>
+                )}
+            </div>
         </div>
     );
 };
