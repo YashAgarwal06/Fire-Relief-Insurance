@@ -6,28 +6,10 @@ import SelectDocuments from './SelectDocumentsPage';
 import UploadInsurancePage from './UploadInsurancePage';
 import UserDetailsPage from './UserDetailsPage';
 import '../CoverClear.css';
+import Header from '../lib/Header';
 import Footer from '../lib/Footer';
 import "./Home.css";
 const { BACKEND_URL } = require('../config.json')
-
-
-// Header Component
-const Header = ({ onOpenModal }) => {
-    const navigate = useNavigate();
-
-    return (
-        <header className="header">
-            <div className="header-content">
-                <span className="logo">LOGO</span>
-                <nav>
-                    <a href="#about" className="nav-link">About</a>
-                    <button className="get-started-button" onClick={onOpenModal}>Get Started</button>
-                </nav>
-            </div>
-        </header>
-    );
-};
-
 
 const Home = () => {
     const navigate = useNavigate();

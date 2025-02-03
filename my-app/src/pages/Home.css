@@ -44,6 +44,11 @@ nav {
     font-weight: 500;
 }
 
+.home-page-button {
+    padding: 0.5rem 3rem !important;
+
+}
+
 .get-started-button {
     all: unset; /* Removes all button styles (background, padding, border, default behavior) */
     font-weight: bold;

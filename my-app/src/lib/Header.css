@@ -27,3 +27,23 @@
     align-items: center !important;
     text-decoration: none; /* Remove underline */
 }
+
+.get-started-button {
+    all: unset; /* Removes all button styles (background, padding, border, default behavior) */
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    
+    /* Gradient Text */
+    background-image: linear-gradient(90deg, #7A52C7, #A76DFF);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent; /* Makes text take gradient color */
+}
+
+.about-button {
+    all: unset; /* Removes all button styles (background, padding, border, default behavior) */
+    font-size: 1rem;
+    cursor: pointer;
+    
+}
