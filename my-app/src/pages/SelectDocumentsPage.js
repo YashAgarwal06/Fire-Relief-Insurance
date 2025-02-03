@@ -7,8 +7,8 @@ const SelectDocuments = ({ docs = [], setDocs, onStartUpload }) => {
         { label: 'Medical', value: 'Medical' },
         { label: 'Earthquake', value: 'Earthquake' },
         { label: 'Flood', value: 'Flood' },
-        { label: 'Public Health', value: 'Public Health' },
-        { label: 'Private Health', value: 'Private Health' },
+        { label: 'Public Health', value: 'Public_Health' },
+        { label: 'Private Health', value: 'Private_Health' },
         { label: 'Car', value: 'Car' },
     ];
 
