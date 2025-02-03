@@ -90,7 +90,7 @@ const Home = () => {
     const handleSubmitAll = () => {
         const data = new FormData()
         fileInputs.forEach(fileInput => {
-            data.append(`${fileInput.type.value}`, fileInput.files.declaration === null ? fileInput.files.renewal : fileInput.files.declaration)
+            data.append(`${fileInput.type.value}`, fileInput.files.declaration)
         })
         
         fetch(`${BACKEND_URL}/upload`, {

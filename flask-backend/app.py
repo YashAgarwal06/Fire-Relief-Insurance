@@ -39,7 +39,7 @@ def validate_file(request):
 
     # ensure they're all pdfs with a non empty filename
     for key, file in enumerate(files):
-        if '.' not in file.filename or file.filename.rsplit('.', 1)[1].lower() not in ['pdf'] or file.filename == '':
+        if '.' not in files[file].filename or files[file].filename.rsplit('.', 1)[1].lower() not in ['pdf'] or files[file].filename == '':
             raise Exception('Bad file')
         
     return files
@@ -53,18 +53,20 @@ def upload_hd():
         return jsonify({'error': e.args[0]}), 400
 
     # save files
-    for filetype, file in files:
-        filename = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f-") + filetype
+    filepaths = {}
+    for filetype, file in files.items():
+        filename = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f-") + filetype + '.pdf'
         
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         
         file.save(filepath)
+    
+        filepaths[filetype] = filepath
 
-    return jsonify({'cat', 'a'}), 200
     # send this to our celery worker
     task_id = str(uuid.uuid4())
     pending_tasks.add(task_id)
-    analyze_file.apply_async(args=['HD', filepath], task_id=task_id)
+    analyze_file.apply_async(args=['INS', filepaths], task_id=task_id)
 
     return jsonify({'task_id': task_id}), 200
 
