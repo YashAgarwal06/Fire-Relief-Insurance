@@ -89,8 +89,8 @@ const Home = () => {
                     }}
                 >
                     Insurance claimants affected by the January California Wildfires are attempting
-                    to submit itemized claims for household items lost in the fires. However, many claimants don’t
-                    know exactly what was in their home, as they were unable to evacuate their property. It’s also
+                    to submit itemized claims for household items lost in the fires. However, many claimants don't
+                    know exactly what was in their home, as they were unable to evacuate their property. It's also
                     difficult to create an itemized list without reviewing years of receipts.
                 </p>
             </div>
