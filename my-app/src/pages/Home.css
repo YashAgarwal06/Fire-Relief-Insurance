@@ -1,0 +1,139 @@
+@import url("../CoverClear.css");
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 25px; /* Reduced padding to make it thinner */
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+    margin: 40px auto 0; /* Moved it down slightly */
+    width: 85%; /* Slightly narrower */
+    max-width: 1100px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #3D2E43;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-link {
+    text-decoration: none;
+    font-size: 1rem;
+    color: #3D2E43;
+    font-weight: 500;
+}
+
+.get-started-button {
+    all: unset; /* Removes all button styles (background, padding, border, default behavior) */
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    
+    /* Gradient Text */
+    background-image: linear-gradient(90deg, #7A52C7, #A76DFF);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent; /* Makes text take gradient color */
+}
+
+.get-started-button:hover {
+    opacity: 0.7; /* Subtle fade on hover */
+}
+
+
+
+
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    position: relative;
+    overflow: hidden;
+    height: 81vh;
+    /* Full viewport height */
+}
+
+h1 {
+    font-size: 5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.home-page-gradient {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    background: rgba(139, 92, 246, 0.2);
+    border-radius: 50%;
+    filter: blur(100px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.home-page-description {
+    font-size: 1.25rem;
+    color: #4b5563;
+    text-align: center;
+    max-width: 28rem;
+    margin-bottom: 2rem;
+}
+
+.home-page-button {
+    color: white;
+    border: none;
+    padding: 1.5rem 2rem;
+    font-size: 1.125rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.home-page-text {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transform: translate(0, 15%)
+}
+
+.home-page-image-gradient {
+    position: relative;
+    background-image: url('../assets/blur.png'); /* Replace with your image URL */
+    background-size: cover; /* Ensure the image covers the container */
+    min-width: 500px;
+    min-height: 475px;
+    background-position: center;
+    background-color: transparent; /* No fallback color */
+    transform: translate(0,-17%); /* Offset the content to truly center it */
+
+}
+
+.home-page-button:hover {
+    background-color: #5f386f !important;
+}

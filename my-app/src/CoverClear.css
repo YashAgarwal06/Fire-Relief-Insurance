@@ -5,15 +5,16 @@
     --accent-blue: #2c6c81;
     --dark-blue: #1f4d61;
     --background: #f7f7f7;
-    --text: #262b2f;
+    --text: #3D2E43;
 }
 
 h1 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
 }
 
 p {
-    font-family: 'Open-Sans', sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 
 .home-container {

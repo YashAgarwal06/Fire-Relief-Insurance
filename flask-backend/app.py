@@ -37,66 +37,6 @@ def validate_file(request):
         raise Exception('Blank File Name')
 
 
-@app.route('/auth/google', methods=['POST'])
-def auth_google():
-    # Get the access token from the request
-    access_token = request.json.get('access_token')
-
-    # check if missing access_token
-    if not access_token:
-        return jsonify({'error': 'Access token is missing'}), 400
-
-    # Validate token info
-    user_info_response = requests.get(
-        'https://www.googleapis.com/oauth2/v3/tokeninfo',
-        headers={'Authorization': f'Bearer {access_token}'}
-    )
-    if user_info_response.status_code != 200:
-        return jsonify({'error': 'Invalid access token'}), 401
-
-    # Call the Gmail API to fetch the user's email messages
-    next_page_token = ''
-    gmail_ids = []
-
-    while True:
-        url = 'https://www.googleapis.com/gmail/v1/users/me/messages?q={subject:"confirm order" subject:"purchase" subject:"receipt"}'
-        if (next_page_token):
-            url += "&pageToken=" + next_page_token
-
-        gmail_response = requests.get(
-            url,
-            headers={'Authorization': f'Bearer {access_token}'}
-        )
-
-        if gmail_response.status_code != 200:
-            return jsonify({'error': 'Failed to fetch Gmail data'}), 401
-
-        resp = gmail_response.json()
-
-        gmail_ids += [i['id'] for i in resp['messages']]
-        if ('nextPageToken' in resp):
-            next_page_token = resp['nextPageToken']
-        else:
-            break
-
-    for id in gmail_ids:
-        resp = requests.get(f'https://www.googleapis.com/gmail/v1/users/me/messages/{id}',
-                            headers={'Authorization': f'Bearer {access_token}'}
-                            )
-        email_data = resp.json()
-
-        for header in email_data['payload']['headers']:
-            if header["name"] == 'From':
-                print(header['value'], end=' ')
-            if header["name"] == 'Subject':
-                print(header['value'])
-
-    # Return the Gmail data along with user info
-    return jsonify({
-        'email': 'cat'
-    }), 200
-
-
 @app.route('/upload_hd', methods=['POST'])
 def upload_hd():
     try:
