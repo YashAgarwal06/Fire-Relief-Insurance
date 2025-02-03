@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import SelectDocuments from './SelectDocumentsPage';
 import UploadInsurancePage from './UploadInsurancePage';
+import UserDetailsPage from './UserDetailsPage';
 import '../CoverClear.css';
 import Footer from '../lib/Footer';
 import "./Home.css";
@@ -27,21 +28,22 @@ const Header = ({ onOpenModal }) => {
     );
 };
 
+
 const Home = () => {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [docs, setDocs] = useState([]);
     const [currentDocIndex, setCurrentDocIndex] = useState(-1);
     const [fileInputs, setFileInputs] = useState([]);
+    const [userDetails, setUserDetails] = useState({ age: '', hasSpouse: false, dependents: 0 });
 
-    // 🔹 Modal height dynamically changes based on selected docs
     const modalStyle = {
         position: 'absolute',
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: '500px',
-        minHeight: docs.length === 0 ? '330px' : '400px',
+        width: '450px',
+        minHeight: currentDocIndex === -1 ? '330px' : '300px',
         backgroundColor: 'white',
         boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.2)',
         borderRadius: '8px',
@@ -59,14 +61,14 @@ const Home = () => {
         }
         const initialFileInputs = docs.map((doc) => ({
             type: doc,
-            files: { declaration: null }, // 🔥 Removed renewal from here
+            files: { declaration: null },
         }));
         setFileInputs(initialFileInputs);
         setCurrentDocIndex(0);
     };
 
     const handleNext = () => {
-        if (currentDocIndex < docs.length - 1) {
+        if (currentDocIndex < docs.length) {
             setCurrentDocIndex((prevIndex) => prevIndex + 1);
         }
     };
@@ -87,18 +89,30 @@ const Home = () => {
         setFileInputs(updatedFileInputs);
     };
 
+    const handleUserDetailsSubmit = (details) => {
+        setUserDetails(details);
+        handleSubmitAll();
+    };
+
     const handleSubmitAll = () => {
-        const data = new FormData()
+        console.log('Submitting files:', fileInputs);
+        console.log('User Details:', userDetails);
+
+        const data = new FormData();
         fileInputs.forEach(fileInput => {
-            data.append(`${fileInput.type.value}`, fileInput.files.declaration === null ? fileInput.files.renewal : fileInput.files.declaration)
-        })
-        
-        fetch(`${BACKEND_URL}/upload`, {
+            data.append(`${fileInput.type.value}`, fileInput.files.declaration);
+        });
+
+        // Append user details
+        data.append('age', userDetails.age);
+        data.append('hasSpouse', userDetails.hasSpouse);
+        data.append('dependents', userDetails.dependents);
+
+        fetch(`${BACKEND_URL}/submit`, {
             method: 'POST',
             body: data,
-        })
+        });
 
-        // Redirect to the results page
         navigate('/results');
     };
 
@@ -133,7 +147,6 @@ const Home = () => {
 
             <Modal open={isModalOpen} onClose={handleCloseModal}>
                 <Box sx={modalStyle}>
-                    {/* Close Button (X) */}
                     <IconButton
                         onClick={handleCloseModal}
                         sx={{
@@ -155,15 +168,16 @@ const Home = () => {
                             setDocs={setDocs}
                             onStartUpload={handleStartUpload}
                         />
-                    ) : (
+                    ) : currentDocIndex < docs.length ? (
                         <UploadInsurancePage
                             doc={docs[currentDocIndex]}
                             onNext={handleNext}
-                            isLast={currentDocIndex === docs.length - 1}
+                            isLast={false}
                             onFileUpload={handleFileUpload}
-                            onSubmit={handleSubmitAll}
                             fileInputs={fileInputs}
                         />
+                    ) : (
+                        <UserDetailsPage onSubmit={handleUserDetailsSubmit} />
                     )}
                 </Box>
             </Modal>

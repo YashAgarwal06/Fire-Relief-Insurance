@@ -26,7 +26,7 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
             alert('Please select at least one document to upload.');
             return;
         }
-        setCurrentStep(1); // Start the upload process
+        setCurrentStep(1);
     };
 
     const handleNext = () => {
@@ -46,12 +46,11 @@ const MultiPageModal = ({ isModalOpen, setIsModalOpen }) => {
         setIsModalOpen(false);
     };
 
-    // Ensure we correctly index into the docs array
     const currentDoc = docs[currentStep - 1];
 
-    console.log('Current Step:', currentStep); // Debug current step
-    console.log('Docs:', docs); // Debug the full docs array
-    console.log('Current Doc:', currentDoc); // Debug the specific doc being passed
+    console.log('Current Step:', currentStep);
+    console.log('Docs:', docs);
+    console.log('Current Doc:', currentDoc);
 
 
     return (
