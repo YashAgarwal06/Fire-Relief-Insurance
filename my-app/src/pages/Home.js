@@ -6,7 +6,7 @@ import UploadInsurancePage from './UploadInsurancePage';
 import '../CoverClear.css';
 import Footer from '../lib/Footer';
 import "./Home.css";
-const { BASE_URL } = require('../config.json')
+const { BACKEND_URL } = require('../config.json')
 
 const modalStyle = {
     position: 'absolute',
@@ -82,14 +82,12 @@ const Home = () => {
     };
 
     const handleSubmitAll = () => {
-        console.log('Submitting files:', fileInputs);
-
         const data = new FormData()
         fileInputs.forEach(fileInput => {
             data.append(`${fileInput.type.value}`, fileInput.files.declaration === null ? fileInput.files.renewal : fileInput.files.declaration)
         })
         
-        fetch(`${BASE_URL}/amongus`, {
+        fetch(`${BACKEND_URL}/upload`, {
             method: 'POST',
             body: data,
         })

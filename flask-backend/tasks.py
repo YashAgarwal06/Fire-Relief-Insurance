@@ -27,10 +27,7 @@ celery = Celery(
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-HDPROMPT = open(os.path.join(BASE_DIR, 'lib', 'hdprompt.txt'), 'r').read()
 
-# HDPROMPT = open('lib/hdprompt.txt', 'r').read()
-# AMZNPROMPT = open('lib/amznprompt.txt', 'r').read()
 AMZNPROMPT = open(os.path.join(BASE_DIR, 'lib', 'amznprompt.txt'), 'r').read()
 
 # this celery task will be used to analyze the files uploaded by the user
@@ -59,7 +56,7 @@ def analyze_file(self, filetype, filepath):
         os.remove(filepath)
         
         try:
-            response = prompt_gpt(HDPROMPT, text)
+            response = prompt_gpt('cat', text)
             return response
         except:
             raise Exception('Task Failed, please retry or contact us')

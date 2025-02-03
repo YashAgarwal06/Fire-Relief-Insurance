@@ -12,6 +12,8 @@ import logging
 from tasks import analyze_file
 
 UPLOAD_FOLDER = 'temp'
+FILE_TYPES = ['Home', 'Pet', 'Medical', 'Earthquake',
+              'Flood', 'Public_Health', 'Private_Health', 'Car']
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = Path(__file__).resolve().parent / UPLOAD_FOLDER
@@ -20,46 +22,51 @@ CORS(app)
 
 logging.basicConfig(filename='app.log', level=logging.ERROR)
 
-pending_tasks = set() # very quirky and dumb workaround cuz we dont use any database
+pending_tasks = set()  # very quirky and dumb workaround cuz we dont use any database
 
 
 # Takes in a flask request object and makes sure that a file exists in the body of the request
 def validate_file(request):
     # check if the post request has the file part
-    if 'file' not in request.files:
-        flash('No file part')
+    files = {}
+
+    for filetype in FILE_TYPES:
+        if filetype in request.files:
+            files[filetype] = request.files[filetype]
+
+    if len(files) == 0:
         raise Exception('No file')
 
-    file = request.files['file']
+    # ensure they're all pdfs with a non empty filename
+    for key, file in enumerate(files):
+        if '.' not in file.filename or file.filename.rsplit('.', 1)[1].lower() not in ['pdf'] or file.filename == '':
+            raise Exception('Bad file')
+        
+    return files
 
-    # If the user does not select a file, the browser submits an empty file without a filename
-    if file.filename == '':
-        raise Exception('Blank File Name')
 
-
-@app.route('/upload_hd', methods=['POST'])
+@app.route('/upload', methods=['POST'])
 def upload_hd():
     try:
-        validate_file(request)
+        files = validate_file(request)
     except Exception as e:
         return jsonify({'error': e.args[0]}), 400
 
-    file = request.files['file']
-
-    # save file
-    if file and ('.' in file.filename and file.filename.rsplit('.', 1)[1].lower() in ['pdf']):
-        filename = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f-") + secure_filename(file.filename)
+    # save files
+    for filetype, file in files:
+        filename = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f-") + filetype
+        
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        
         file.save(filepath)
 
-        # send this to our celery worker
-        task_id = str(uuid.uuid4())
-        pending_tasks.add(task_id)
-        analyze_file.apply_async(args=['HD', filepath], task_id=task_id)
+    return jsonify({'cat', 'a'}), 200
+    # send this to our celery worker
+    task_id = str(uuid.uuid4())
+    pending_tasks.add(task_id)
+    analyze_file.apply_async(args=['HD', filepath], task_id=task_id)
 
-        return jsonify({'task_id': task_id}), 200
-    else:
-        return jsonify({'error': "Bad file"}), 400
+    return jsonify({'task_id': task_id}), 200
 
 
 @app.route('/upload_amzn', methods=['POST'])
@@ -74,7 +81,8 @@ def upload_amzn():
     # validate file extension
     if file and ('.' in file.filename and file.filename.rsplit('.', 1)[1].lower() in ['zip']):
         # save file
-        filename = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f-") + secure_filename(file.filename)
+        filename = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S-%f-") + \
+            secure_filename(file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         file.save(filepath)
 
@@ -93,20 +101,21 @@ def upload_amzn():
 def get_task_status(task_id):
     if task_id not in pending_tasks:
         return jsonify({'error': 'No task with specified id'}), 400
-    
+
     task = analyze_file.AsyncResult(task_id)
-    
+
     if task.state == 'PENDING':
         response = {'state': task.state, 'status': 'Pending...'}
     elif task.state == 'SUCCESS':
         response = {'state': task.state, 'result': task.result}
         # Delete the task
-        task.forget()  
+        task.forget()
         pending_tasks.remove(task_id)
     elif task.state == 'FAILURE':
-        response = {'state': task.state, 'status': str(task.info)}  # Exception occurred
+        response = {'state': task.state, 'status': str(
+            task.info)}  # Exception occurred
         # Delete the task
-        task.forget()  
+        task.forget()
         pending_tasks.remove(task_id)
     else:
         response = {'state': task.state, 'status': 'Unknown state'}
@@ -126,13 +135,13 @@ def serve(path):
 @app.errorhandler(InternalServerError)
 def handle_exception(e):
     logging.error(e, exc_info=True)
-    
+
     # signal kevin
     URL = os.getenv('ERROR_WEBHOOK')
     requests.post(URL, data={
         "content": "check logs nerd"
     })
-    
+
     return jsonify({'error': "Internal Server Error, please try again"}), 500
 
 
