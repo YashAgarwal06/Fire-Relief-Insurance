@@ -1,7 +1,0 @@
-﻿"OrderID","ReversalID","RefundCompletionDate","Currency","AmountRefunded","Status","DisbursementType"
-"113-7306918-2273015","z+pPDLddSCOJWsGvLyZU3A","2025-01-14T02:40:06.142Z","USD","8.57","Completed","Refund"
-"113-1062317-9255454","DxRVIDpWQo6w6YJ/hZO72A","2024-12-31T03:54:32.706Z","USD","5.43","Completed","Refund"
-"113-7128801-2978613","jrrOQE0JQ4CqX9HYkJd/Nw","2024-11-27T00:34:43.604Z","USD","13.69","Completed","Refund"
-"113-5403975-0280232","huTsKlQ4SZeBqa7IEW1bNw","2024-11-08T05:10:08.055Z","USD","32.84","Completed","Refund"
-"113-7573708-5677808","Hdw8KIdwRwCyuQyTO5U4Gg","2024-05-06T22:39:26.603Z","USD","16.41","Completed","Refund"
-"112-4154569-2901036","NdrL9DKoTOOj6KwwEmEumw","2024-04-10T21:21:16.366Z","USD","103.45","Completed","Refund"
