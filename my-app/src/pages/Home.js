@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Modal, Box, Button } from '@mui/material';
+import { Modal, Box, Button, IconButton } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import CloseIcon from '@mui/icons-material/Close';
 import SelectDocuments from './SelectDocumentsPage';
 import UploadInsurancePage from './UploadInsurancePage';
 import '../CoverClear.css';
@@ -8,19 +9,6 @@ import Footer from '../lib/Footer';
 import "./Home.css";
 const { BACKEND_URL } = require('../config.json')
 
-const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    minWidth: '600px',
-    minHeight: '400px',
-    backgroundColor: 'white',
-    boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.2)',
-    borderRadius: '8px',
-    maxHeight: '90vh',
-    overflowY: 'auto',
-};
 
 // Header Component
 const Header = ({ onOpenModal }) => {
@@ -46,6 +34,24 @@ const Home = () => {
     const [currentDocIndex, setCurrentDocIndex] = useState(-1);
     const [fileInputs, setFileInputs] = useState([]);
 
+    // 🔹 Modal height dynamically changes based on selected docs
+    const modalStyle = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '500px',
+        minHeight: docs.length === 0 ? '330px' : '400px',
+        backgroundColor: 'white',
+        boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.2)',
+        borderRadius: '8px',
+        maxHeight: '90vh',
+        overflowY: 'auto',
+        padding: '20px',
+        position: 'relative',
+        transition: 'min-height 0.3s ease-in-out',
+    };
+
     const handleStartUpload = () => {
         if (docs.length === 0) {
             alert('Please select at least one document to upload.');
@@ -53,7 +59,7 @@ const Home = () => {
         }
         const initialFileInputs = docs.map((doc) => ({
             type: doc,
-            files: { declaration: null, renewal: null },
+            files: { declaration: null }, // 🔥 Removed renewal from here
         }));
         setFileInputs(initialFileInputs);
         setCurrentDocIndex(0);
@@ -127,8 +133,28 @@ const Home = () => {
 
             <Modal open={isModalOpen} onClose={handleCloseModal}>
                 <Box sx={modalStyle}>
+                    {/* Close Button (X) */}
+                    <IconButton
+                        onClick={handleCloseModal}
+                        sx={{
+                            position: 'absolute',
+                            top: '10px',
+                            right: '10px',
+                            color: '#333',
+                            background: 'transparent',
+                            borderRadius: '20px',
+                            boxShadow: 'none',
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+
                     {currentDocIndex === -1 ? (
-                        <SelectDocuments docs={docs} setDocs={setDocs} onStartUpload={handleStartUpload} />
+                        <SelectDocuments
+                            docs={docs}
+                            setDocs={setDocs}
+                            onStartUpload={handleStartUpload}
+                        />
                     ) : (
                         <UploadInsurancePage
                             doc={docs[currentDocIndex]}

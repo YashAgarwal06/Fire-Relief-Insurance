@@ -4,12 +4,12 @@ const SelectDocuments = ({ docs = [], setDocs, onStartUpload }) => {
     const options = [
         { label: 'Home', value: 'Home' },
         { label: 'Pet', value: 'Pet' },
-        { label: 'Medical', value: 'Medical' },
+        { label: 'Life', value: 'Life' },
         { label: 'Earthquake', value: 'Earthquake' },
         { label: 'Flood', value: 'Flood' },
-        { label: 'Public Health', value: 'Public_Health' },
-        { label: 'Private Health', value: 'Private_Health' },
-        { label: 'Car', value: 'Car' },
+        { label: 'Public Health', value: 'Public Health' },
+        { label: 'Private Health', value: 'Private Health' },
+        { label: 'Auto', value: 'Auto' },
     ];
 
     const handleCheckboxChange = (option) => {
@@ -21,7 +21,7 @@ const SelectDocuments = ({ docs = [], setDocs, onStartUpload }) => {
 
     return (
         <div>
-            <h3 style={{ textAlign: 'center', marginBottom: '20px' }}>Select Insurance Policies</h3>
+            <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Select Insurance Policies</h2>
             <div
                 style={{
                     display: 'grid',
@@ -65,7 +65,7 @@ const SelectDocuments = ({ docs = [], setDocs, onStartUpload }) => {
                             backgroundColor: '#000',
                             color: '#fff',
                             padding: '10px 20px',
-                            borderRadius: '20px',
+                            borderRadius: '7px',
                             fontSize: '16px',
                         }}
                     >
