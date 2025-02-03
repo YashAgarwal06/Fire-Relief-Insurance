@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { Modal, Box, Button } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // For navigation to the results page
+import { useNavigate } from 'react-router-dom';
 import SelectDocuments from './SelectDocumentsPage';
 import UploadInsurancePage from './UploadInsurancePage';
 import '../CoverClear.css';
-import Header from '../lib/Header';
-import homePageImage from '../assets/homepageimage.png';
 import Footer from '../lib/Footer';
 import "./Home.css";
 const { BASE_URL } = require('../config.json')
@@ -24,8 +22,25 @@ const modalStyle = {
     overflowY: 'auto',
 };
 
+// Header Component
+const Header = ({ onOpenModal }) => {
+    const navigate = useNavigate();
+
+    return (
+        <header className="header">
+            <div className="header-content">
+                <span className="logo">LOGO</span>
+                <nav>
+                    <a href="#about" className="nav-link">About</a>
+                    <button className="get-started-button" onClick={onOpenModal}>Get Started</button>
+                </nav>
+            </div>
+        </header>
+    );
+};
+
 const Home = () => {
-    const navigate = useNavigate(); // For navigation to the results page
+    const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [docs, setDocs] = useState([]);
     const [currentDocIndex, setCurrentDocIndex] = useState(-1);
@@ -36,18 +51,17 @@ const Home = () => {
             alert('Please select at least one document to upload.');
             return;
         }
-        // Initialize file inputs for the selected documents
         const initialFileInputs = docs.map((doc) => ({
             type: doc,
             files: { declaration: null, renewal: null },
         }));
         setFileInputs(initialFileInputs);
-        setCurrentDocIndex(0); // Move to the first document's upload page
+        setCurrentDocIndex(0);
     };
 
     const handleNext = () => {
         if (currentDocIndex < docs.length - 1) {
-            setCurrentDocIndex((prevIndex) => prevIndex + 1); // Go to the next document
+            setCurrentDocIndex((prevIndex) => prevIndex + 1);
         }
     };
 
@@ -55,7 +69,7 @@ const Home = () => {
         setIsModalOpen(false);
         setDocs([]);
         setFileInputs([]);
-        setCurrentDocIndex(-1); // Reset the flow
+        setCurrentDocIndex(-1);
     };
 
     const handleFileUpload = (docType, fileType, file) => {
@@ -68,7 +82,6 @@ const Home = () => {
     };
 
     const handleSubmitAll = () => {
-        // Log or process the uploaded files
         console.log('Submitting files:', fileInputs);
 
         const data = new FormData()
@@ -87,17 +100,16 @@ const Home = () => {
 
     return (
         <div>
+            <Header onOpenModal={() => setIsModalOpen(true)} />
             <main className="home-page-main">
-                {/* Purple gradient effect */}
-                <div className="home-page-gradient">
-                </div>
-                <div className="home-page-image-gradient" />
+                <div className="home-page-gradient"></div>
+                <div className="home-page-image-gradient"></div>
 
                 <div className="home-page-text">
-                    <h1 className="home-page-title">
-                        janus
-                    </h1>
-                    <p className="home-page-description">This is the description about the product.</p>
+                    <h1 className="home-page-title">janus</h1>
+                    <p className="home-page-description">
+                        This is the description about the product.
+                    </p>
                     <Button
                         className="home-page-button"
                         variant="contained"
@@ -115,8 +127,6 @@ const Home = () => {
                 </div>
             </main>
 
-
-          
             <Modal open={isModalOpen} onClose={handleCloseModal}>
                 <Box sx={modalStyle}>
                     {currentDocIndex === -1 ? (
@@ -127,8 +137,8 @@ const Home = () => {
                             onNext={handleNext}
                             isLast={currentDocIndex === docs.length - 1}
                             onFileUpload={handleFileUpload}
-                            onSubmit={handleSubmitAll} // Pass handleSubmitAll
-                            fileInputs={fileInputs} // Pass all file inputs for context
+                            onSubmit={handleSubmitAll}
+                            fileInputs={fileInputs}
                         />
                     )}
                 </Box>
