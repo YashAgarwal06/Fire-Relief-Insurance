@@ -2,21 +2,19 @@ import React, { useState, useEffect } from 'react';
 
 const UploadInsurancePage = ({ doc, onNext, isLast, onFileUpload, onSubmit, fileInputs }) => {
     const [declarationFile, setDeclarationFile] = useState(null);
-    const [renewalFile, setRenewalFile] = useState(null);
 
     // Reset UI when switching pages
     useEffect(() => {
         setDeclarationFile(null);
-        setRenewalFile(null);
     }, [doc]);
 
-    const handleFileChange = (e, fileType, setFile) => {
+    const handleFileChange = (e, setFile) => {
         const file = e.target.files[0];
         setFile(file);
-        onFileUpload(doc, fileType, file); // Store the file in the parent state
+        onFileUpload(doc, 'declaration', file); // Store the file in the parent state
     };
 
-    const isNextDisabled = !declarationFile || !renewalFile; // Disable button if either file is missing
+    const isNextDisabled = !declarationFile; // Disable button if no file is uploaded
 
     return (
         <div style={{ padding: '30px' }}>
@@ -32,7 +30,7 @@ const UploadInsurancePage = ({ doc, onNext, isLast, onFileUpload, onSubmit, file
                         type="file"
                         accept=".pdf"
                         id="declaration-upload"
-                        onChange={(e) => handleFileChange(e, 'declaration', setDeclarationFile)}
+                        onChange={(e) => handleFileChange(e, setDeclarationFile)}
                         style={{ display: 'none' }}
                     />
                     <label
@@ -65,51 +63,6 @@ const UploadInsurancePage = ({ doc, onNext, isLast, onFileUpload, onSubmit, file
                         }}
                     >
                         {declarationFile ? declarationFile.name : 'No file chosen'}
-                    </span>
-                </div>
-            </div>
-
-            {/* Renewal Information Upload */}
-            <div style={{ marginBottom: '30px' }}>
-                <div style={{ marginBottom: '15px', fontSize: '16px', fontWeight: 'bold' }}>Renewal Information:</div>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                    <input
-                        type="file"
-                        accept=".pdf"
-                        id="renewal-upload"
-                        onChange={(e) => handleFileChange(e, 'renewal', setRenewalFile)}
-                        style={{ display: 'none' }}
-                    />
-                    <label
-                        htmlFor="renewal-upload"
-                        style={{
-                            backgroundColor: '#f2f2f2',
-                            border: '1px solid #ccc',
-                            padding: '12px 20px',
-                            borderRadius: '6px',
-                            fontSize: '16px',
-                            cursor: 'pointer',
-                            flex: 1,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            height: '20px',
-                        }}
-                    >
-                        Choose File
-                    </label>
-                    <span
-                        style={{
-                            marginLeft: '15px',
-                            fontSize: '14px',
-                            flex: 2,
-                            display: 'inline-block',
-                            whiteSpace: 'nowrap',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                        }}
-                    >
-                        {renewalFile ? renewalFile.name : 'No file chosen'}
                     </span>
                 </div>
             </div>
