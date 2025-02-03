@@ -116,9 +116,15 @@ const Home = () => {
         navigate('/results');
     };
 
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
+
+
     return (
+        
         <div>
-            <Header onOpenModal={() => setIsModalOpen(true)} />
+            <Header onOpenModal={handleOpenModal} />
             <main className="home-page-main">
                 <div className="home-page-gradient"></div>
                 <div className="home-page-image-gradient"></div>
@@ -135,7 +141,6 @@ const Home = () => {
                         style={{
                             backgroundColor: '#3D2E43',
                             color: 'white',
-                            padding: '12px 30px',
                             fontSize: '1.1rem',
                             fontWeight: 'bold',
                         }}

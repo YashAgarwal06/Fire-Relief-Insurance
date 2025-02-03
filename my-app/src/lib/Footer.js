@@ -10,8 +10,8 @@ export default function Footer() {
         <p className="footer-made-by-bruin-ai">Made by students of UCLA Bruin AI</p>
         <div className="footer-links">
           <Link to="/about" className="footer-about">About</Link>
-          <Link to="/page" className="footer-page">Page</Link>
-          <a href="https://www.bruinai.org/" className="footer-bruin-ai-link" target="_blank" rel="noopener noreferrer">BruinAI</a>
+          <Link to="/privacy" className="footer-page">Privacy</Link>
+          <a href="https://www.bruinai.org/" className="footer-bruin-ai-link" target="_blank" rel="noopener noreferrer">Bruin AI</a>
         </div>
       </div>
     </footer>

@@ -22,26 +22,13 @@ p {
     /* Light gray background */
 }
 
-.button {
-    background-color: #ff6f43;
-    color: #fff;
-    /* White text */
-    padding: 12px 24px;
-    /* Padding inside the button */
-    font-size: 1rem;
-    font-weight: bold;
-    text-align: center;
-    border-radius: 1px;
-    border-color: #df7655;
-    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);  */
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.button:hover {
-    background-color: #cb6749;
-    /* transform: translateY(-2px); */
-    /* box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); Stronger shadow on hover */
+button {
+    background-color: '#3D2E43';
+    color: 'white';
+    font-size: '1rem';
+    font-weight: 'bold';
+    border-radius: 20px !important;
+    padding: 0.5rem 3rem !important;
 }
 
 /* General Container Styles */
@@ -78,13 +65,11 @@ p {
     text-align: center;
     margin-bottom: 16px;
     color: #333333;
-    /* Dark gray text */
 }
 
 /* Description Styles */
 .coverclear-description {
     font-size: 1.125rem;
-    /* Slightly larger than default */
     color: #555555;
     /* Medium gray text */
     margin-bottom: 24px;
@@ -243,12 +228,14 @@ p {
 }
 
 .file-upload-input {
-    display: none; /* Hide the default file input */
+    display: none;
+    /* Hide the default file input */
 }
 
 .file-upload-label {
     font-weight: bold;
-    flex-shrink: 0; /* Prevent the label from shrinking */
+    flex-shrink: 0;
+    /* Prevent the label from shrinking */
 }
 
 .file-upload-custom {
@@ -269,12 +256,15 @@ p {
     font-style: italic;
     color: #555;
     font-size: .85em;
-    flex-grow: 1; /* Allow the file name to take up remaining space */
-    text-align: right; /* Right-align the file name */
+    flex-grow: 1;
+    /* Allow the file name to take up remaining space */
+    text-align: right;
+    /* Right-align the file name */
 }
 
 .file-upload-right {
     display: flex;
     align-items: center;
-    gap: 10px; /* Space between the button and file name */
+    gap: 10px;
+    /* Space between the button and file name */
 }

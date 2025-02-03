@@ -1,0 +1,29 @@
+@import url("../CoverClear.css");
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px; /* Reduced padding to make it thinner */
+    background: white;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 30px;
+    margin: 40px auto 0; /* Moved it down slightly */
+    width: 85%; /* Slightly narrower */
+    max-width: 1100px;
+}
+
+.logo-image {
+    height: 27px;
+    width: 27px;
+    align-items: center !important;
+    margin-left: auto;
+    margin-top: auto;
+    margin-right: 10px;
+}
+
+.logo {
+    display: flex;
+    align-items: center !important;
+    text-decoration: none; /* Remove underline */
+}
