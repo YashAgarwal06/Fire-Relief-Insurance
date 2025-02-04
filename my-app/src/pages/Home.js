@@ -9,6 +9,8 @@ import '../CoverClear.css';
 import Header from '../lib/Header';
 import Footer from '../lib/Footer';
 import "./Home.css";
+
+
 const { BACKEND_URL } = require('../config.json')
 
 const Home = () => {
@@ -175,5 +177,6 @@ const Home = () => {
         </div>
     );
 };
+
 
 export default Home;

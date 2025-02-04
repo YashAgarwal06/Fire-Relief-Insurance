@@ -43,3 +43,14 @@
   font-size: 14px !important;
   color: #6c757d !important;
 }
+
+.footer-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adjust spacing between logo and text */
+}
+
+.footer-logo {
+  height: 25px; /* Adjust as needed */
+  width: auto;
+}

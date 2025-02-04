@@ -51,7 +51,13 @@ const SelectDocuments = ({ docs = [], setDocs, onStartUpload }) => {
                             value={option.value}
                             checked={docs.some(doc => doc.value === option.value)}
                             readOnly
-                            style={{ marginRight: '10px', pointerEvents: 'none' }}
+                            style={{
+                                marginRight: '10px',
+                                pointerEvents: 'none',
+                                width: '18px',
+                                height: '18px',
+                                accentColor: 'black',
+                            }}
                         />
                         <label htmlFor={option.value}>{option.label}</label>
                     </div>

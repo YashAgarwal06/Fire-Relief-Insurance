@@ -4,6 +4,7 @@ import "./Footer.css";
 import { Modal, Box, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import logo from '../assets/Logo_BAI.png'; // Import the logo
 
 export default function Footer() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
@@ -35,7 +36,11 @@ export default function Footer() {
       <hr className="footer-line" />
 
       <div className="footer-div">
+        {/* Add the logo here */}
+        <div className="footer-logo-container">
+        <img src={logo} alt="Bruin AI Logo" className="footer-logo" />
         <p className="footer-made-by-bruin-ai">Made by students of UCLA Bruin AI</p>
+        </div>
         <div className="footer-links">
           <button className="about-button" onClick={handleOpenAbout}>About</button>
           <Link to="/privacy" className="footer-page">Privacy</Link>
