@@ -1,14 +1,6 @@
 import React, { useState } from 'react';
 
-const UserDetailsPage = ({ onSubmit }) => {
-    const [age, setAge] = useState('');
-    const [hasSpouse, setHasSpouse] = useState(false);
-    const [dependents, setDependents] = useState(0);
-
-    const handleSubmit = () => {
-        onSubmit({ age, hasSpouse, dependents });
-    };
-
+const UserDetailsPage = ({ onSubmit, age, setAge, dependents, setDependents, hasSpouse, setHasSpouse }) => {
     return (
         <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
             <h3 style={{ textAlign: 'center', fontSize: '22px', marginBottom: '20px', fontWeight: 'bold' }}>
@@ -22,7 +14,7 @@ const UserDetailsPage = ({ onSubmit }) => {
                     type="number"
                     min="0"
                     value={age}
-                    onChange={(e) => setAge(e.target.value)}
+                    onChange={e => setAge(e.target.value)}
                     style={{
                         width: '100%',
                         padding: '10px',
@@ -59,7 +51,7 @@ const UserDetailsPage = ({ onSubmit }) => {
                     type="number"
                     min="0"
                     value={dependents}
-                    onChange={(e) => setDependents(e.target.value)}
+                    onChange={(e) => {setDependents(e.target.value)}}
                     style={{
                         width: '100%',
                         padding: '10px',
@@ -73,7 +65,7 @@ const UserDetailsPage = ({ onSubmit }) => {
             {/* Submit Button */}
             <div style={{ textAlign: 'center', marginTop: '20px' }}>
                 <button 
-                    onClick={handleSubmit} 
+                    onClick={onSubmit} 
                     style={{
                         width: '100%',
                         padding: '12px',

@@ -17,7 +17,10 @@ const Home = () => {
     const [docs, setDocs] = useState([]);
     const [currentDocIndex, setCurrentDocIndex] = useState(-1);
     const [fileInputs, setFileInputs] = useState([]);
-    const [userDetails, setUserDetails] = useState({ age: '', hasSpouse: false, dependents: 0 });
+
+    const [age, setAge] = useState('');
+    const [hasSpouse, setHasSpouse] = useState(false);
+    const [dependents, setDependents] = useState('');
 
     const modalStyle = {
         position: 'absolute',
@@ -71,24 +74,16 @@ const Home = () => {
         setFileInputs(updatedFileInputs);
     };
 
-    const handleUserDetailsSubmit = (details) => {
-        setUserDetails(details);
-        handleSubmitAll();
-    };
-
     const handleSubmitAll = () => {
-        console.log('Submitting files:', fileInputs);
-        console.log('User Details:', userDetails);
-
         const data = new FormData();
         fileInputs.forEach(fileInput => {
             data.append(`${fileInput.type.value}`, fileInput.files.declaration);
         });
 
         // Append user details
-        data.append('age', userDetails.age);
-        data.append('hasSpouse', userDetails.hasSpouse);
-        data.append('dependents', userDetails.dependents);
+        data.append('age', age);
+        data.append('hasSpouse', hasSpouse);
+        data.append('dependents', dependents);
 
         fetch(`${BACKEND_URL}/submit`, {
             method: 'POST',
@@ -104,7 +99,7 @@ const Home = () => {
 
 
     return (
-        
+
         <div>
             <Header onOpenModal={handleOpenModal} />
             <main className="home-page-main">
@@ -164,7 +159,15 @@ const Home = () => {
                             fileInputs={fileInputs}
                         />
                     ) : (
-                        <UserDetailsPage onSubmit={handleUserDetailsSubmit} />
+                        <UserDetailsPage // raising state
+                            onSubmit={handleSubmitAll}
+                            age={age}
+                            setAge={setAge}
+                            hasSpouse={hasSpouse}
+                            setHasSpouse={setHasSpouse}
+                            dependents={dependents}
+                            setDependents={setDependents} 
+                        />
                     )}
                 </Box>
             </Modal>
