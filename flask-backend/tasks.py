@@ -1,19 +1,19 @@
+import pandas as pd
+from lib.pdf_files_to_perplexity import pdf_to_images, process_images_with_textract, prompt_perplexity
+from lib.prompt_gpt import prompt_gpt
+from lib.get_amazon_from_zip import process_zip_to_csv
+from lib.amazon_to_template import process_csv_to_xlsx
+from io import StringIO
+import shutil
+import zipfile
+from pathlib import Path
+from celery import Celery
 import os
 from pdf2image import convert_from_path
 import base64
 from dotenv import load_dotenv
 load_dotenv()
-from celery import Celery
-from pathlib import Path
-import zipfile
-import shutil
-from io import StringIO
-import pandas as pd 
 
-
-from lib.amazon_to_template import process_csv_to_xlsx
-from lib.get_amazon_from_zip import process_zip_to_csv
-from lib.prompt_gpt import prompt_gpt
 
 celery = Celery(
     __name__,
@@ -29,27 +29,76 @@ AMZNPROMPT = open(os.path.join(BASE_DIR, 'lib', 'amznprompt.txt'), 'r').read()
 # this celery task will be used to analyze the files uploaded by the user
 # when calling this function, we will use the filetype variable to label which file it is (e.g. home declaration doc, amazon orders.zip, etc)
 # and handle it accordingly
+
+
 @celery.task(bind=True)
-def analyze_file(self, filetype, filepath): 
-    if filetype == 'INS':
-        # process files
-        for filetype, path in filepath.items():
-            filebytes = open(path, 'rb').read()
-            
-            # call AWS
-            
-            
-            # delete file
-            os.remove(path)
-        
-        
+def analyze_file(self, tasktype, filepaths, age, hasSpouse, dependents):
+    print(tasktype, filepaths, age, hasSpouse, dependents)
+    if tasktype == 'INS':
         try:
-            response = prompt_gpt('cat', False)
+            # for every filepath in filepaths, we break it into images
+            image_dict = {}
+            for filetype, filepath in filepaths.items():
+                ims = pdf_to_images(filepath)
+                image_dict[filetype] = ims
+                
+                os.remove(filepath)
+                
+            # now we read the text from each list of images
+            txt = ''
+            for doctype, images in image_dict.items():
+                txt += f'My policy for {doctype} insurance:\n===================\n'
+                txt += process_images_with_textract(images)
+                txt += '\n\n'
+            
+            # finally calling perplexity
+            
+            structure = (
+            '''
+            1. What do you have covered?
+                a. Break down by coverage type
+            2. What is your overall risk protection score?
+                a. Provide an overall score (a percentage)
+                b. Break this down by each coverage type - provide reasoning for each
+                c. Provide strengths and weaknesses for each of the categories
+            3. What are the next steps you can do to defend yourself from further risk?
+                a. Provide a step by step analysis based on the risk protection score
+                b. Include real policies that could be purchased to supplement the weaknesses. Ensure they fit with the individual's address, family background, age, etc.
+            '''
+            )
+
+            messages = [
+                {
+                    "role": "system",
+                    "content": (
+                        "You are a helpful assistant that answers questions about company policies."
+                        "Only reply with data from your searches if it matches the situation exactly."
+                        "Only rely on information we provide for you otherwise."
+                        f"Display your response in this exact format in Markdown: {structure}"
+                        "Please return raw Markdown text, thank you"
+                    )
+                },
+                {
+                    "role": "user",
+                    "content": (
+                        f"Here is my situation: Age: {age}, Has Spouse: {hasSpouse}, Number of Dependents: {dependents}."
+                        f"Here are the policies:\n\n{txt}"
+                    )
+                }
+            ]
+            
+            response = prompt_perplexity(messages)
+            
+            open('output.md', 'w').write(response)
+            
             return response
         except:
             raise Exception('Task Failed, please retry or contact us')
     
-    # if filetype == 'AMZN':
+    
+    
+    
+    # if tasktype == 'AMZN':
     #     try:
     #         output_folder = Path(filepath).stem
     #         with zipfile.ZipFile(filepath, 'r') as zip_ref:

@@ -4,11 +4,5 @@ flask_cors
 requests
 celery
 redis
-pytesseract
-pdf2image
-python-poppler
-PyPDF2
-pycryptodome
 pandas
-openpyxl
-xlsxwriter
+pymupdf

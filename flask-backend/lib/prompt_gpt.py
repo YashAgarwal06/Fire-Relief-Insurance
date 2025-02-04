@@ -1,5 +1,7 @@
 import os
 from openai import AzureOpenAI
+from dotenv import load_dotenv
+load_dotenv()
 
 client = AzureOpenAI(
     azure_endpoint = os.getenv("AZURE_OPENAI_ENDPOINT"), 

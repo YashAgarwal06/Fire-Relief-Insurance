@@ -8,8 +8,10 @@ from pathlib import Path
 import uuid
 from werkzeug.exceptions import InternalServerError
 import logging
-
+from dotenv import load_dotenv
 from tasks import analyze_file
+
+load_dotenv()
 
 UPLOAD_FOLDER = 'temp'
 FILE_TYPES = ['Home', 'Pet', 'Medical', 'Earthquake',
@@ -46,11 +48,19 @@ def validate_file(request):
 
 
 @app.route('/upload', methods=['POST'])
-def upload_hd():
+def upload():
     try:
         files = validate_file(request)
     except Exception as e:
         return jsonify({'error': e.args[0]}), 400
+    
+    # ensure the values of age, hasSpouse, and dependents exist
+    try:
+        age = int(request.form.get('age'))
+        hasSpouse = request.form.get('hasSpouse').lower() == 'true'
+        dependents = int(request.form.get('dependents'))
+    except:
+        return jsonify({'error': 'Bad Request'}), 400
 
     # save files
     filepaths = {}
@@ -66,7 +76,7 @@ def upload_hd():
     # send this to our celery worker
     task_id = str(uuid.uuid4())
     pending_tasks.add(task_id)
-    analyze_file.apply_async(args=['INS', filepaths], task_id=task_id)
+    analyze_file.apply_async(args=['INS', filepaths, age, hasSpouse, dependents], task_id=task_id)
 
     return jsonify({'task_id': task_id}), 200
 
