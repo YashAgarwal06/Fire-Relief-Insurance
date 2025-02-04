@@ -8,6 +8,7 @@ import UserDetailsPage from './UserDetailsPage';
 import '../CoverClear.css';
 import Header from '../lib/Header';
 import Footer from '../lib/Footer';
+import { useContextStore } from '../lib/ContextStore';
 import "./Home.css";
 
 
@@ -23,6 +24,8 @@ const Home = () => {
     const [age, setAge] = useState('');
     const [hasSpouse, setHasSpouse] = useState(false);
     const [dependents, setDependents] = useState('');
+
+    const { ins_task_id, setins_task_id } = useContextStore();
 
     const modalStyle = {
         position: 'absolute',
@@ -75,7 +78,7 @@ const Home = () => {
         setFileInputs(updatedFileInputs);
     };
 
-    const handleSubmitAll = () => {
+    const handleSubmitAll = async () => {
         const data = new FormData();
         fileInputs.forEach(fileInput => {
             data.append(`${fileInput.type.value}`, fileInput.files.declaration);
@@ -86,12 +89,25 @@ const Home = () => {
         data.append('hasSpouse', hasSpouse);
         data.append('dependents', dependents);
 
-        fetch(`${BACKEND_URL}/upload`, {
-            method: 'POST',
-            body: data,
-        });
+        try {
+            const response = await fetch(`${BACKEND_URL}/upload`, {
+                method: 'POST',
+                body: data,
+            })
+            const result = await response.json();
+            if (response.ok) {
+                setins_task_id(result.task_id);
+            } 
+            else {
+                throw new Error(result.error)
+            }
 
-        navigate('/results');
+            navigate('/results');
+        } 
+        catch (err) {
+            alert(`Failed to upload files: ${err.message}`)
+            navigate('/')
+        }
     };
 
     const handleOpenModal = () => {
@@ -167,7 +183,7 @@ const Home = () => {
                             hasSpouse={hasSpouse}
                             setHasSpouse={setHasSpouse}
                             dependents={dependents}
-                            setDependents={setDependents} 
+                            setDependents={setDependents}
                         />
                     )}
                 </Box>

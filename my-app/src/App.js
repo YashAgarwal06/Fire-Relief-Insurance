@@ -8,7 +8,6 @@ function App() {
         <ContextStoreProvider>
             <Router>
                 <Routes>
-                    {/* <Route path="/" element={<HomePage />} /> */}
                     <Route path="/" element={<CoverClear />} />
                     <Route path="/results" element={<ResultsPage />} />
                     <Route path="/privacy" element={<Privacy />} />

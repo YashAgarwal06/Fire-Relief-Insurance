@@ -89,8 +89,6 @@ def analyze_file(self, tasktype, filepaths, age, hasSpouse, dependents):
             
             response = prompt_perplexity(messages)
             
-            open('output.md', 'w').write(response)
-            
             return response
         except:
             raise Exception('Task Failed, please retry or contact us')

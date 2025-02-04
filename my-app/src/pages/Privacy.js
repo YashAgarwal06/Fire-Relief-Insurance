@@ -123,7 +123,7 @@ export default function Privacy() {
                 <p>We may update this Privacy Policy from time to time. Continued use of our website constitutes acceptance of the revised policy.</p>
 
                 <h2>8. Contact Us</h2>
-                <p>If you have any questions about this Privacy Policy, please contact us at <a href="mailto:bruinaiucla@gmail.com">bruinaiucla@gmail.com</a>.</p>
+                <p>If you have any questions about this Privacy Policy, please contact us at <a href="mailto:admin@bruinai.org">admin@bruinai.org</a>.</p>
             </div>
             <Footer />
         </div>
