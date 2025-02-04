@@ -37,7 +37,6 @@ const Home = () => {
         maxHeight: '90vh',
         overflowY: 'auto',
         padding: '20px',
-        position: 'relative',
         transition: 'min-height 0.3s ease-in-out',
     };
 
@@ -87,7 +86,7 @@ const Home = () => {
         data.append('hasSpouse', hasSpouse);
         data.append('dependents', dependents);
 
-        fetch(`${BACKEND_URL}/submit`, {
+        fetch(`${BACKEND_URL}/upload`, {
             method: 'POST',
             body: data,
         });
